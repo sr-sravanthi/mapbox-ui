@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "json": "json-server src/assets/db.json --watch --port 3000"
   },
   "private": true,
   "dependencies": {
@@ -26,6 +27,7 @@
     "@mapbox/mapbox-gl-geocoder": "^5.0.1",
     "@types/mapbox__mapbox-gl-geocoder": "^4.7.7",
     "firebase": "^10.7.1",
+    "json-server": "^1.0.0-alpha.11",
     "mapbox-gl": "^3.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
