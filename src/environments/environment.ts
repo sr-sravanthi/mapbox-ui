@@ -1,6 +1,7 @@
 
 export const environment = {
     production: false,
+    BASE_API:"https://mapps-pal-ci.mariapps.com/ESMobileService/",
     mapbox: {
         accessToken: 'pk.eyJ1IjoibXN1dGV1IiwiYSI6ImNsNjBtcmZtaDAxdWIzZXAzaXh2MWpjNnoifQ.L5xob1M0ve9CSDs_Upje-A'
     },
