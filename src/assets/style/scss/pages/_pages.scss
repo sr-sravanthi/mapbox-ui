@@ -281,11 +281,11 @@ body {
     }
 
     .trashlist-wrapper {
-        ul {
+        .trashlist-container {
             height: calc(100vh - 210px);
             overflow: auto;
 
-            li {
+            .trashlist-item {
                 &.trash-blk {
                     border: 1px solid $border-light;
                     border-radius: 6px;

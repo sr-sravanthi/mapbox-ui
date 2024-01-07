@@ -8,6 +8,7 @@ import { PopupComponent } from './popup/popup.component';
 import { MaterialModule } from 'src/app/shared/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TrashitemComponent } from './trashitem/trashitem.component';
+import { TrashTabComponent } from './trash-tab/trash-tab.component';
 
 
 
@@ -17,7 +18,8 @@ import { TrashitemComponent } from './trashitem/trashitem.component';
     AddtrashComponent,
     UserDashboardComponent,
     PopupComponent,
-    TrashitemComponent
+    TrashitemComponent,
+    TrashTabComponent
   ],
   imports: [
     CommonModule,

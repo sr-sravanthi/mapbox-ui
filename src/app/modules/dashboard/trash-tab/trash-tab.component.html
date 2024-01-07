@@ -1,0 +1,16 @@
+<div class="d-flex justfy-content-spacebetween m-t-20 records-count">
+  <span>{{ trashData.length }} Records found</span>
+  <div class="right-section d-flex">
+    <span>Sort by :</span>
+    <i class="bold m-r-5 text-color pointer" (click)="toggleSortingOrder()">DATE </i>
+    <mat-icon class="arrow-up pointer" *ngIf="isAscendingOrder">arrow_upward</mat-icon>
+    <mat-icon class="pointer" *ngIf="!isAscendingOrder">arrow_downward</mat-icon>
+  </div>
+</div>
+<div class="trashlist-wrapper">
+  <div class="p-0 m-t-0 trashlist-container">
+    <div *ngFor="let trash of trashData">
+      <app-trashitem [trashItem]="trash"></app-trashitem>
+    </div>
+  </div>
+</div>

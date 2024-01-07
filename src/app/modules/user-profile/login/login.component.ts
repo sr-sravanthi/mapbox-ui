@@ -55,9 +55,9 @@ export class LoginComponent implements OnInit {
           }
         }
         else {
-          this.afAuth.signOut().then(() => {
-            window.alert('Logged out!');
-          });
+          // this.afAuth.signOut().then(() => {
+          //   window.alert('Logged out!');
+          // });
         }
       },
       // error: (err) => {

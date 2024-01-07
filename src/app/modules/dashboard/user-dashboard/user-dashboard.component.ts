@@ -3,18 +3,17 @@ import { Component, OnInit } from '@angular/core';
 import { AddtrashComponent } from '../addtrash/addtrash.component';
 import { MatDialog } from '@angular/material/dialog';
 import * as mapboxgl from 'mapbox-gl';
-import { environment } from "src/environments/environment.development";
+import { environment } from 'src/environments/environment.development';
 import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { DynamicComponentService } from 'src/app/core/services/dynamic-component-service/dynamic-component.service';
 import { UserDetails, UserRequest } from 'src/app/core/interfaces/user';
 import { TrashRequest } from 'src/app/core/interfaces/trash';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
-
 @Component({
   selector: 'app-user-dashboard',
   templateUrl: './user-dashboard.component.html',
-  styleUrls: ['./user-dashboard.component.scss']
+  styleUrls: ['./user-dashboard.component.scss'],
 })
 export class UserDashboardComponent implements OnInit {
   cornerCoordinates: any;
@@ -24,15 +23,21 @@ export class UserDashboardComponent implements OnInit {
   lat = -74.5;
   lng = 40;
   zoom = 13;
-  allTrash!: any;
   popup!: mapboxgl.Popup;
-  myTrashDetails: any;
+  myTrash: any[] = [];
+  allTrash: any[] = [];
+  recoveredTrash: any[] = [];
 
-  constructor(public dialog: MatDialog, private dynamic: DynamicComponentService, private authService: AuthService) { }
+  selectedTab: string = '';
+
+  constructor(
+    public dialog: MatDialog,
+    private dynamic: DynamicComponentService,
+    private authService: AuthService
+  ) {}
   ngOnInit(): void {
+    this.selectedTab = 'MyTrash';
     this.addMap();
-
-
   }
   addMap() {
     this.map = new mapboxgl.Map({
@@ -40,7 +45,7 @@ export class UserDashboardComponent implements OnInit {
       container: 'map',
       style: this.style,
       zoom: this.zoom,
-      center: [this.lng, this.lat]
+      center: [this.lng, this.lat],
     });
     this.map.addControl(new mapboxgl.NavigationControl());
     const locateUser = new mapboxgl.GeolocateControl({
@@ -49,9 +54,8 @@ export class UserDashboardComponent implements OnInit {
       positionOptions: {
         enableHighAccuracy: true,
       },
-
     });
-    this.map.addControl(locateUser, 'bottom-right')
+    this.map.addControl(locateUser, 'bottom-right');
 
     locateUser.on('geolocate', (e: any) => {
       console.log(e);
@@ -64,7 +68,6 @@ export class UserDashboardComponent implements OnInit {
     this.map.on('load', () => {
       locateUser.trigger();
       this.getCornerCoordinates();
-
     });
   }
   getCornerCoordinates() {
@@ -75,7 +78,7 @@ export class UserDashboardComponent implements OnInit {
     const northeast = bounds.getNorthEast();
     const northwest = bounds.getNorthWest();
     this.cornerCoordinates = { southwest, southeast, northeast, northwest };
-    this.getTrashDetails("MyTrash");
+    this.getTrashDetails(this.selectedTab);
   }
 
   getTrashDetails(tabType: string) {
@@ -85,7 +88,7 @@ export class UserDashboardComponent implements OnInit {
       return
     }
     const trash: TrashRequest = {
-      userid: "hariharan31",
+      userid: 'hariharan31',
       timestamp: null,
       nELatitude: this.cornerCoordinates.northeast[1],
       nWLatitude: this.cornerCoordinates.northwest[1],
@@ -95,35 +98,37 @@ export class UserDashboardComponent implements OnInit {
       nWLongitude: this.cornerCoordinates.northwest[0],
       sELongitude: this.cornerCoordinates.southeast[0],
       sWLongitude: this.cornerCoordinates.southwest[0],
-      zoom: this.zoom
+      zoom: this.zoom,
     };
-    console.log(trash);
+    // console.log(trash);
     this.authService.getAlltrash(trash).subscribe({
       next: (response: any) => {
         console.log(response);
-        if (response.commonEntity.transactionStatus === "Y" && response.trashDetailsEntity.length > 0) {
-          this.trashCount = response.trashDetailsEntity.length;
-          console.log(this.trashCount)
-          this.myTrashDetails = response.trashDetailsEntity.filter((trash: any) => trash.isMyTrash === true).slice(0, 10);
-          console.log(this.myTrashDetails)
+        if (
+          response.commonEntity.transactionStatus === 'Y' &&
+          response.trashDetailsEntity.length > 0
+        ) {
+          this.allTrash = response.trashDetailsEntity;
+          this.myTrash = response.trashDetailsEntity.filter(
+            (trash: any) => trash.isMyTrash === true
+          );
+          this.recoveredTrash = response.trashDetailsEntity.filter(
+            (trash: any) => trash.isRecovered === true
+          );
         }
-      }
+      },
     });
-
   }
 
   onTrashTabChange(event: MatTabChangeEvent) {
-    const tabType = event.tab.textLabel;
-    this.getTrashDetails(tabType);
-
+    this.selectedTab = event.tab.textLabel;
+    //this.getTrashDetails(this.selectedTab);
   }
 
-  AddTrackClick() {
+  AddTrashClick() {
     const dialogRef = this.dialog.open(AddtrashComponent, {
       width: '60%',
     });
-    dialogRef.afterClosed().subscribe(result => {
-    });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
-
 }
