@@ -1,0 +1,148 @@
+<div class="public-main-page ">
+    <div class="full-height d-flex">
+        <div class="left-content d-flex flex-1">
+            <div id="map" class="map-container">
+            </div>
+        </div>
+   <div class="right-content">
+
+            <div class="relative p-20">
+                <mat-tab-group (selectedTabChange)="onTrashTabChange($event)">
+                    <mat-tab label="MyTrash">
+                        <div class="d-flex justfy-content-spacebetween m-t-20 records-count">
+                            <span>{{trashCount}} Records found</span>
+                            <div class="right-section d-flex">
+                                <span>Sort by :</span>
+                                <span class="bold m-r-5 text-color">DATE</span>
+                                <mat-icon class="arrow-up pointer" >arrow_upward</mat-icon>
+                                <mat-icon class="pointer">arrow_downward</mat-icon>
+                            </div>                        
+                        </div>
+                        <div class="trashlist-wrapper">
+                            <ul class="p-0 m-t-0">
+                                <li class="rash-blk d-flex justfy-content-spacebetween m-b-10"
+                                    *ngFor="let trash of myTrashDetails">
+                                    <app-trashitem [trashItem]="trash"></app-trashitem>
+                                </li>
+                            </ul>
+                        </div>
+
+
+                    </mat-tab>
+                    <mat-tab label="AllTrash">
+                        <div class="d-flex justfy-content-spacebetween m-t-20 records-count">
+                            <span>12 Records found</span>
+                            <div class="right-section d-flex">
+                                <span>Sort by :</span>
+                                <span class="bold m-r-5 text-color">DATE</span>
+                                <mat-icon class="arrow-up pointer">arrow_upward</mat-icon>
+                                <mat-icon class="pointer">arrow_downward</mat-icon>
+                            </div>
+
+                        </div>
+                        <div class="trashlist-wrapper">
+                            <ul class="p-0 m-t-0">
+                                <li class="trash-blk d-flex justfy-content-spacebetween m-b-10">
+                                    <div class="d-flex gap-30">
+                                        <div class="trash-img"></div>
+                                        <div class="d-flex flex-column gap-5">
+                                            <label>Plastic waste near Brooklyn</label>
+                                            <div class="d-flex align-items-center location-icon">
+                                                <mat-icon> location_on</mat-icon>
+                                                <span>N54.05702,W4.62654</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="right-end d-flex flex-column align-items-end gap-5">
+                                        <div class="badge bg-blue">Plastic</div>
+                                        <span>01-Aug-2023</span>
+                                    </div>
+                                </li>
+                                <li class="trash-blk d-flex justfy-content-spacebetween m-b-10">
+                                    <div class="d-flex gap-30">
+                                        <div class="trash-img"></div>
+                                        <div class="d-flex flex-column gap-5">
+                                            <label>Plastic waste near Brooklyn</label>
+                                            <div class="d-flex align-items-center location-icon">
+                                                <mat-icon> location_on</mat-icon>
+                                                <span>N54.05702,W4.62654</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="right-end d-flex flex-column align-items-end gap-5">
+                                        <div class="badge bg-blue">Plastic</div>
+                                        <span>01-Aug-2023</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="RecoveredTrash">
+                        <div class="d-flex justfy-content-spacebetween m-t-20 records-count">
+                            <span>12 Records found</span>
+                            <div class="right-section d-flex">
+                                <span>Sort by :</span>
+                                <span class="bold m-r-5 text-color">DATE</span>
+                                <mat-icon class="arrow-up pointer">arrow_upward</mat-icon>
+                                <mat-icon class="pointer">arrow_downward</mat-icon>
+                            </div>
+
+                        </div>
+                        <div class="trashlist-wrapper">
+                            <ul class="p-0 m-t-0">
+                                <li class="trash-blk d-flex justfy-content-spacebetween m-b-10">
+                                    <div class="d-flex gap-30">
+                                        <div class="trash-img"></div>
+                                        <div class="d-flex flex-column gap-5">
+                                            <label>Plastic waste near Brooklyn</label>
+                                            <div class="d-flex align-items-center location-icon">
+                                                <mat-icon> location_on</mat-icon>
+                                                <span>N54.05702,W4.62654</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="right-end d-flex flex-column align-items-end gap-5">
+                                        <div class="badge bg-blue">Plastic</div>
+                                        <span>01-Aug-2023</span>
+                                    </div>
+                                </li>
+                                <li class="trash-blk d-flex justfy-content-spacebetween m-b-10">
+                                    <div class="d-flex gap-30">
+                                        <div class="trash-img"></div>
+                                        <div class="d-flex flex-column gap-5">
+                                            <label>Plastic waste near Brooklyn</label>
+                                            <div class="d-flex align-items-center location-icon">
+                                                <mat-icon> location_on</mat-icon>
+                                                <span>N54.05702,W4.62654</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="right-end d-flex flex-column align-items-end gap-5">
+                                        <div class="badge bg-blue">Plastic</div>
+                                        <span>01-Aug-2023</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </mat-tab>
+
+                </mat-tab-group>
+
+                <div class="right-btn " (click)="AddTrackClick()">
+                    <mat-icon>add</mat-icon>
+                    <span class="text-white">Trash</span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>

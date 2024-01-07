@@ -1,0 +1,15 @@
+<div class="d-flex gap-30">
+    <div class="trash-img"></div>
+    <div class="d-flex flex-column gap-5">
+        <label>{{trashItem.title}}</label>
+        <div class="d-flex align-items-center location-icon">
+            <mat-icon>location_on</mat-icon>
+            <span>{{trashItem.latitude}}, {{trashItem.longitude}}</span>
+        </div>
+    </div>
+</div>
+
+<div class="right-end d-flex flex-column align-items-end gap-5">
+    <div class="badge bg-blue">Plastic</div>
+    <span>{{trashItem.reportedDate | date: 'dd-MMM-yyyy'}}</span>
+</div>

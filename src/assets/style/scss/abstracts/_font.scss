@@ -1,0 +1,21 @@
+/*@each $file-name, $wt, $style in $font-variants-base {
+    @include font-face($font-family-base, $file-name, $font-path-base, $wt, $style, $font-types-base);
+}*/
+
+$font-name: 'opensans';
+//$font-props: (("light", "lightitalic", 300), ("regular", "italic", 400), ("semibold", "semibolditalic", 600), ("bold", "boldItalic", 700), ("extrabold", "extrabolditalic", 900) );
+$font-props: (("regular", 400), ("semibold", 600), ("bold", 700));
+$font-file-prefix: "../../fonts/Opensans/opensans-";
+
+//@each $name1, $name2, $wt in $font-props {
+@each $name1, $wt in $font-props {
+    @font-face {
+        font-family: $font-name;
+        src: url(#{$font-file-prefix}#{$name1}.woff2) format('woff2'), url(#{$font-file-prefix}#{$name1}.woff) format('woff');
+        font-weight: $wt;
+        font-style: normal;
+    }
+}
+
+
+
