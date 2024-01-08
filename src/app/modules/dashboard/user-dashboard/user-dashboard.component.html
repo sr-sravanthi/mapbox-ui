@@ -1,36 +1,55 @@
-<div class="public-main-page">
-  <div class="full-height d-flex">
-    <div class="left-content d-flex flex-1">
-      <div id="map" class="map-container"></div>
-    </div>
-    <div class="right-content">
-      <div class="relative p-20">
-        <mat-tab-group (selectedTabChange)="onTrashTabChange($event)">
-          <mat-tab label="MyTrash">
-            <app-trash-tab
-              [tabName]="selectedTab"
-              [trashData]="myTrash"
-            ></app-trash-tab>
-          </mat-tab>
-          <mat-tab label="AllTrash">
-            <app-trash-tab
-              [tabName]="selectedTab"
-              [trashData]="allTrash"
-            ></app-trash-tab>
-          </mat-tab>
-          <mat-tab label="RecoveredTrash">
-            <app-trash-tab
-              [tabName]="selectedTab"
-              [trashData]="recoveredTrash"
-            ></app-trash-tab>
-          </mat-tab>
-        </mat-tab-group>
-
-        <div class="right-btn" (click)="AddTrashClick()">
-          <mat-icon>add</mat-icon>
-          <span class="text-white">Trash</span>
+<div class="public-main-page ">
+    <div class="full-height d-flex">
+        <div class="left-content d-flex flex-1">
+            <div id="map" class="map-container">
+                <button  mat-flat-button id="fit" (click)="search()">search Trash</button>
+                <div class="map-wrapper">
+                    <div class="filter-btn-wrapper">
+                        <div class="btn-inner-wrapper d-flex align-items-center justify-content-center" >
+                            <i class="net-icon custom-sprite" (click)="filterNet()"></i>
+                        </div>
+                        <div  class="btn-inner-wrapper d-flex align-items-center justify-content-center">
+                            <i class="plastic custom-sprite"(click)="filterPlastic()" ></i>
+                        </div>
+                        <div  class="btn-inner-wrapper d-flex align-items-center justify-content-center">
+                            <i class="oil-icon custom-sprite"(click)="filterOil()"></i>
+                        </div>
+                        <div class="btn-inner-wrapper d-flex align-items-center justify-content-center" >
+                            <i class="other-icon custom-sprite"></i>
+                        </div>
+   
+   
+                    </div>
+                </div>
+            </div>
+          
         </div>
-      </div>
+        <div class="right-content">
+
+            <div class="relative p-20">
+                <mat-tab-group (selectedTabChange)="onTrashTabChange($event)">
+                    <mat-tab label="MyTrash">
+                        <app-trash-tab [tabName]="selectedTab" [trashData]="myTrash"></app-trash-tab>
+                    </mat-tab>
+                    <mat-tab label="AllTrash">
+                        <app-trash-tab [tabName]="selectedTab" [trashData]="allTrash"></app-trash-tab>
+                    </mat-tab>
+                    <mat-tab label="RecoveredTrash">
+                        <app-trash-tab [tabName]="selectedTab" [trashData]="recoveredTrash"></app-trash-tab>
+                    </mat-tab>
+
+                </mat-tab-group>
+                <div class="right-btn " (click)="AddTrackClick()">
+                    <mat-icon>add</mat-icon>
+                    <span class="text-white">Trash</span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
     </div>
-  </div>
+
 </div>

@@ -1,18 +1,9 @@
 
 export const environment = {
+    BASE_API : 'https://mapps-pal-ci.mariapps.com/ESMobileService/',
     production: false,
-    BASE_API:"https://mapps-pal-ci.mariapps.com/ESMobileService/",
     mapbox: {
         accessToken: 'pk.eyJ1IjoibXN1dGV1IiwiYSI6ImNsNjBtcmZtaDAxdWIzZXAzaXh2MWpjNnoifQ.L5xob1M0ve9CSDs_Upje-A'
-    },
-    firebaseConfigMapBox: {
-        apiKey: "AIzaSyBiQHX5SssFr758Xtqgk-poaYYLi5csJT0",
-        authDomain: "mapbox-1fa42.firebaseapp.com",
-        projectId: "mapbox-1fa42",
-        storageBucket: "mapbox-1fa42.appspot.com",
-        messagingSenderId: "339423296469",
-        appId: "1:339423296469:web:1425758908cc4888805b5c",
-        measurementId: "G-X53DLJ8WG8"
     },
     firebaseConfig: {
         apiKey: "AIzaSyD9cu22rVC9d6IFI_lxHA33HVynJjUOdSI",
