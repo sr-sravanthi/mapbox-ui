@@ -10,6 +10,7 @@ import { DynamicComponentService } from 'src/app/core/services/dynamic-component
 import { UserDetails, UserRequest } from 'src/app/core/interfaces/user';
 import { TrashRequest } from 'src/app/core/interfaces/trash';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import * as turf from '@turf/turf';
 
 
 @Component({
@@ -30,10 +31,11 @@ export class UserDashboardComponent implements OnInit {
   allTrash: any[] = [];
   recoveredTrash: any[] = [];
   selectedTab: string = '';
-  userCoordinates:any[]=[];
-  net:any[]=[];
-  plastic:any[]=[];
-  oil:any[]=[];
+  userCoordinates: any[] = [];
+  trashDataForMap: any;
+  net: any[] = [];
+  plastic: any[] = [];
+  oil: any[] = [];
   constructor(public dialog: MatDialog, private dynamic: DynamicComponentService, private authService: AuthService) { }
   ngOnInit(): void {
     this.addMap();
@@ -68,8 +70,19 @@ export class UserDashboardComponent implements OnInit {
       console.log(userCoordinates);
     });
     this.map.on('load', () => {
-      locateUser.trigger();
-      this.getCornerCoordinates();
+      this.map.loadImage(
+        '../../../../assets/style/images/new-trash-marker.jpg', (
+        (error, image: any) => {
+          if (error) throw (error);
+          this.map.addImage('new-trash-marker', image);
+          locateUser.trigger();
+          this.getCornerCoordinates();
+
+
+        }
+      )
+      )
+
 
     });
   }
@@ -84,7 +97,7 @@ export class UserDashboardComponent implements OnInit {
     this.getTrashDetails(this.selectedTab);
 
   }
- 
+
 
   getTrashDetails(tabType: string) {
     let userDetails = JSON.parse(sessionStorage.getItem("userDetails") || "");
@@ -116,10 +129,170 @@ export class UserDashboardComponent implements OnInit {
           this.myTrash = response.trashDetailsEntity.filter((trash: any) => trash.isMyTrash === true);
           console.log(this.myTrash)
           this.recoveredTrash = response.trashDetailsEntity.filter((trash: any) => trash.isRecovered === true);
+          this.getTrashDataForMap(this.allTrash);
         }
       }
     });
-   
+
+  }
+
+  getTrashDataForMap(trashData: any) {
+    const features: turf.Feature<turf.Point, any>[] = [];
+
+    trashData.forEach((item: any) => {
+      const lng = item.longitude;
+      const lat = item.latitude;
+      const feature = turf.point([lng, lat], {
+      });
+      features.push(feature);
+    });
+
+    this.trashDataForMap = turf.featureCollection(features);
+
+    this.map.addSource('trash-source', {
+      type: 'geojson',
+      data: {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "properties": {
+              "title": "Lincoln Park",
+              "description": "A northside park that is home to the Lincoln Park Zoo"
+            },
+            "geometry": {
+              "coordinates": [
+                -87.637596,
+                41.940403
+              ],
+              "type": "Point"
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "title": "Burnham Park",
+              "description": "A lakefront park on Chicago's south side"
+            },
+            "geometry": {
+              "coordinates": [
+                -87.603735,
+                41.829985
+              ],
+              "type": "Point"
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "title": "Millennium Park",
+              "description": "A downtown park known for its art installations and unique architecture"
+            },
+            "geometry": {
+              "coordinates": [
+                -87.622554,
+                41.882534
+              ],
+              "type": "Point"
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "title": "Grant Park",
+              "description": "A downtown park that is the site of many of Chicago's favorite festivals and events"
+            },
+            "geometry": {
+              "coordinates": [
+                -87.619185,
+                41.876367
+              ],
+              "type": "Point"
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "title": "Humboldt Park",
+              "description": "A large park on Chicago's northwest side"
+            },
+            "geometry": {
+              "coordinates": [
+                -87.70199,
+                41.905423
+              ],
+              "type": "Point"
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "title": "Douglas Park",
+              "description": "A large park near in Chicago's North Lawndale neighborhood"
+            },
+            "geometry": {
+              "coordinates": [
+                -87.699329,
+                41.860092
+              ],
+              "type": "Point"
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "title": "Calumet Park",
+              "description": "A park on the Illinois-Indiana border featuring a historic fieldhouse"
+            },
+            "geometry": {
+              "coordinates": [
+                -87.530221,
+                41.715515
+              ],
+              "type": "Point"
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "title": "Jackson Park",
+              "description": "A lakeside park that was the site of the 1893 World's Fair"
+            },
+            "geometry": {
+              "coordinates": [
+                -87.580389,
+                41.783185
+              ],
+              "type": "Point"
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "title": "Columbus Park",
+              "description": "A large park in Chicago's Austin neighborhood"
+            },
+            "geometry": {
+              "coordinates": [
+                -87.769775,
+                41.873683
+              ],
+              "type": "Point"
+            }
+          }
+        ]
+      },
+    });
+    this.map.addLayer({
+      id: 'trash-layer',
+      source: 'trash-source',
+      type: 'symbol',
+      layout: {
+        'icon-image': 'new-trash-marker',
+        'icon-size': 1.5,
+      },
+    });
+
   }
 
   onTrashTabChange(event: MatTabChangeEvent) {
@@ -127,17 +300,17 @@ export class UserDashboardComponent implements OnInit {
     // this.getTrashDetails(tabType);
 
   }
-  filterNet(){
-  this.net = this.myTrash.filter((trash:any)=>trash.categoryId==1);
-  console.log(this.net)
-    
+  filterNet() {
+    this.net = this.myTrash.filter((trash: any) => trash.categoryId == 1);
+    console.log(this.net)
+
   }
-  filterPlastic(){
-    this.plastic = this.myTrash.filter((trash:any)=>trash.categoryId==2);
-  console.log(this.plastic)
+  filterPlastic() {
+    this.plastic = this.myTrash.filter((trash: any) => trash.categoryId == 2);
+    console.log(this.plastic)
   }
-  filterOil(){
-    this.oil = this.myTrash.filter((trash:any)=>trash.categoryId==3);
+  filterOil() {
+    this.oil = this.myTrash.filter((trash: any) => trash.categoryId == 3);
     console.log(this.oil)
   }
   AddTrackClick() {
@@ -146,7 +319,7 @@ export class UserDashboardComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
     });
-    
+
   }
-  search(){}
+  search() { }
 }
