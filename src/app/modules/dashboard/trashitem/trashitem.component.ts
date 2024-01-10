@@ -18,11 +18,11 @@ export class TrashitemComponent implements OnInit {
   }
   trashPopup() {
     let dialogRef = this.dialog.open(PopupComponent, {
-      data:this.trashItem,
-      width: '60%',
+      data: this.trashItem,
+      width: '40%',
     });
     dialogRef.afterClosed().subscribe(result => {
-     
+
     });
 
   }

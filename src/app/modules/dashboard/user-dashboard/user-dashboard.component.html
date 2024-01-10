@@ -9,13 +9,13 @@
             <div class="relative p-20">
                 <mat-tab-group (selectedTabChange)="onTrashTabChange($event)">
                     <mat-tab label="My Trash">
-                        <app-trash-tab [tabName]="selectedTab" [trashData]="myTrash"></app-trash-tab>
+                        <app-trash-tab [tabName]="selectedTab" [trashData]="trashDataForMap"></app-trash-tab>
                     </mat-tab>
                     <mat-tab label="All Trash">
-                        <app-trash-tab [tabName]="selectedTab" [trashData]="allTrash"></app-trash-tab>
+                        <app-trash-tab [tabName]="selectedTab" [trashData]="trashDataForMap"></app-trash-tab>
                     </mat-tab>
                     <mat-tab label="Recovered Trash">
-                        <app-trash-tab [tabName]="selectedTab" [trashData]="recoveredTrash"></app-trash-tab>
+                        <app-trash-tab [tabName]="selectedTab" [trashData]="trashDataForMap"></app-trash-tab>
                     </mat-tab>
 
                 </mat-tab-group>
@@ -31,16 +31,16 @@
 <ng-template #fitersTemplate let-data="dynamicData">
     <div class="map-wrapper">
         <div class="filter-btn-wrapper">
-            <div class="btn-inner-wrapper d-flex align-items-center justify-content-center">
+            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center">
                 <i class="net-icon custom-sprite" (click)="filterNet()"></i>
             </div>
-            <div class="btn-inner-wrapper d-flex align-items-center justify-content-center">
+            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center">
                 <i class="plastic custom-sprite" (click)="filterPlastic()"></i>
             </div>
-            <div class="btn-inner-wrapper d-flex align-items-center justify-content-center">
+            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center">
                 <i class="oil-icon custom-sprite" (click)="filterOil()"></i>
             </div>
-            <div class="btn-inner-wrapper d-flex align-items-center justify-content-center">
+            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center">
                 <i class="other-icon custom-sprite"></i>
             </div>
         </div>

@@ -1,15 +1,13 @@
- <div class="add-trash">
-
-
+<div class="add-trash">
     <div mat-dialog-content class="trash-content d-flex p-0">
         <div class="left-map">
-            <div id="map" class="map-container"></div>
-            
+            <app-mapbox [container]="'addtrash'" [geoCoder]="true">
+            </app-mapbox>
         </div>
         <div class="right-content flex-1 p-10">
             <div class="d-flex justfy-content-spacebetween ">
                 <h1 mat-dialog-title class="d-flex p-0">Add Trash</h1>
-                <mat-icon class="text-gray">close</mat-icon>
+                <mat-icon class="text-gray" (click)="closePopup()">close</mat-icon>
             </div>
             <div class="file-uploader">
                 <input type="file" class="input-hidden">
@@ -35,11 +33,9 @@
                         <span class="file-close"> <mat-icon>close</mat-icon></span>
                     </div>
                 </div>
-               
+
             </div>
             <div class="trash-details m-t-20">
-             
-
                 <form [formGroup]="addTrashForm" (ngSubmit)="onSave()">
                     <div>
                         <mat-form-field>
@@ -83,28 +79,11 @@
                     <div *ngIf="addTrashForm.get('selectedDate')?.hasError('required')">
                         Please select a date.
                     </div>
-
-
                 </form>
-
-
-
             </div>
-
             <div mat-dialog-actions class="d-flex justfy-content-end">
-
                 <button mat-stroked-button class="pointer btn-primary btn-submit">save</button>
-
             </div>
         </div>
     </div>
-</div>  
-
-
-
-
-
-
-
-
-
+</div>

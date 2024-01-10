@@ -22,8 +22,10 @@ export class UserDashboardComponent implements OnInit {
   allTrash: any[] = [];
   recoveredTrash: any[] = [];
   selectedTab: string = '';
+  selectedTabTrashData: any[] = [];
   userCoordinates: any[] = [];
-  trashDataForMap: any;
+  trashDataForMap: any = [];
+  filteredTrash: any[] = [];
   net: any[] = [];
   plastic: any[] = [];
   oil: any[] = [];
@@ -77,13 +79,14 @@ export class UserDashboardComponent implements OnInit {
   onTrashTabChange(event: MatTabChangeEvent) {
     this.selectedTab = event.tab.textLabel;
     if (this.selectedTab === "My Trash") {
+      this.selectedTabTrashData = this.myTrash;
       this.trashDataForMap = this.myTrash;
     }
     else if (this.selectedTab === "All Trash") {
-      this.trashDataForMap = this.allTrash;
+      this.trashDataForMap = this.selectedTabTrashData = this.allTrash;
     }
     else if (this.selectedTab === "Recovered Trash") {
-      this.trashDataForMap = this.recoveredTrash;
+      this.trashDataForMap = this.selectedTabTrashData = this.recoveredTrash;
     }
 
 
@@ -91,16 +94,16 @@ export class UserDashboardComponent implements OnInit {
 
   }
   filterNet() {
-    this.net = this.myTrash.filter((trash: any) => trash.categoryId == 1);
-    console.log(this.net)
+    this.trashDataForMap = this.selectedTabTrashData.filter((trash: any) => trash.categoryId == 1);
+
 
   }
   filterPlastic() {
-    this.plastic = this.myTrash.filter((trash: any) => trash.categoryId == 2);
+    this.trashDataForMap = this.selectedTabTrashData.filter((trash: any) => trash.categoryId == 2);
     console.log(this.plastic)
   }
   filterOil() {
-    this.oil = this.myTrash.filter((trash: any) => trash.categoryId == 3);
+    this.trashDataForMap = this.selectedTabTrashData.filter((trash: any) => trash.categoryId == 3);
     console.log(this.oil)
   }
   AddTrackClick() {

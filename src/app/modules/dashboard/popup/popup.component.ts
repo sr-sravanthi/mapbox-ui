@@ -7,15 +7,18 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.scss']
 })
-export class PopupComponent implements OnInit{
+export class PopupComponent implements OnInit {
   trashcategory: string = '';
   TRASH_CATEGORIES = TRASH_CATEGORIES;
 
   //@Input("trashData") trashData: any;
-  constructor(@Inject(MAT_DIALOG_DATA) public trashItem: any){}
+  constructor(@Inject(MAT_DIALOG_DATA) public trashItem: any, public dialogRef: MatDialogRef<PopupComponent>) { }
   ngOnInit(): void {
     console.log(this.trashItem);
 
   }
 
+  closePopup(){
+    this.dialogRef.close();
+  }
 }

@@ -30,13 +30,19 @@ export class MapboxComponent {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.trashData);
-    this.convertToGeoJsonData(this.trashData);
+    if (this.trashData) {
+      this.convertToGeoJsonData(this.trashData);
+    }
 
   }
 
   ngAfterViewInit() {
     this.initMap();
+  }
+
+  ngOnInit() {
+    console.log(this.container);
+   //  this.initMap();
   }
 
   addLocateUser() {
