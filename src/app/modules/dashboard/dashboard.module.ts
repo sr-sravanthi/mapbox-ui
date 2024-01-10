@@ -8,6 +8,7 @@ import { MaterialModule } from 'src/app/shared/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TrashitemComponent } from './trashitem/trashitem.component';
 import { TrashTabComponent } from './trash-tab/trash-tab.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 
@@ -23,9 +24,10 @@ import { TrashTabComponent } from './trash-tab/trash-tab.component';
     CommonModule,
     DashboardRoutingModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
 
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DashboardModule { }

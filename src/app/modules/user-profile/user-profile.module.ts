@@ -5,6 +5,7 @@ import { UserProfileRoutingModule } from './user-profile.routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/shared/material/material.module';
 import { LoginComponent } from './login/login.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { LoginComponent } from './login/login.component';
     UserProfileRoutingModule,
     MaterialModule,
     ReactiveFormsModule,
+    SharedModule
   ],
 
 

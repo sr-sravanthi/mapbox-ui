@@ -6,4 +6,7 @@ const TRASH_CATEGORIES: { [key: string]: string } = {
   '3': 'Oil Spill',
 };
 
-export { TRASH_CATEGORIES };
+
+const MAPBOX_ZOOM = 13;
+
+export { TRASH_CATEGORIES, MAPBOX_ZOOM };
