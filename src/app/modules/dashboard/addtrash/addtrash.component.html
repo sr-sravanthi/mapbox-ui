@@ -1,9 +1,9 @@
 <div class="add-trash">
     <div mat-dialog-content class="trash-content d-flex p-0">
         <div class="left-map">
-            <!-- <app-mapbox [container]="'addtrash'">
-            </app-mapbox> -->
-            <div #mapContainer class="map-container" id="addtrash"></div>
+            <app-mapbox [container]="'addtrash'" [locateUser]="true" [flyToCords]="searchCoOrds">
+            </app-mapbox>
+            <!-- <div #mapContainer class="map-container" id="addtrash"></div> -->
         </div>
         <div class="right-content flex-1 p-10">
             <div class="d-flex justfy-content-spacebetween ">

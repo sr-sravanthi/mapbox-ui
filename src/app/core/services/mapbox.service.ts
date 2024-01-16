@@ -26,7 +26,7 @@ export class MapboxService {
 
     return {
       nELatitude: northeast.lat,
-      nELongitude: northwest.lng,
+      nELongitude: northeast.lng,
       nWLatitude: northwest.lat,
       nWLongitude: northwest.lng,
       sELatitude: southeast.lat,

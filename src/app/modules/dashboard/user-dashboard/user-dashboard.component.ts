@@ -1,3 +1,4 @@
+import { TrashService } from './../../../core/services/trash.service';
 import { MapboxService } from './../../../core/services/mapbox.service';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
@@ -29,11 +30,11 @@ export class UserDashboardComponent implements OnInit {
   net: any[] = [];
   plastic: any[] = [];
   oil: any[] = [];
-  constructor(public dialog: MatDialog, private authService: AuthService, private mapService: MapboxService) { }
+  constructor(public dialog: MatDialog, private authService: AuthService, private mapService: MapboxService, private trashService: TrashService) { }
   ngOnInit(): void {
     this.selectedTab = 'myTrash';
 
-    this.mapService.currentMapBounds.subscribe((bounds) => {
+    this.mapService.currentMapBounds$.subscribe((bounds) => {
       if (bounds) {
         let cornerCoords = this.mapService.getCornerCoordinates(bounds as mapboxgl.LngLatBounds)
         this.getTrashDetails(this.selectedTab, cornerCoords);
@@ -59,7 +60,7 @@ export class UserDashboardComponent implements OnInit {
 
     console.log(trash);
 
-    this.authService.getAlltrash(trash).subscribe({
+    this.trashService.getAlltrash(trash).subscribe({
       next: (response: any) => {
         console.log(response);
         if (response.commonEntity.transactionStatus === "Y" && response.trashDetailsEntity.length > 0) {
@@ -67,8 +68,9 @@ export class UserDashboardComponent implements OnInit {
           this.allTrash = response.trashDetailsEntity;
           this.myTrash = response.trashDetailsEntity.filter((trash: any) => trash.isMyTrash === true);
           this.recoveredTrash = response.trashDetailsEntity.filter((trash: any) => trash.isRecovered === true);
+
+          this.selectedTabTrashData = this.myTrash;
           this.trashDataForMap = this.myTrash;
-          // this.getTrashDataForMap(this.allTrash);
         }
       }
     });
@@ -89,27 +91,17 @@ export class UserDashboardComponent implements OnInit {
       this.trashDataForMap = this.selectedTabTrashData = this.recoveredTrash;
     }
 
-
-    // this.getTrashDetails(tabType);
-
   }
-  filterNet() {
-    this.trashDataForMap = this.selectedTabTrashData.filter((trash: any) => trash.categoryId == 1);
 
+  filterTrash(categoryId: number) {
+    this.trashDataForMap = this.selectedTabTrashData.filter((trash: any) => trash.categoryId == categoryId);
 
   }
-  filterPlastic() {
-    this.trashDataForMap = this.selectedTabTrashData.filter((trash: any) => trash.categoryId == 2);
-    console.log(this.plastic)
-  }
-  filterOil() {
-    this.trashDataForMap = this.selectedTabTrashData.filter((trash: any) => trash.categoryId == 3);
-    console.log(this.oil)
-  }
-  AddTrackClick() {
+
+  AddTrashClick() {
     const dialogRef = this.dialog.open(AddtrashComponent, {
       width: '60%',
-      height: '95%'
+      height: '80%'
     });
     dialogRef.afterClosed().subscribe(result => {
     });

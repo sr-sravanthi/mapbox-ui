@@ -1,5 +1,5 @@
 <div [id]="container" class="map-container">
-    <ng-container *ngIf="trashFiltersTemplate; else noTemplate">
+    <ng-container *ngIf="trashFiltersTemplate; else noTemplate ">
         <ng-container *ngTemplateOutlet="trashFiltersTemplate"></ng-container>
     </ng-container>
     <ng-template #noTemplate></ng-template>

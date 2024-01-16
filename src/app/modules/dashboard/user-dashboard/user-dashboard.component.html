@@ -19,7 +19,7 @@
                     </mat-tab>
 
                 </mat-tab-group>
-                <div class="right-btn " (click)="AddTrackClick()">
+                <div class="right-btn " (click)="AddTrashClick()">
                     <mat-icon>add</mat-icon>
                     <span class="text-white">Trash</span>
                 </div>
@@ -31,18 +31,29 @@
 <ng-template #fitersTemplate let-data="dynamicData">
     <div class="map-wrapper">
         <div class="filter-btn-wrapper">
-            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center">
-                <i class="net-icon custom-sprite" (click)="filterNet()"></i>
+            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column active">
+                <i class="net-icon custom-sprite" (click)="filterTrash(1)"></i>
+                <label>net</label>
             </div>
-            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center">
-                <i class="plastic custom-sprite" (click)="filterPlastic()"></i>
+            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column">
+                <i class="plastic custom-sprite" (click)="filterTrash(2)"></i>
+                <label>plastic</label>
             </div>
-            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center">
-                <i class="oil-icon custom-sprite" (click)="filterOil()"></i>
+            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column">
+                <i class="oil-icon custom-sprite" (click)="filterTrash(3)"></i>
+                <label>Oil spill </label>
             </div>
-            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center">
+            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column">
                 <i class="other-icon custom-sprite"></i>
-            </div>
+                <label>other</label>
+            </div>s
+        </div>
+
+        <div class="map-btn d-flex justify-content-center m-t-10">
+            <section class="">
+                <button mat-button class="pointer btn-primary" type="submit">Search this area</button>
+
+            </section>
         </div>
     </div>
 </ng-template>

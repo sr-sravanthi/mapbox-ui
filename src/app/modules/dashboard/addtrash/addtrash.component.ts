@@ -36,6 +36,7 @@ export class AddtrashComponent implements OnInit {
 
   searchControl = new FormControl();
   geoCoderSuggestions: any[] = [];
+  searchCoOrds: any;
 
 
   @ViewChild('geocoderInput', { static: true }) geocoderInput!: ElementRef;
@@ -53,7 +54,7 @@ export class AddtrashComponent implements OnInit {
       location: ['', Validators.required],
       category: ['', Validators.required]
     });
-    this.addMap();
+    // this.addMap();
     this.setupAutocomplete();
   }
   addMap() {
@@ -99,8 +100,7 @@ export class AddtrashComponent implements OnInit {
   onGeoCoderSelection(event: any) {
     console.log(event.option.value);
     const data = event.option.value;
-    const coordinates = data?.geometry?.coordinates;
-    this.map.flyTo({ center: coordinates, zoom: 13 });
+    this.searchCoOrds = data?.geometry?.coordinates;
 
   }
 

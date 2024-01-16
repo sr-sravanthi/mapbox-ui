@@ -4,6 +4,7 @@ import * as mapboxgl from 'mapbox-gl';
 import { environment } from 'src/environments/environment';
 import * as turf from '@turf/turf';
 import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import { MAPBOX_STYLE, MAPBOX_ZOOM } from 'src/app/core/utilities/constants';
 
 @Component({
   selector: 'app-mapbox',
@@ -13,10 +14,6 @@ import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 export class MapboxComponent {
 
   map!: mapboxgl.Map;
-  style = 'mapbox://styles/msuteu/cllnjn3u5001f01pe07y3e03b';
-  lat = -74.5;
-  lng = 40;
-  zoom = 13;
   popup!: mapboxgl.Popup;
 
   @Input() trashFiltersTemplate!: TemplateRef<any>;
@@ -24,15 +21,23 @@ export class MapboxComponent {
   @Input("geoCoder") geoCoderInput: boolean = false;
   @Input("container") container!: string;
   @Input("mapData") trashData!: any[];
+  @Input("flyToCords") flyToCords!: any;
+
 
   locateUser!: mapboxgl.GeolocateControl;
   constructor(private mapboxService: MapboxService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.trashData.length > 0) {
+    if (this.trashData && this.trashData.length > 0) {
       this.convertToGeoJsonData(this.trashData);
     }
+
+    if(this.flyToCords){
+      this.flyToCoOrdsOnMap(this.flyToCords)
+    }
+
+
   }
 
   ngAfterViewInit() {
@@ -65,9 +70,8 @@ export class MapboxComponent {
     this.map = new mapboxgl.Map({
       accessToken: environment.MAPBOX_APIKEY,
       container: this.container,
-      style: this.style,
-      zoom: this.zoom,
-      center: [this.lng, this.lat]
+      style: MAPBOX_STYLE,
+      zoom: MAPBOX_ZOOM,
     });
 
     this.map.addControl(new mapboxgl.NavigationControl());
@@ -122,6 +126,11 @@ export class MapboxComponent {
     let trashFeatures = turf.featureCollection(features);
     (this.map.getSource('trash-source') as mapboxgl.GeoJSONSource).setData(
       trashFeatures);
+  }
+
+
+  flyToCoOrdsOnMap(center: any) {
+    this.map.flyTo({ center: center, zoom: MAPBOX_ZOOM });
   }
 
 }

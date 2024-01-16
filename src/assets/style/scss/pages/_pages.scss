@@ -223,36 +223,81 @@ body {
 
 //**********Public main page **********************//
 .public-main-page {
-    .map-container {
-        width: 65%;
-        height: 100%;
-        position: absolute;
-    
-    .map-wrapper{
-        .filter-btn-wrapper{
-            width: 57px;
-            height: 234px;
-            border-radius: 8px;
-            background-color: $color-white;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 6px;
-            justify-content: space-between;
+    .left-content {
+        .map-container {
+            width: 65%;
+            height: 100%;
             position: absolute;
-            right: 10px;
-            top: calc(50% - 120px);
-            z-index: 1;
-            .btn-inner-wrapper{
-               
-                height: 48px;
-                border-radius: 6px;
-                background-color:$grey-light-btn-bg
+
+            .map-wrapper {
+                .filter-btn-wrapper {
+                    width: 57px;
+                    height: 234px;
+                    border-radius: 8px;
+                    background-color: $color-white;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    padding: 6px;
+                    justify-content: space-between;
+                    position: absolute;
+                    right: 10px;
+                    top: calc(50% - 120px);
+                    z-index: 1;
+
+                    .btn-inner-wrapper {
+
+                        height: 48px;
+                        border-radius: 6px;
+                        background-color: $grey-light-btn-bg;
+
+                        &.active {
+                            background-color: $color-dark-blue;
+
+                            label {
+                                color: $color-white;
+                            }
+
+                            .net-icon {
+                                background-position: -82px -76px;
+                                ;
+
+                            }
+
+                            .plastic {
+                                background-position: -55px -79px;
+
+                            }
+
+                            .oil-icon {
+                                background-position: -111px -81px;
+
+                            }
+
+                            .other-icon {
+                                background-position: -139px -78px;
+
+                            }
+                        }
+                    }
+
+
+                }
+
+                .map-btn {
+                    button.btn-primary.mdc-button {
+                        width: auto;
+                        height: auto;
+                        z-index: 99;
+                        padding: 6px;
+                        font-size: 16px;
+                    }
+
+                }
             }
- 
-        }
         }
     }
+
 
     .right-content {
         width: 35%;
@@ -307,7 +352,7 @@ body {
 
     .trashlist-wrapper {
         .trashlist-container {
-            height: calc(100vh - 210px);
+            height: calc(100vh - 143px);
             overflow: auto;
 
             .trashlist-item {
@@ -398,13 +443,14 @@ body {
     .trash-content {
         .left-map {
             width: 40%;
-            .map-container{
-                width:100%;
+
+            .map-container {
+                width: 100%;
                 height: 100%;
-               position: relative;
+                position: relative;
             }
         }
-      
+
 
         .right-content {
             .file-uploader {
@@ -515,6 +561,7 @@ body {
         height: 40px !important;
     }
 }
+
 //*************************icons******************************//
 .custom-sprite {
     background: url('../../images/custom-sprite.png');
@@ -526,28 +573,29 @@ body {
         width: 43px;
         height: 41px;
     }
+
     &.google-icon {
         width: 41px;
         height: 41px;
-        background-position:  -48px -33px;
-       
+        background-position: -48px -33px;
+
     }
 
     &.gustuser-icon {
         width: 41px;
         height: 41px;
-        background-position:  -94px -33px;
+        background-position: -94px -33px;
 
     }
 
     &.award-icon {
-        background-position:  -142px -2px;
+        background-position: -142px -2px;
         width: 17px;
-        height: 20px;     
+        height: 20px;
     }
 
     &.notification-icon {
-        background-position:-120px -2px;
+        background-position: -120px -2px;
         width: 20px;
         height: 20px;
     }
@@ -563,29 +611,35 @@ body {
         width: 17px;
         height: 18px;
     }
-    &.file-preview-icon{
-    background-position: -162px -2px;
-	width: 21px;
-	height: 27px;
+
+    &.file-preview-icon {
+        background-position: -162px -2px;
+        width: 21px;
+        height: 27px;
     }
-    &.net-icon{
+
+    &.net-icon {
         background-position: -140px -33px;
-    width: 24px;
-    height: 24px;
+        width: 24px;
+        height: 24px;
     }
-    &.plastic{
+
+    &.plastic {
         background-position: -169px -37px;
-    width: 24px;
-    height: 24px;
+        width: 24px;
+        height: 24px;
     }
-    &.oil-icon{
+
+    &.oil-icon {
         background-position: -2px -79px;
-    width: 24px;
-    height: 24px;
+        width: 24px;
+        height: 24px;
     }
-    &.other-icon{
+
+    &.other-icon {
         background-position: -30px -79px;
-    width: 24px;
-    height: 24px;
+        width: 24px;
+        height: 24px;
     }
+
 }
