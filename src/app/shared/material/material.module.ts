@@ -11,6 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox'
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 
@@ -26,6 +27,7 @@ const materialComponents = [
   MatCheckboxModule,
   MatDatepickerModule,
   MatNativeDateModule,
+  MatAutocompleteModule
 ]
 
 @NgModule({

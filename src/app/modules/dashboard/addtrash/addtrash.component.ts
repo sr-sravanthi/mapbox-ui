@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MapboxService } from './../../../core/services/mapbox.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { _MatAutocompleteBase } from '@angular/material/autocomplete';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import * as mapboxgl from 'mapbox-gl';
+import { catchError, debounceTime, of, switchMap } from 'rxjs';
+import { MAPBOX_STYLE, MAPBOX_ZOOM } from 'src/app/core/utilities/constants';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/shared/dateFormat';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-addtrash',
@@ -17,11 +22,8 @@ import { environment } from 'src/environments/environment.development';
 })
 
 export class AddtrashComponent implements OnInit {
+
   map!: mapboxgl.Map;
-  style = 'mapbox://styles/mapbox/streets-v8';
-  lat = 45.899977;
-  lng = 6.172652;
-  zoom = 2;
   allTrash!: any;
   popup!: mapboxgl.Popup;
   marker!: mapboxgl.Marker;
@@ -29,7 +31,18 @@ export class AddtrashComponent implements OnInit {
   addTrashForm!: FormGroup;
   selectedCategory!: string;
   selectedDate!: Date;
-  constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<AddtrashComponent>) {
+
+  geoCoder!: MapboxGeocoder;
+
+  searchControl = new FormControl();
+  geoCoderSuggestions: any[] = [];
+
+
+  @ViewChild('geocoderInput', { static: true }) geocoderInput!: ElementRef;
+  @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
+  auto!: _MatAutocompleteBase;
+
+  constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<AddtrashComponent>, private mapboxService: MapboxService) {
 
   }
   ngOnInit(): void {
@@ -40,15 +53,15 @@ export class AddtrashComponent implements OnInit {
       location: ['', Validators.required],
       category: ['', Validators.required]
     });
-    //  this.addMap();
+    this.addMap();
+    this.setupAutocomplete();
   }
   addMap() {
     this.map = new mapboxgl.Map({
-      accessToken: environment.mapbox.accessToken,
-      container: 'map',
-      style: this.style,
-      zoom: this.zoom,
-      center: [this.lng, this.lat]
+      accessToken: environment.MAPBOX_APIKEY,
+      container: 'addtrash',
+      style: MAPBOX_STYLE,
+      zoom: MAPBOX_ZOOM
     });
     this.map.addControl(new mapboxgl.NavigationControl());
     const locateUser = new mapboxgl.GeolocateControl({
@@ -69,9 +82,43 @@ export class AddtrashComponent implements OnInit {
       );
       console.log(userCoordinates);
     });
+
+    this.geoCoder = new MapboxGeocoder({
+      accessToken: environment.MAPBOX_APIKEY,
+      mapboxgl: mapboxgl,
+      marker: false,
+      reverseGeocode: true,
+    });
+    this.map.addControl(this.geoCoder, 'top-left');
+
     this.map.on('load', () => {
       locateUser.trigger();
     });
+  }
+
+  onGeoCoderSelection(event: any) {
+    console.log(event.option.value);
+    const data = event.option.value;
+    const coordinates = data?.geometry?.coordinates;
+    this.map.flyTo({ center: coordinates, zoom: 13 });
+
+  }
+
+  setupAutocomplete() {
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        switchMap((query) => (query ? this.mapboxService.searchGeoCoder(query) : of([]))),
+        catchError(() => of([]))
+      )
+      .subscribe((data: any) => {
+        this.geoCoderSuggestions = data.features;
+        console.log(this.geoCoderSuggestions);
+      });
+  }
+
+  displayFn(value: any): string {
+    return value && typeof value === 'object' ? value.place_name : value;
   }
 
   onSave() { }

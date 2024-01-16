@@ -30,19 +30,13 @@ export class MapboxComponent {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.trashData) {
+    if (this.trashData.length > 0) {
       this.convertToGeoJsonData(this.trashData);
     }
-
   }
 
   ngAfterViewInit() {
     this.initMap();
-  }
-
-  ngOnInit() {
-    console.log(this.container);
-   //  this.initMap();
   }
 
   addLocateUser() {
@@ -59,7 +53,7 @@ export class MapboxComponent {
 
   addGeoCoder() {
     const geoCoder = new MapboxGeocoder({
-      accessToken: environment.mapbox.accessToken,
+      accessToken: environment.MAPBOX_APIKEY,
       mapboxgl: mapboxgl,
       marker: false,
       reverseGeocode: true,
@@ -69,7 +63,7 @@ export class MapboxComponent {
 
   initMap() {
     this.map = new mapboxgl.Map({
-      accessToken: environment.mapbox.accessToken,
+      accessToken: environment.MAPBOX_APIKEY,
       container: this.container,
       style: this.style,
       zoom: this.zoom,

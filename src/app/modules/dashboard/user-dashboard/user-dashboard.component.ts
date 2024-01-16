@@ -109,6 +109,7 @@ export class UserDashboardComponent implements OnInit {
   AddTrackClick() {
     const dialogRef = this.dialog.open(AddtrashComponent, {
       width: '60%',
+      height: '95%'
     });
     dialogRef.afterClosed().subscribe(result => {
     });

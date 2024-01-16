@@ -1,8 +1,9 @@
 <div class="add-trash">
     <div mat-dialog-content class="trash-content d-flex p-0">
         <div class="left-map">
-            <app-mapbox [container]="'addtrash'" [geoCoder]="true">
-            </app-mapbox>
+            <!-- <app-mapbox [container]="'addtrash'">
+            </app-mapbox> -->
+            <div #mapContainer class="map-container" id="addtrash"></div>
         </div>
         <div class="right-content flex-1 p-10">
             <div class="d-flex justfy-content-spacebetween ">
@@ -61,7 +62,14 @@
                             </div>
 
                             <mat-label>Location</mat-label>
-                            <input matInput placeholder="Enter Location" formControlName="location">
+                            <input matInput placeholder="Enter Location" [formControl]="searchControl"
+                                [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+                                (optionSelected)="onGeoCoderSelection($event)">
+                                <mat-option *ngFor="let option of geoCoderSuggestions" [value]="option">
+                                    {{option.place_name}}
+                                </mat-option>
+                            </mat-autocomplete>
                         </mat-form-field>
                     </div>
 

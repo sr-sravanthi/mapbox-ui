@@ -4,3 +4,7 @@
 @import "./scss/pages/common_custom";
 @import "./scss/pages/pages";
 @import "./scss/pages/responsive";
+
+.mat-mdc-dialog-content {
+    max-height: initial !important;
+}

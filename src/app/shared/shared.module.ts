@@ -7,9 +7,9 @@ import { MapboxComponent } from './mapbox/mapbox.component';
 @NgModule({
   declarations: [HeaderComponent,
     FooterComponent,
-    MapboxComponent],
+    MapboxComponent,],
   imports: [
-    CommonModule
+    CommonModule,
   ],
   exports: [MapboxComponent]
 })

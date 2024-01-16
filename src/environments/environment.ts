@@ -1,10 +1,10 @@
 
 export const environment = {
-    BASE_API : 'https://mapps-pal-ci.mariapps.com/ESMobileService/',
     production: false,
-    mapbox: {
-        accessToken: 'pk.eyJ1IjoibXN1dGV1IiwiYSI6ImNsNjBtcmZtaDAxdWIzZXAzaXh2MWpjNnoifQ.L5xob1M0ve9CSDs_Upje-A'
-    },
+    BASE_API: 'https://mapps-pal-ci.mariapps.com/ESMobileService/',
+    MAPBOX_API: 'https://api.mapbox.com/geocoding/v5/mapbox.places/',
+    MAPBOX_APIKEY: 'pk.eyJ1IjoibXN1dGV1IiwiYSI6ImNsNjBtcmZtaDAxdWIzZXAzaXh2MWpjNnoifQ.L5xob1M0ve9CSDs_Upje-A',
+
     firebaseConfig: {
         apiKey: "AIzaSyD9cu22rVC9d6IFI_lxHA33HVynJjUOdSI",
         authDomain: "eyesea-95a32.firebaseapp.com",
