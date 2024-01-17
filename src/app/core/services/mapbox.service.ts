@@ -11,6 +11,7 @@ export class MapboxService {
 
   currentMapBounds = new BehaviorSubject<any>(null);
   currentMapBounds$ = this.currentMapBounds.asObservable();
+  searchTimestamp: Date | null = null;
 
   constructor(private http: HttpClient) { }
 

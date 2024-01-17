@@ -3,4 +3,13 @@
         <ng-container *ngTemplateOutlet="trashFiltersTemplate"></ng-container>
     </ng-container>
     <ng-template #noTemplate></ng-template>
+
+    <div class="map-wrapper" *ngIf="container==='dashboard'">
+        <div class="map-btn d-flex justify-content-center m-t-10">
+            <div class="pointer search-btn" (click)="searchTrashOnMap()">
+                <mat-icon>search</mat-icon>
+                <span class="text-white">Search this Area</span>
+            </div>
+        </div>
+    </div>
 </div>

@@ -19,6 +19,7 @@ export const httpUrls = {
   VESSELDETAILS: "Vessel/FetchVesselDetails",
   TRASHDETAILS: "Trash/FetchTrashDetailsV2",
   RECOVEREDTRASH: "Trash/SaveTrashRecovered",
+  ADDTRASH: "Trash/SaveTrashDetailsv2",
   POSTIMAGE: "TrashAttachment/postImage"
 };
 

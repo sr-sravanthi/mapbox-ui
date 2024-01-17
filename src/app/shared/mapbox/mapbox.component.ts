@@ -1,5 +1,5 @@
 import { MapboxService } from './../../core/services/mapbox.service';
-import { Component, Input, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { environment } from 'src/environments/environment';
 import * as turf from '@turf/turf';
@@ -12,6 +12,7 @@ import { MAPBOX_STYLE, MAPBOX_ZOOM } from 'src/app/core/utilities/constants';
   styleUrls: ['./mapbox.component.scss']
 })
 export class MapboxComponent {
+
 
   map!: mapboxgl.Map;
   popup!: mapboxgl.Popup;
@@ -29,11 +30,21 @@ export class MapboxComponent {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.trashData && this.trashData.length > 0) {
-      this.convertToGeoJsonData(this.trashData);
+    if (this.trashData) {
+      if (this.trashData.length > 0) {
+        this.convertToGeoJsonData(this.trashData);
+      }
+      else {
+        (this.map.getSource('trash-source') as mapboxgl.GeoJSONSource).setData(
+          {
+            "type": "FeatureCollection",
+            "features": []
+          });
+      }
+
     }
 
-    if(this.flyToCords){
+    if (this.flyToCords) {
       this.flyToCoOrdsOnMap(this.flyToCords)
     }
 
@@ -87,13 +98,22 @@ export class MapboxComponent {
     this.map.on('load', () => {
       if (this.locateUserInput) {
         this.locateUser.trigger();
-        this.mapboxService.setMapBounds(this.map.getBounds());
-
         if (this.container === "dashboard") {
+          this.mapboxService.setMapBounds(this.map.getBounds());
+          console.log(this.map.getBounds());
           this.initGeoJsonSource();
         }
+
       }
     });
+  }
+
+  addDraggableOnMap() {
+    this.map.on("dragend", () => {
+      console.log("dragend");
+      console.log(this.map.getBounds());
+
+    })
   }
 
   initGeoJsonSource() {
@@ -133,4 +153,9 @@ export class MapboxComponent {
     this.map.flyTo({ center: center, zoom: MAPBOX_ZOOM });
   }
 
+
+  searchTrashOnMap() {
+    this.mapboxService.searchTimestamp = new Date();
+    this.mapboxService.setMapBounds(this.map.getBounds());
+  }
 }

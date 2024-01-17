@@ -11,7 +11,7 @@
                 <mat-icon class="text-gray" (click)="closePopup()">close</mat-icon>
             </div>
             <div class="file-uploader">
-                <input type="file" class="input-hidden">
+                <input type="file" class="input-hidden" (change)="onFileSelected($event)" #fileUploader>
                 <div class="d-flex flex-column uploader-info">
                     <span class="add-photo-icon"><mat-icon>add_photo_alternate</mat-icon></span>
                     <div class="d-flex gap-5">
@@ -21,17 +21,17 @@
                     <label class="fs-12 text-gray">Maximum upload file size: 50 MB</label>
                 </div>
             </div>
-            <div class="file-preview-wrapper">
+            <div class="file-preview-wrapper" *ngIf="isFileUploaded">
                 <div class="d-flex justfy-content-spacebetween preview-item align-items-center">
                     <div class="d-flex gap-10 ">
                         <div class="file-preview-icon custom-sprite"></div>
                         <div class="d-flex flex-column">
-                            <span class="fs-14 bold">File Name_1.Jpeg</span>
-                            <label class="fs-11 text-gray">24 MB</label>
+                            <span class="fs-14 bold">{{this.filename}}</span>
+                            <label class="fs-11 text-gray">{{this.filesize}} MB</label>
                         </div>
                     </div>
-                    <div>
-                        <span class="file-close"> <mat-icon>close</mat-icon></span>
+                    <div (click)="deleteFile()">
+                        <span class="file-close pointer"> <mat-icon>close</mat-icon></span>
                     </div>
                 </div>
 
@@ -41,18 +41,26 @@
                     <div>
                         <mat-form-field>
                             <mat-label>Trash Name</mat-label>
-                            <input matInput placeholder="Trash Name" formControlName="trashName">
+                            <input matInput placeholder="Trash Name" formControlName="Title">
+
+                            <mat-error *ngIf="addTrashForm.get('Title')?.hasError('required')">Please select
+                                Please enter title.</mat-error>
                         </mat-form-field>
+
                     </div>
 
                     <div>
                         <mat-form-field>
 
                             <mat-label>Date</mat-label>
-                            <input matInput [matDatepicker]="picker" placeholder="Select Date" formControlName="date">
+                            <input matInput [matDatepicker]="picker" placeholder="Select Date"
+                                formControlName="ReportedDate">
+
 
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="addTrashForm.get('ReportedDate')?.hasError('required')">Please select
+                                reported date.</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="location-form">
@@ -76,21 +84,24 @@
                     <div>
                         <mat-form-field>
                             <mat-label>Select Category</mat-label>
-                            <mat-select formControlName="category">
-                                <mat-option value="oil">Oil</mat-option>
-                                <mat-option value="plastic">Plastic</mat-option>
-                                <mat-option value="net">Net</mat-option>
+                            <mat-select formControlName="CategoryId">
+                                <mat-option value="3">Oil</mat-option>
+                                <mat-option value="2">Plastic</mat-option>
+                                <mat-option value="1">Net</mat-option>
+                                <mat-option value="4">Others</mat-option>
+
                             </mat-select>
+                            <mat-error *ngIf="addTrashForm.get('CategoryId')?.hasError('required')">Please
+                                select
+                                category.</mat-error>
                         </mat-form-field>
                     </div>
 
-                    <div *ngIf="addTrashForm.get('selectedDate')?.hasError('required')">
-                        Please select a date.
-                    </div>
+
                 </form>
             </div>
             <div mat-dialog-actions class="d-flex justfy-content-end">
-                <button mat-stroked-button class="pointer btn-primary btn-submit">save</button>
+                <button mat-stroked-button class="pointer btn-primary btn-submit" (click)="saveTrash()">save</button>
             </div>
         </div>
     </div>

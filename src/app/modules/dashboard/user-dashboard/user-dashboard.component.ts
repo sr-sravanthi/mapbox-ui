@@ -8,6 +8,7 @@ import { DynamicComponentService } from 'src/app/core/services/dynamic-component
 import { TrashRequest } from 'src/app/core/interfaces/trash';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MAPBOX_ZOOM } from 'src/app/core/utilities/constants';
+import { UserDetails } from 'src/app/core/interfaces/user';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class UserDashboardComponent implements OnInit {
   plastic: any[] = [];
   oil: any[] = [];
   constructor(public dialog: MatDialog, private authService: AuthService, private mapService: MapboxService, private trashService: TrashService) { }
+
   ngOnInit(): void {
     this.selectedTab = 'myTrash';
 
@@ -45,15 +47,19 @@ export class UserDashboardComponent implements OnInit {
 
 
   getTrashDetails(tabType: string, cornerCoords: any) {
-    // let userDetails = JSON.parse(sessionStorage.getItem("userDetails") || "");
+    let userDetails!: UserDetails;
+    if (sessionStorage.getItem("userDetails")) {
+      userDetails = JSON.parse(sessionStorage.getItem("userDetails") || "");
+    }
+    if (!userDetails) {
+      return
+    }
 
-    // if (!userDetails) {
-    //   return
-    // }
+
     const trash: TrashRequest = {
-      //  userid:"userdetails.userID",
-      userid: "hariharan31",
-      timestamp: null,
+      //userid: userDetails.userID,
+      userid: 'hariharan31',
+      timestamp: this.mapService.searchTimestamp === null ? null : this.mapService.searchTimestamp.toISOString(),
       zoom: MAPBOX_ZOOM,
       ...cornerCoords
     };
@@ -63,7 +69,7 @@ export class UserDashboardComponent implements OnInit {
     this.trashService.getAlltrash(trash).subscribe({
       next: (response: any) => {
         console.log(response);
-        if (response.commonEntity.transactionStatus === "Y" && response.trashDetailsEntity.length > 0) {
+        if (response.commonEntity.transactionStatus === "Y") {
           this.trashCount = response.trashDetailsEntity.length;
           this.allTrash = response.trashDetailsEntity;
           this.myTrash = response.trashDetailsEntity.filter((trash: any) => trash.isMyTrash === true);
@@ -107,5 +113,4 @@ export class UserDashboardComponent implements OnInit {
     });
 
   }
-  search() { }
 }

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { TrashRequest } from '../interfaces/trash';
+import { AddTrashRequest, TrashRequest } from '../interfaces/trash';
 import { Observable } from 'rxjs';
 import { httpUrls } from './httpUrl';
 
@@ -20,6 +20,11 @@ export class TrashService {
 
   setRecoveredTrash(trashItems: any) {
     return this.http.post(`${this.apiUrl}${httpUrls.RECOVEREDTRASH}`, trashItems)
+
+  }
+
+  addTrash(addTrashReq: AddTrashRequest) {
+    return this.http.post(`${this.apiUrl}${httpUrls.ADDTRASH}`, addTrashReq)
 
   }
 

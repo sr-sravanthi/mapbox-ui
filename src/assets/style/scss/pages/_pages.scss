@@ -285,12 +285,29 @@ body {
                 }
 
                 .map-btn {
-                    button.btn-primary.mdc-button {
+                    .search-btn {
                         width: auto;
                         height: auto;
                         z-index: 99;
                         padding: 6px;
                         font-size: 16px;
+                        background-color: $primary-light;
+                        border-radius: 20px;
+                        position: absolute;
+                        display: flex;
+                        border: 0;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+            
+                        &:hover {
+                            background-color: $primary-btn-hover;
+                        }
+            
+                        .material-icons {
+                            font-size: 20px;
+                            color: $color-white;
+                        }
                     }
 
                 }
