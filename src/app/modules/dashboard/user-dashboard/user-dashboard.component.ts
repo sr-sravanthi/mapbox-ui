@@ -9,6 +9,7 @@ import { TrashService } from 'src/app/core/services/trash/trash.service';
 import { MapboxService } from 'src/app/core/services/mapbox/mapbox.service';
 import { MAP_ZOOM } from 'src/app/core/utilities/constants';
 import { UserDetails } from 'src/app/core/interfaces/user';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -23,20 +24,30 @@ export class UserDashboardComponent implements OnInit {
   recoveredTrash: any[] = [];
   selectedTab: string = '';
   selectedCategoryFilter!: number;
-
+  isFilterAppllied: boolean = false;
   tabNames = ["My Trash", "All Trash", "Recovered Trash"];
 
   constructor(public dialog: MatDialog, private authService: AuthService, private trashService: TrashService,
     private mapboxService: MapboxService) { }
 
   ngOnInit(): void {
+
     this.selectedTab = "My Trash";
+
+    this.getTrashForCurrentBounds();
+
+    this.trashService.refreshTrashData$.subscribe((val) => {
+      this.getTrashForCurrentBounds();
+    })
+  }
+
+  getTrashForCurrentBounds() {
     this.mapboxService.currentmapBounds$.subscribe((bounds: any) => {
       if (bounds) {
         let cornerCoords = this.mapboxService.getCornerCordinates(bounds as mapboxgl.LngLatBounds);
-        this.getTrashDetails(this.selectedTab, cornerCoords)
+        this.getTrashDetails(this.selectedTab, cornerCoords);
       }
-    })
+    });
   }
 
   getTrashDetails(tabType: string, cornerCoords: any) {
@@ -48,8 +59,8 @@ export class UserDashboardComponent implements OnInit {
       return
     }
     const trash: TrashRequest = {
-      //userid:"userdetails.userID",
-      userid: "hariharan31",
+      userid: userDetails.userID,
+      //userid: "hariharan31",
       timestamp: this.mapboxService.searchTimestamp === null ? null : this.mapboxService.searchTimestamp.toISOString(),
       zoom: MAP_ZOOM,
       ...cornerCoords
@@ -62,10 +73,9 @@ export class UserDashboardComponent implements OnInit {
         if (response.commonEntity.transactionStatus === "Y") {
 
           this.allTrash = response.trashDetailsEntity;
-          this.myTrash = response.trashDetailsEntity.filter((trash: any) => trash.isMyTrash === true);
+          this.myTrash = response.trashDetailsEntity.filter((trash: any) => trash.isMyTrash === true && trash.isRecovered === false);
           console.log(this.myTrash)
           this.recoveredTrash = response.trashDetailsEntity.filter((trash: any) => trash.isRecovered === true);
-
           this.getSelectedTabData();
         }
       }
@@ -95,10 +105,31 @@ export class UserDashboardComponent implements OnInit {
   }
 
   filterTrash(categoryId: number) {
+    if (!this.isFilterAppllied) {
+      this.isFilterAppllied = true;
+      this.filterSelectedTrash(categoryId);
+    }
+    else if (this.selectedCategoryFilter !== categoryId) {
+      this.isFilterAppllied = true;
+      this.filterSelectedTrash(categoryId);
+    }
+    else {
+      this.isFilterAppllied = false;
+      this.trashDataForMap = this.selectedTabTrashData;
+      this.selectedCategoryFilter = -1;
+    }
+    //this.isFilterAppllied = !this.isFilterAppllied
+
+
+  }
+
+  filterSelectedTrash(categoryId: number) {
     this.selectedCategoryFilter = categoryId;
+
     this.trashDataForMap = this.selectedTabTrashData.filter((trash: any) => trash.categoryId == categoryId);
 
   }
+
 
   AddTrashClick() {
     const dialogRef = this.dialog.open(AddtrashComponent, {
@@ -106,6 +137,12 @@ export class UserDashboardComponent implements OnInit {
       height: '72%'
     });
     dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.trashService.refreshTrashData();
+        this.selectedTab == "My Trash";
+        this.mapboxService.searchTimestamp = null;
+
+      }
     });
 
   }

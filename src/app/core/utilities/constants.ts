@@ -1,3 +1,5 @@
+import * as moment from "moment";
+
 const TRASH_CATEGORIES: { [key: string]: string } = {
   '1': 'Net',
   '2': 'Plastic',
@@ -10,4 +12,8 @@ const MAPBOX_lng = -74.5;
 
 const MAX_FILE_SIZE = 10;
 
-export { TRASH_CATEGORIES, MAP_ZOOM, MAP_STYLE, MAX_FILE_SIZE };
+const getCurrentDateTimeTrasanctionID = (): number => {
+  return Number(moment(new Date()).format("yyyyMMDDHHmmssSSS"));
+}
+
+export { TRASH_CATEGORIES, MAP_ZOOM, MAP_STYLE, MAX_FILE_SIZE, getCurrentDateTimeTrasanctionID };

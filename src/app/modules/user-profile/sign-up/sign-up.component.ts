@@ -1,5 +1,3 @@
-
-import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -24,9 +22,12 @@ export class SignUpComponent implements OnInit {
   companySuggestions: any;
   companySearchControl = new FormControl();
   vesselSearchControl = new FormControl();
-  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService ,public dialog: MatDialog) { }
+  authUserDetails: any;
+  imageUrl: string = '';
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService, public dialog: MatDialog) { }
   ngOnInit(): void {
-    this.getInitialData()
+    this.getprofilephoto();
+    this.getInitialData();
     this.registrationForm = this.fb.group({
       userName: ["", [Validators.required, Validators.pattern(/^[a-zA-Z]+(?: [a-zA-Z]+)*$/)]],
       companyId: [""],
@@ -64,58 +65,65 @@ export class SignUpComponent implements OnInit {
 
   }
 
-  setupAutocomplete() {
-    this.filteredCompanyOptions = this.companySearchControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
-    this.filteredVesselOptions = this.vesselSearchControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._vesselfilter(value || '')),
+  // setupAutocomplete() {
+  //   this.filteredCompanyOptions = this.companySearchControl.valueChanges.pipe(
+  //     startWith(''),
+  //     map(value => this._filter(value || '')),
+  //   );
+  //   this.filteredVesselOptions = this.vesselSearchControl.valueChanges.pipe(
+  //     startWith(''),
+  //     map(value => this._vesselfilter(value || '')),
 
-    )
-  }
+  //   )
+  // }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+  // private _filter(value: string): string[] {
+  //   const filterValue = value.toLowerCase();
 
-    if (this.companyDetails.length > 0 && value != "") {
-      return this.companyDetails.filter((option: any) => option.toLowerCase().includes(filterValue));
+  //   if (this.companyDetails.length > 0 && value != "") {
+  //     return this.companyDetails.filter((option: any) => option.toLowerCase().includes(filterValue));
+  //   }
+  //   else {
+  //     return this.companyDetails;
+  //   }
+
+  // }
+  // private _vesselfilter(value: string): string[] {
+  //   const filterValue = value.toLowerCase();
+
+  //   if (this.vesselDetails.length > 0 && value != "") {
+  //     return this.vesselDetails.filter((option: any) => option.toLowerCase().includes(filterValue));
+  //   }
+  //   else {
+  //     return this.companyDetails;
+  //   }
+
+  // }
+
+
+  // displayFn(value: any): string {
+  //   return value && typeof value === 'object' ? value.place_name : value;
+  // }
+
+  // searchCompanyFn(searchValue: string) {
+  //   return of(this.companyDetails.filter(company => company.toLowerCase().includes(searchValue.toLowerCase()))).pipe(delay(500));
+  // }
+
+  // displayCompanyFn(value: any) {
+  //   return value && typeof value === 'object' ? value.name : value;
+  // }
+
+  // onItemSelected(item: any) {
+  //   //this.myForm.get('autocompleteControl').setValue(item);
+  // }
+  getprofilephoto() {
+    this.authUserDetails = JSON.parse(sessionStorage.getItem("authProviderUserData") || "");
+    console.log(this.authUserDetails);
+    if (this.authUserDetails) {
+      this.imageUrl = this.authUserDetails.photoURL;
     }
-    else {
-      return this.companyDetails;
-    }
 
   }
-  private _vesselfilter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    if (this.vesselDetails.length > 0 && value != "") {
-      return this.vesselDetails.filter((option: any) => option.toLowerCase().includes(filterValue));
-    }
-    else {
-      return this.companyDetails;
-    }
-
-  }
-
-
-  displayFn(value: any): string {
-    return value && typeof value === 'object' ? value.place_name : value;
-  }
-
-  searchCompanyFn(searchValue: string) {
-    return of(this.companyDetails.filter(company => company.toLowerCase().includes(searchValue.toLowerCase()))).pipe(delay(500));
-  }
-
-  displayCompanyFn(value: any) {
-    return value && typeof value === 'object' ? value.name : value;
-  }
-
-  onItemSelected(item: any) {
-    //this.myForm.get('autocompleteControl').setValue(item);
-  }
-
   getInitialData() {
 
     let getUserTypes$ = this.authService.getUserTypes();
@@ -143,7 +151,7 @@ export class SignUpComponent implements OnInit {
             this.vesselDetails = vesselNamesResponse?.vesselEntity;
             console.log(this.vesselDetails)
           }
-          this.setupAutocomplete();
+          // this.setupAutocomplete();
         },
         error: () => {
         }
@@ -167,7 +175,6 @@ export class SignUpComponent implements OnInit {
           this.getUserData();
         }
       });
-
     }
 
   }
@@ -198,19 +205,12 @@ export class SignUpComponent implements OnInit {
 
   }
 
-  dataPolocyPopup(){
+  dataPolocyPopup() {
     let dialogRef = this.dialog.open(DataPolicyComponent, {
-     
       width: '40%',
     });
-
-
-
+   
   }
-
-
-
-
 
 }
 

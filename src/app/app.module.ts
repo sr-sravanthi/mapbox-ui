@@ -10,14 +10,18 @@ import { FacebookLoginProvider, GoogleLoginProvider, GoogleSigninButtonModule, S
 import { MaterialModule } from './shared/material/material.module';
 import { HeaderInterceptor } from './core/interceptors/header.interceptor';
 import { SharedModule } from './shared/shared.module';
+import { HeaderComponent } from './shared/header/header.component';
+import { FooterComponent } from './shared/footer/footer.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    
- ],
+    HeaderComponent,
+    FooterComponent,
+
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

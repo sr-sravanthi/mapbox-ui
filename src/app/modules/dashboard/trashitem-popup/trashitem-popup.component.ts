@@ -14,15 +14,13 @@ import { TrashService } from 'src/app/core/services/trash/trash.service';
 export class TrashitemPopupComponent implements OnInit {
   trashcategory: string = '';
   TRASH_CATEGORIES = TRASH_CATEGORIES;
-
-
-  //@Input("trashData") trashData: any;
-
-  constructor(@Inject(MAT_DIALOG_DATA) public trashItem: any, public dialogRef: MatDialogRef<TrashitemComponent>, private trashService: TrashService) { }
+  
+constructor(@Inject(MAT_DIALOG_DATA) public trashItem: any, public dialogRef: MatDialogRef<TrashitemComponent>, private trashService: TrashService) { }
   ngOnInit(): void {
     console.log(this.trashItem);
 
   }
+
   clickOnRecovered() {
     let userDetails: UserDetails = JSON.parse(sessionStorage.getItem("userDetails") || "");
 
@@ -42,14 +40,13 @@ export class TrashitemPopupComponent implements OnInit {
 
       this.trashService.setRecoveredTrash(JSON.stringify(saveRequestObj)).subscribe(res => {
         console.log(res);
+        this.trashService.refreshTrashData();
         this.dialogRef.close();
-     
-
       })
+    }
   }
-  }
-  closePopup(){
+  closePopup() {
     this.dialogRef.close();
   }
-  
+
 }

@@ -32,11 +32,10 @@ export interface TrashAttachmentEntity {
   TrashId?: string
   TransactionId?: number
   AttachmentTransactionId?: number
-  AttachmentId?: string
+  AttachmentName?: string
   AttachmentType?: string
-  FileName?: string
-  FileUrl?: string
-  IsActive?: boolean
+  FileType?: string
+  FileSize?: number
 
 }
 

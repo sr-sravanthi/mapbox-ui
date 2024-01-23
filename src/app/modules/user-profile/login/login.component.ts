@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
     this.AuthLogin(new FacebookAuthProvider());
   }
 
-  
+
   AuthLogin(provider: any) {
     const auth = getAuth();
 
@@ -102,9 +102,6 @@ export class LoginComponent implements OnInit {
     });
   }
   guestUserLogin() {
-    this.router.navigateByUrl('/profile/register');
-  }
-  createAccount() {
     this.router.navigateByUrl('/profile/register');
   }
 

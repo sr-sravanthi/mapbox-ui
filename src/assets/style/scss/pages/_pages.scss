@@ -210,11 +210,12 @@ body {
         }
 
         .change-img {
-            background: url('../../images/profile-add.png');
             width: 169px;
             height: 169px;
             display: flex;
             background-repeat: no-repeat;
+            border-radius: 50%;
+
 
         }
 
@@ -254,11 +255,11 @@ body {
     .header-right {
 
         .user-profile {
-            background: url('../../images/profile.png');
             width: 46px;
             height: 46px;
             display: block;
             background-repeat: no-repeat;
+            border-radius: 50%;
         }
 
         .divider {

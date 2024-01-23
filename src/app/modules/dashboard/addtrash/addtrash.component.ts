@@ -8,9 +8,8 @@ import { AddTrashRequest, TrashAttachmentEntity, TrashCommonEntity, TrashEntity 
 import { UserDetails } from 'src/app/core/interfaces/user';
 import { MapboxService } from 'src/app/core/services/mapbox/mapbox.service';
 import { TrashService } from 'src/app/core/services/trash/trash.service';
-import { MAX_FILE_SIZE } from 'src/app/core/utilities/constants';
+import { MAX_FILE_SIZE, getCurrentDateTimeTrasanctionID } from 'src/app/core/utilities/constants';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/shared/dateFormat';
-import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-addtrash',
@@ -49,7 +48,9 @@ export class AddtrashComponent implements OnInit {
   ];
   filename: string = ""
   filesize: number = 0;
+  fileExt: string = "";
   isFileUploaded: boolean = false;
+  attachmentEntity!: TrashAttachmentEntity;
 
 
   constructor(private fb: FormBuilder,
@@ -109,18 +110,26 @@ export class AddtrashComponent implements OnInit {
       this.filename = this.uploadedFiles[0].name;
       this.filesize = Number((this.uploadedFiles[0].size / (1024 * 1024)).toFixed(2));
       if (this.filename.indexOf(".") != -1) {
-        let fileExt = this.filename.substring(
+        this.fileExt = this.filename.substring(
           this.filename.lastIndexOf("."),
           this.filename.length
         );
 
-        if (this.validFileExt.indexOf(fileExt.toLowerCase()) === -1) {
+        if (this.validFileExt.indexOf(this.fileExt.toLowerCase()) === -1) {
           alert("invalid format!!");
         } else if (this.filesize > MAX_FILE_SIZE) {
           alert("exceeded file size limit (10MB)!!");
         }
         else {
+
           this.isFileUploaded = true;
+          this.attachmentEntity = {
+            AttachmentTransactionId: getCurrentDateTimeTrasanctionID(),
+            AttachmentName: this.filename,
+            FileType: this.fileExt
+          };
+
+
         }
       }
     }
@@ -148,19 +157,17 @@ export class AddtrashComponent implements OnInit {
 
     if (this.addTrashForm.valid && this.searchCoOrds) {
       this.updateFormValues();
-      let commonEntity: TrashCommonEntity = { UserId: userDetails?.userID };
-      let trashEntity: TrashEntity = { ...this.addTrashForm.value };
-      let attachmentEntity: TrashAttachmentEntity;
+      let transactionId = getCurrentDateTimeTrasanctionID();
 
-      let addTrashRequest: AddTrashRequest = { CommonEntity: commonEntity, TrashList: [trashEntity], AttachmentEntity: [] };
+      let commonEntity: TrashCommonEntity = { UserId: userDetails?.userID };
+      let trashEntity: TrashEntity = { ...this.addTrashForm.value, TransactionId: transactionId };
+      if (this.isFileUploaded && this.attachmentEntity) {
+        this.attachmentEntity.TransactionId = transactionId;
+      }
+
+      let addTrashRequest: AddTrashRequest = { CommonEntity: commonEntity, TrashList: [trashEntity], AttachmentEntity: this.isFileUploaded ? [this.attachmentEntity] : [] };
 
       console.log(addTrashRequest);
-
-      if (this.isFileUploaded) {
-        this.trashService.saveAttachment(this.uploadedFiles[0]).subscribe((res) => {
-          console.log(res);
-        })
-      }
 
 
       this.trashService.addTrash(addTrashRequest).subscribe(
@@ -168,8 +175,14 @@ export class AddtrashComponent implements OnInit {
           next: (response: any) => {
             console.log(response);
             if (response.commonEntity.transactionStatus === "Y" && response.trashDetailsEntity.length > 0) {
-              alert("New Trash saved successfully.");
-              this.dialogRef.close();
+             
+              // if (this.isFileUploaded) {
+              //   this.trashService.saveAttachment(this.uploadedFiles[0]).subscribe((res) => {
+              //     console.log(res);
+              //   })
+              // }
+
+              this.dialogRef.close(true);
             }
           }
         });

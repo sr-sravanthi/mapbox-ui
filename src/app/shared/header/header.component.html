@@ -15,26 +15,27 @@
             <div class="d-flex align-items-center gap-20">
                 <div class="divider"><i></i></div>
 
-                <span>{{userDetails.name}}</span>
-    
+                <span>{{authUserDetails.displayName}}</span>
+
                 <!-- <div class="user-profile"  (click)="clickOnProfilePhoto()">
                 
                 </div> -->
-                <button  class="user-profile" mat-button [matMenuTriggerFor]="beforeMenu"></button>
+                <!--   -->
+                <button mat-button>
+                    <img class="user-profile" [src]="imageUrl" [matMenuTriggerFor]="beforeMenu" alt="profile image">
+                </button>
                 <mat-menu #beforeMenu="matMenu" xPosition="before">
-                    <div class="profile-menu d-flex  flex-column">
-                        <div class="d-flex  ">
+                    <div class="profile-menu d-flex flex-column p-10">
+                        <!-- <div class="d-flex  ">
                             <div class="menu-profile-img relative">
                                 <div class="d-flex align-items-center  edit-img-wrpr ">
                                     <i class="edit-icon custom-sprite"></i>
                                 </div>
-                    
-                    
                             </div>
-                        </div>
+                        </div> -->
                         <div class="d-flex  flex-column">
-                            <h4 class="m-b-0 fs-22">Sara Palmer</h4>
-                            <label class="text-gray">BSM Company</label>
+                            <h4 class="m-b-0 fs-22">{{authUserDetails.displayName}}</h4>
+                            <!-- <label class="text-gray">BSM Company</label> -->
                         </div>
                         <div class="d-flex rewards m-t-30 m-b-30">
                             <div class="d-flex rank-wrapr relative gap-20">
@@ -44,7 +45,7 @@
                                     <label class="bold">1265</label>
                                 </div>
                             </div>
-                    
+
                             <div class="d-flex gap-20">
                                 <i class="custom-sprite point-icon"></i>
                                 <div>
@@ -53,7 +54,7 @@
                                         <i class="custom-sprite arrow"></i>
                                         <label class="bold">12</label>
                                     </div>
-                    
+
                                 </div>
                             </div>
                         </div>
@@ -77,10 +78,14 @@
                             <i class="custom-sprite settings-icon"></i>
                             <h4>Settings</h4>
                         </div>
+                        <div class="d-flex align-items-center gap-20" (click)="signout()">
+                            <i class="custom-sprite settings-icon"></i>
+                            <h4>Log out</h4>
+                        </div>
                     </div>
-                  </mat-menu>
+                </mat-menu>
             </div>
-         
+
         </div>
     </div>
 </div>

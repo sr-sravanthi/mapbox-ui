@@ -7,12 +7,9 @@
         <div class="right-content">
             <div class="relative p-20">
                 <mat-tab-group (selectedTabChange)="onTrashTabChange($event)">
-
                     <mat-tab [label]="tab" *ngFor="let tab of tabNames">
                         <app-trash-tab [tabName]="selectedTab" [trashData]="trashDataForMap"></app-trash-tab>
                     </mat-tab>
-
-
                 </mat-tab-group>
                 <div class="right-btn " (click)="AddTrashClick()">
                     <mat-icon>add</mat-icon>
@@ -26,22 +23,22 @@
     <div class="map-wrapper">
         <div class="filter-btn-wrapper">
             <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column"
-                [class.active]="selectedCategoryFilter==1" (click)="filterTrash(1)">
+                [ngClass]="{'active': isFilterAppllied && selectedCategoryFilter==1}" (click)="filterTrash(1)">
                 <i class="net-icon custom-sprite"></i>
                 <label>net</label>
             </div>
             <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column"
-                [class.active]="selectedCategoryFilter==2" (click)="filterTrash(2)">
+                [ngClass]="{'active': isFilterAppllied && selectedCategoryFilter==2}" (click)="filterTrash(2)">
                 <i class="plastic custom-sprite"></i>
                 <label>plastic</label>
             </div>
             <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column"
-                [class.active]="selectedCategoryFilter==3" (click)="filterTrash(3)">
+                [ngClass]="{'active': isFilterAppllied && selectedCategoryFilter==3}" (click)="filterTrash(3)">
                 <i class="oil-icon custom-sprite"></i>
                 <label>Oil spill </label>
             </div>
             <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column"
-                [class.active]="selectedCategoryFilter==4">
+                [ngClass]="{'active': isFilterAppllied && selectedCategoryFilter==4}" (click)="filterTrash(4)">
                 <i class="other-icon custom-sprite"></i>
                 <label>other</label>
             </div>

@@ -16,8 +16,9 @@
 
             </div>
             <div class="d-flex justify-content-center m-b-20">
-                <div class="change-img relative">
-                    <i class="add-img custom-sprite"></i>
+                <div class=" relative">
+                    <img class="change-img" [src]="imageUrl">
+                    <!-- <i class="add-img custom-sprite"></i> -->
 
                 </div>
             </div>
@@ -50,7 +51,19 @@
 
                     </div>
 
+                    <div class="grid-item">
+                        <mat-form-field class="register-custom-styles login-custom-styles">
+                            <mat-label class="fs-12">Organization</mat-label>
 
+                            <mat-select formControlName="companyId">
+                                <mat-option *ngFor="let type of companyDetails"
+                                    [value]="type.name">{{type.name}}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="registrationForm.get('companyId')?.hasError('required')">Organization is
+                                required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <!-- 
                     <div class="grid-item">
                         <mat-form-field class="register-custom-styles login-custom-styles">
                             <mat-label class="fs-12">Organization</mat-label>
@@ -60,12 +73,12 @@
                                     {{option.name}}
                                 </mat-option>
                             </mat-autocomplete>
-                        </mat-form-field>
-                        <!-- <div class="register-custom-styles login-custom-styles"> <app-autocomplete
+                        </mat-form-field> 
+                    <div class="register-custom-styles login-custom-styles"> <app-autocomplete
                                 [searchFn]="searchCompanyFn" [displayFn]="displayCompanyFn"
-                                (selected)="onItemSelected($event)"></app-autocomplete></div> -->
+                                (selected)="onItemSelected($event)"></app-autocomplete></div>
 
-                    </div>
+                   </div> -->
 
                     <div class="grid-item">
                         <mat-form-field class=" register-custom-styles login-custom-styles">
@@ -73,6 +86,7 @@
                             <input matInput formControlName="userNumber" readonly="true" placeholder="" value="">
                         </mat-form-field>
                     </div>
+
                     <div class="grid-item">
                         <mat-form-field class=" register-custom-styles login-custom-styles">
                             <mat-label class="fs-12">MMSI Number</mat-label>
@@ -83,6 +97,19 @@
                     <div class="grid-item">
                         <mat-form-field class="register-custom-styles login-custom-styles">
                             <mat-label class="fs-12">Ship Name</mat-label>
+
+                            <mat-select formControlName="VesselID">
+                                <mat-option *ngFor="let type of vesselDetails"
+                                    [value]="type.vesselObjectId">{{type.vesselName}}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="registrationForm.get('VesselID')?.hasError('required')">User Type is
+                                required</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- <div class="grid-item">
+                        <mat-form-field class="register-custom-styles login-custom-styles">
+                            <mat-label class="fs-12">Ship Name</mat-label>
                             <input matInput [formControl]="vesselSearchControl" [matAutocomplete]="auto">
                             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
                                 <mat-option *ngFor="let option of vesselDetails" [value]="option">
@@ -90,26 +117,26 @@
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
-                    </div>
-
+                    </div>  -->
 
 
                 </div>
-
                 <div class="tickbox m-t-20 m-b-20">
                     <section class="">
                         <mat-checkbox formControlName="agreeChkbox">I agree with Eyesea user agreement and <a
-                                href="/data-policy">Privacy Policy..</a>
+                                (click)="dataPolocyPopup()">Privacy Policy..</a>
                         </mat-checkbox>
-                        <mat-error *ngIf="registrationForm.get('agreeChkbox')?.hasError('requiredTrue')"
+                        <!-- <mat-error *ngIf="registrationForm.get('agreeChkbox')?.hasError('requiredTrue')"
                             class="m-l-20">Please agree
-                            Privacy Policy </mat-error>
+                            Privacy Policy </mat-error> -->
                     </section>
                 </div>
+
 
                 <div class="signup-btn">
                     <button mat-button class="pointer btn-primary" type="submit">Complete Registration</button>
                 </div>
+
             </form>
         </div>
     </div>
