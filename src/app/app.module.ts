@@ -10,13 +10,13 @@ import { FacebookLoginProvider, GoogleLoginProvider, GoogleSigninButtonModule, S
 import { MaterialModule } from './shared/material/material.module';
 import { HeaderInterceptor } from './core/interceptors/header.interceptor';
 import { SharedModule } from './shared/shared.module';
-import { DataPolicyComponent } from './user-profile/data-policy/data-policy.component';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    DataPolicyComponent,
+    
  ],
   imports: [
     BrowserModule,

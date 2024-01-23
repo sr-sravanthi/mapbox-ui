@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { debounceTime, delay, forkJoin, map, of, startWith } from 'rxjs';
 import { UserDetails, UserRequest, UserType } from 'src/app/core/interfaces/user';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { DataPolicyComponent } from '../data-policy/data-policy.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-sign-up',
@@ -22,7 +24,7 @@ export class SignUpComponent implements OnInit {
   companySuggestions: any;
   companySearchControl = new FormControl();
   vesselSearchControl = new FormControl();
-  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) { }
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService ,public dialog: MatDialog) { }
   ngOnInit(): void {
     this.getInitialData()
     this.registrationForm = this.fb.group({
@@ -195,8 +197,15 @@ export class SignUpComponent implements OnInit {
     });
 
   }
-  clickLogin() {
-    this.router.navigateByUrl('/profile/login');
+
+  dataPolocyPopup(){
+    let dialogRef = this.dialog.open(DataPolicyComponent, {
+     
+      width: '40%',
+    });
+
+
+
   }
 
 

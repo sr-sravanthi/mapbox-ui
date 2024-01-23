@@ -23,18 +23,18 @@ export class MapboxComponent {
   constructor(private mapboxService: MapboxService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.trashData) { 
-      if(this.trashData.length > 0) {
-      this.convertToGeoJsonData(this.trashData);
+    if (this.trashData) {
+      if (this.trashData.length > 0) {
+        this.convertToGeoJsonData(this.trashData);
+      }
+      else {
+        (this.map.getSource('trash-source') as mapboxgl.GeoJSONSource).setData(
+          {
+            "type": "FeatureCollection",
+            "features": []
+          });
+      }
     }
-    else{
-      (this.map.getSource('trash-source') as mapboxgl.GeoJSONSource).setData(
-        {
-          "type": "FeatureCollection",
-          "features": []
-        });
-    }
-  }
     if (this.flyToCords) {
       this.flyToCoOrdsOnMap(this.flyToCords)
     }
@@ -82,20 +82,29 @@ export class MapboxComponent {
       this.addGeoCoder()
     }
     this.map.on('load', () => {
-      if (this.locateUserInput) { 
-      this.locateUser.trigger();
-    //   this.map.loadImage('../../assets/style/images/new-trash-marker2.png', (error, image: any) => {
-    //     if (error) throw (error);
-    //     this.map.addImage('custom-marker', image);
-    // }) ;
-      this.mapboxService.setMapbounds(this.map.getBounds());
-      if(this.container==="dashboard"){
-        this.initGeoJsonSource();
-      }
+      if (this.locateUserInput) {
+        this.locateUser.trigger();
+        this.loadImagesForMap();
+        this.mapboxService.setMapbounds(this.map.getBounds());
+        if (this.container === "dashboard") {
+          this.initGeoJsonSource();
+        }
       }
 
     })
   }
+
+  loadImagesForMap() {
+    this.map.loadImage('../../assets/style/images/marker-red.png', (error, image: any) => {
+      if (error) throw (error);
+      this.map.addImage('red-marker', image);
+    });
+    this.map.loadImage('../../assets/style/images/marker-green.png', (error, image: any) => {
+      if (error) throw (error);
+      this.map.addImage('green-marker', image);
+    });
+  }
+
   addDraggableOnMap() {
     this.map.on("dragend", () => {
       console.log("dragend");
@@ -103,12 +112,7 @@ export class MapboxComponent {
 
     })
   }
-//   customMarker(){
-//     this.map.loadImage('https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png', (error, image: any) => {
-//       if (error) throw (error);
-//       this.map.addImage('custom-marker', image);
-//   }) ;
-//  }
+
   initGeoJsonSource() {
     this.map.addSource('trash-source', {
       type: 'geojson',
@@ -121,23 +125,37 @@ export class MapboxComponent {
       id: 'trash-layer',
       source: 'trash-source',
       type: 'symbol',
+      // layout: {
+      //   'icon-image': 'red-marker',
+      //   'icon-size': 1,
+      // },
       layout: {
-        'icon-image': 'custom-marker',
-        'icon-size': 1,
+        'icon-image': [
+          'match',
+          ['get', 'isRecoveredStr'],
+          'true', 'green-marker',
+          'red-marker'
+        ],
+        'icon-size': 1.5,
       },
     });
+
+
   }
-  
+
   convertToGeoJsonData(trashData: any) {
     const features: turf.Feature<turf.Point, any>[] = [];
     trashData.forEach((item: any) => {
       const lng = item.longitude;
       const lat = item.latitude;
       const feature = turf.point([lng, lat], {
+        isRecoveredStr: item.isRecovered ? "true" : "false",
+        ...item
       });
       features.push(feature);
     });
 
+    console.log(features);
     let trashFeatures = turf.featureCollection(features);
     (this.map.getSource('trash-source') as mapboxgl.GeoJSONSource).setData(trashFeatures)
   }
@@ -149,5 +167,5 @@ export class MapboxComponent {
     this.mapboxService.searchTimestamp = new Date();
     this.mapboxService.setMapbounds(this.map.getBounds());
   }
-  
+
 }

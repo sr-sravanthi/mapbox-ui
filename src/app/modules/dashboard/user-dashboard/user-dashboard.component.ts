@@ -30,7 +30,7 @@ export class UserDashboardComponent implements OnInit {
     private mapboxService: MapboxService) { }
 
   ngOnInit(): void {
-    this.selectedTab = "myTrash";
+    this.selectedTab = "My Trash";
     this.mapboxService.currentmapBounds$.subscribe((bounds: any) => {
       if (bounds) {
         let cornerCoords = this.mapboxService.getCornerCordinates(bounds as mapboxgl.LngLatBounds);
@@ -59,15 +59,14 @@ export class UserDashboardComponent implements OnInit {
     this.trashService.getAlltrash(trash).subscribe({
       next: (response: any) => {
         console.log(response);
-        if (response.commonEntity.transactionStatus === "Y" && response.trashDetailsEntity.length > 0) {
+        if (response.commonEntity.transactionStatus === "Y") {
 
           this.allTrash = response.trashDetailsEntity;
           this.myTrash = response.trashDetailsEntity.filter((trash: any) => trash.isMyTrash === true);
           console.log(this.myTrash)
           this.recoveredTrash = response.trashDetailsEntity.filter((trash: any) => trash.isRecovered === true);
 
-          this.selectedTabTrashData = this.myTrash;
-          this.trashDataForMap = this.myTrash;
+          this.getSelectedTabData();
         }
       }
     });
@@ -77,6 +76,12 @@ export class UserDashboardComponent implements OnInit {
 
   onTrashTabChange(event: MatTabChangeEvent) {
     this.selectedTab = event.tab.textLabel;
+    this.getSelectedTabData();
+
+
+  }
+
+  getSelectedTabData() {
     if (this.selectedTab === "My Trash") {
       this.selectedTabTrashData = this.myTrash;
       this.trashDataForMap = this.myTrash;
@@ -87,8 +92,6 @@ export class UserDashboardComponent implements OnInit {
     else if (this.selectedTab === "Recovered Trash") {
       this.selectedTabTrashData = this.trashDataForMap = this.recoveredTrash;
     }
-
-
   }
 
   filterTrash(categoryId: number) {
