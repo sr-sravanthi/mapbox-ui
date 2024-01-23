@@ -5,12 +5,17 @@ import { UserProfileRoutingModule } from './user-profile.routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/shared/material/material.module';
 import { LoginComponent } from './login/login.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { UploadPhotoComponent } from './upload-photo/upload-photo.component';
+import { DataPolicyComponent } from './data-policy/data-policy.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-
 @NgModule({
   declarations: [
     LoginComponent,
-    SignUpComponent
+    SignUpComponent,
+    EditProfileComponent,
+    UploadPhotoComponent,
+    DataPolicyComponent
   ],
 
   imports: [

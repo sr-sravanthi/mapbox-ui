@@ -1,21 +1,16 @@
-import { TrashEntity, TrashAttachmentEntity, TrashCommonEntity } from './../../../core/interfaces/trash';
-import { MapboxService } from './../../../core/services/mapbox.service';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { _MatAutocompleteBase } from '@angular/material/autocomplete';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import * as mapboxgl from 'mapbox-gl';
-import { catchError, debounceTime, of, switchMap } from 'rxjs';
-import { AddTrashRequest } from 'src/app/core/interfaces/trash';
+import { debounceTime, switchMap, of, catchError } from 'rxjs';
+import { AddTrashRequest, TrashAttachmentEntity, TrashCommonEntity, TrashEntity } from 'src/app/core/interfaces/trash';
 import { UserDetails } from 'src/app/core/interfaces/user';
-import { TrashService } from 'src/app/core/services/trash.service';
-import { MAPBOX_STYLE, MAPBOX_ZOOM } from 'src/app/core/utilities/constants';
+import { MapboxService } from 'src/app/core/services/mapbox/mapbox.service';
+import { TrashService } from 'src/app/core/services/trash/trash.service';
+import { MAX_FILE_SIZE } from 'src/app/core/utilities/constants';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/shared/dateFormat';
-import { environment } from 'src/environments/environment';
-import * as moment from 'moment';
-
+import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-addtrash',
@@ -43,6 +38,19 @@ export class AddtrashComponent implements OnInit {
   searchControl = new FormControl();
   geoCoderSuggestions: any[] = [];
   searchCoOrds: any;
+  @ViewChild('fileUploader') fileUploader!: ElementRef;
+
+  uploadedFiles!: File[];
+
+  validFileExt: Array<string> = [
+    ".jpg",
+    ".jpeg",
+    ".png"
+  ];
+  filename: string = ""
+  filesize: number = 0;
+  isFileUploaded: boolean = false;
+
 
   constructor(private fb: FormBuilder,
     public dialogRef: MatDialogRef<AddtrashComponent>,
@@ -72,8 +80,8 @@ export class AddtrashComponent implements OnInit {
   setupAutocomplete() {
     this.searchControl.valueChanges
       .pipe(
-        debounceTime(300),
-        switchMap((query) => (query ? this.mapboxService.searchGeoCoder(query) : of([]))),
+        debounceTime(500),
+        switchMap((searchValue) => (searchValue ? this.mapboxService.searchGeoCoder(searchValue) : of([]))),
         catchError(() => of([]))
       )
       .subscribe((data: any) => {
@@ -86,25 +94,13 @@ export class AddtrashComponent implements OnInit {
     return value && typeof value === 'object' ? value.place_name : value;
   }
 
-  onSave() { }
 
 
   closePopup() {
     this.dialogRef.close();
   }
 
-  @ViewChild('fileUploader') fileUploader!: ElementRef;
 
-  uploadedFiles!: File[];
-
-  validFileExt: Array<string> = [
-    ".jpg",
-    ".jpeg",
-    ".png"
-  ];
-  filename: string = ""
-  filesize: number = 0;
-  isFileUploaded: boolean = false;
 
   onFileSelected(event: any) {
     console.log(event.target.files);
@@ -118,9 +114,9 @@ export class AddtrashComponent implements OnInit {
           this.filename.length
         );
 
-        if (this.validFileExt.indexOf(fileExt.toLowerCase()) == -1) {
+        if (this.validFileExt.indexOf(fileExt.toLowerCase()) === -1) {
           alert("invalid format!!");
-        } else if (this.filesize > 10) {
+        } else if (this.filesize > MAX_FILE_SIZE) {
           alert("exceeded file size limit (10MB)!!");
         }
         else {
@@ -158,7 +154,15 @@ export class AddtrashComponent implements OnInit {
 
       let addTrashRequest: AddTrashRequest = { CommonEntity: commonEntity, TrashList: [trashEntity], AttachmentEntity: [] };
 
-      console.log(addTrashRequest)
+      console.log(addTrashRequest);
+
+      if (this.isFileUploaded) {
+        this.trashService.saveAttachment(this.uploadedFiles[0]).subscribe((res) => {
+          console.log(res);
+        })
+      }
+
+
       this.trashService.addTrash(addTrashRequest).subscribe(
         {
           next: (response: any) => {
@@ -176,4 +180,3 @@ export class AddtrashComponent implements OnInit {
 
   }
 }
-

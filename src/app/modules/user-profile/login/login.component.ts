@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import firebase from "firebase/compat/app"
 import {
@@ -17,23 +16,20 @@ import { UserRequest } from 'src/app/core/interfaces/user';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  loginForm!: FormGroup;
-  isRegistered: any
+  isRegistered: any;
   user!: any;
   provider: any;
   Provider: any;
-  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService, private afAuth: AngularFireAuth,) { }
+  constructor(private router: Router, private authService: AuthService, private afAuth: AngularFireAuth,) { }
 
   ngOnInit() {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      // password: ['', Validators.required],
-    });
+
     this.Provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().onAuthStateChanged(user => {
       this.user = user;
     });
   }
+
   getUserData(providerData: any) {
     const user: UserRequest = {
       emailid: providerData.email,
@@ -60,12 +56,13 @@ export class LoginComponent implements OnInit {
           });
         }
       },
-      // error: (err) => {
-      //   console.error(err);
-      // },
+      error: (err) => {
+        console.error(err);
+      },
     });
 
   }
+
   googleLogin() {
     this.AuthLogin(new GoogleAuthProvider());
   }
@@ -73,23 +70,24 @@ export class LoginComponent implements OnInit {
   facebookLogin() {
     this.AuthLogin(new FacebookAuthProvider());
   }
+
+  
   AuthLogin(provider: any) {
     const auth = getAuth();
+
     signInWithPopup(auth, provider)
       .then((result) => {
         console.log(result);
+
         if (result.user !== null) {
           let providerData = result.user.providerData;
           if (providerData.length > 0) {
             sessionStorage.setItem('authProviderUserData', JSON.stringify(providerData[0]));
-
             this.getUserData(providerData[0]);
           }
 
-          // this.router.navigateByUrl('/profile/register');
         } else {
           this.router.navigateByUrl('/');
-
           localStorage.clear();
 
         }
@@ -111,3 +109,5 @@ export class LoginComponent implements OnInit {
   }
 
 }
+
+

@@ -7,11 +7,14 @@ import { Component, Input, OnInit, SimpleChanges, OnChanges } from '@angular/cor
 })
 export class TrashTabComponent implements OnInit {
   @Input('tabName') tabName: any;
-  @Input('trashData') trashData: any;
+  @Input('trashData') trashData: any[]=[];
   trashItemCount: number = 0;
   isAscendingOrder: boolean = true;
   ngOnChanges(changes: SimpleChanges): void {
-    this.toggleSortingOrder();
+    if(this.trashData && this.trashData.length>0){
+      this.toggleSortingOrder();
+    }
+    
 
   }
 

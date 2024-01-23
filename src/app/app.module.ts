@@ -9,11 +9,15 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { FacebookLoginProvider, GoogleLoginProvider, GoogleSigninButtonModule, SocialAuthServiceConfig, SocialLoginModule } from '@abacritt/angularx-social-login';
 import { MaterialModule } from './shared/material/material.module';
 import { HeaderInterceptor } from './core/interceptors/header.interceptor';
+import { SharedModule } from './shared/shared.module';
+import { DataPolicyComponent } from './user-profile/data-policy/data-policy.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-  ],
+    DataPolicyComponent,
+ ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -23,6 +27,7 @@ import { HeaderInterceptor } from './core/interceptors/header.interceptor';
     MaterialModule,
     SocialLoginModule,
     GoogleSigninButtonModule,
+    SharedModule
 
   ],
 
@@ -31,7 +36,7 @@ import { HeaderInterceptor } from './core/interceptors/header.interceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: HeaderInterceptor,
       multi: true
-     },
+    },
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
@@ -53,7 +58,7 @@ import { HeaderInterceptor } from './core/interceptors/header.interceptor';
         },
       } as SocialAuthServiceConfig,
     }
-    
+
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 

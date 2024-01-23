@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { TRASH_CATEGORIES } from 'src/app/core/utilities/constats';
-import { PopupComponent } from '../popup/popup.component';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { TRASH_CATEGORIES } from 'src/app/core/utilities/constants';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { TrashitemPopupComponent } from '../trashitem-popup/trashitem-popup.component';
 
 @Component({
   selector: 'app-trashitem',
@@ -17,13 +17,13 @@ export class TrashitemComponent implements OnInit {
   ngOnInit(): void {
   }
   trashPopup() {
-    let dialogRef = this.dialog.open(PopupComponent, {
+    let dialogRef = this.dialog.open(TrashitemPopupComponent, {
       data: this.trashItem,
       width: '40%',
     });
-    dialogRef.afterClosed().subscribe(result => {
 
-    });
+
+
 
   }
 }

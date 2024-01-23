@@ -1,0 +1,8 @@
+<mat-form-field class="register-custom-styles login-custom-styles">
+    <input type="text" matInput [formControl]="searchControl" [matAutocomplete]="auto" />
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onItemSelected($event.option.value)">
+        <mat-option *ngFor="let result of searchResults" [value]="result">
+            {{ displayFn(result) }}
+        </mat-option>
+    </mat-autocomplete>
+</mat-form-field>

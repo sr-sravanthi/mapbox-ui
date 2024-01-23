@@ -1,0 +1,133 @@
+<div class="login-section full-width full-height register-section">
+    <div class="login-wrper full-width full-height d-flex">
+
+
+        <div class="register-right edit-profile">
+            <div class="m-b-40 m-t-40">
+                <h3 class="m-b-10">Edit Profile</h3>
+                <!-- <p>Don't have and account ? Create your account, it take less the a minute</p> -->
+            </div>
+            <div class="d-flex  m-b-60">
+                <div class="change-img relative">
+                    <i class="add-img custom-sprite"></i>
+
+                </div>
+            </div>
+            <form class="registration-form" [formGroup]="registrationForm" (ngSubmit)="onRegisterClick()">
+                <div class="register-forms">
+
+                    <div class="grid-item">
+                        <mat-form-field class=" register-custom-styles login-custom-styles">
+                            <mat-label class="fs-12">Name</mat-label>
+                            <input matInput formControlName="userName" placeholder="" value="">
+                            <mat-error
+                                *ngIf="registrationForm.get('userName')?.invalid&&(registrationForm.get('userName')?.dirty||registrationForm.get('userName')?.touched)"
+                                class="block p-error"></mat-error>
+                            <mat-error *ngIf="registrationForm.get('userName')?.hasError('required')">Name is
+                                required</mat-error>
+                            <mat-error *ngIf="registrationForm.get('userName')?.hasError('pattern')">Enter a valid
+                                name</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="grid-item">
+
+                        <mat-form-field class="register-custom-styles login-custom-styles">
+                            <mat-label class="fs-12">Organization</mat-label>
+
+                            <mat-select formControlName="companyId">
+                                <mat-option *ngFor="let type of companyDetails"
+                                    [value]="type.name">{{type.name}}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="registrationForm.get('companyId')?.hasError('required')">Organization is
+                                required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="grid-item">
+                        <mat-form-field class=" register-custom-styles login-custom-styles">
+                            <mat-label class="fs-12">User Number</mat-label>
+                            <input matInput formControlName="userNumber" readonly="true" placeholder="" value="">
+                        </mat-form-field>
+                    </div>
+                    <div class="grid-item">
+                        <mat-form-field class=" register-custom-styles login-custom-styles">
+                            <mat-label class="fs-12">MMSI Number</mat-label>
+                            <input matInput formControlName="imoNumber" placeholder="" value="">
+                        </mat-form-field>
+                    </div>
+                    <div class="grid-item">
+
+                        <mat-form-field class="register-custom-styles login-custom-styles">
+                            <mat-label class="fs-12">Ship Name</mat-label>
+
+                            <mat-select formControlName="VesselID">
+                                <mat-option *ngFor="let type of vesselDetails"
+                                    [value]="type.vesselObjectId">{{type.vesselName}}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="registrationForm.get('VesselID')?.hasError('required')">User Type is
+                                required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <!-- <div class="grid-item">
+                        <mat-form-field class="register-custom-styles login-custom-styles">
+                            <mat-label class="fs-12">Email Id</mat-label>
+                            <input matInput formControlName="email" type="email" value="">
+                            <mat-error
+                                *ngIf="registrationForm.get('email')?.invalid && (registrationForm.get('email')?.dirty || registrationForm.get('email')?.touched)"></mat-error>
+                            <mat-error *ngIf="registrationForm.get('email')?.hasError('required')">Email is
+                                required</mat-error>
+                            <mat-error *ngIf="registrationForm.get('email')?.hasError('email')">Invalid email
+                                format</mat-error>
+                        </mat-form-field>
+                    </div> -->
+                    <div class="grid-item">
+                        <mat-form-field class="register-custom-styles login-custom-styles">
+                            <mat-label class="fs-12">Select User Type</mat-label>
+                            <!-- <input matInput formControlName="userTypeId" type="text" value=""> -->
+
+                            <mat-select formControlName="userTypeID">
+                                <mat-option *ngFor="let type of userTypes" [value]="type.id">{{type.name}}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="registrationForm.get('UserTypeID')?.hasError('required')">User Type is
+                                required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <!-- <div class="grid-item">
+                        <mat-form-field class=" register-custom-styles login-custom-styles">
+                            <mat-label class="fs-12">Password</mat-label>
+                            <input matInput formControlName="password" type="password" placeholder="" value="">
+                            <mat-error
+                                *ngIf="registrationForm.get('password')?.invalid && (registrationForm.get('password')?.dirty || registrationForm.get('password')?.touched)"></mat-error>
+                            <mat-error *ngIf="registrationForm.get('password')?.hasError('required')">password is
+                                required</mat-error>
+                            <mat-error *ngIf="registrationForm.get('password')?.hasError('pattern')">Invalid password
+                                format</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="grid-item">
+                        <mat-form-field class=" register-custom-styles login-custom-styles">
+                            <mat-label class="fs-12">Confirm Password</mat-label>
+                            <input matInput formControlName="confirmPassword" type="password" value="">
+
+                            <mat-error
+                                *ngIf="registrationForm.get('confirmPassword')?.hasError('passwordMismatch')">confirm
+                                password is not matched</mat-error>
+                        </mat-form-field>
+                    </div> -->
+                </div>
+
+
+
+                <div class="signup-btn d-flex gap-10 justfy-content-end ">
+
+                    <button mat-button class="pointer btn-white " type="submit">Cancel</button>
+                    <button mat-button class="pointer btn-primary" type="submit">Save</button>
+                </div>
+            </form>
+
+            <!-- <div class="d-flex justify-content-center align-items-center full-height">
+                <label class="pointer">Already have an account? </label>
+                <label class="text-success pointer m-l-3" (click)="clickLogin()">Log In</label>
+            </div> -->
+        </div>
+    </div>
+</div>

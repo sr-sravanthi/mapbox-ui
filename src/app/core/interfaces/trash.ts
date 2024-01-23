@@ -1,17 +1,16 @@
 export interface TrashRequest {
   userid?: string
   timestamp?: Date | null,
-  nELatitude: number,
-  nWLatitude: number,
-  sELatitude: number,
-  sWLatitude: number,
-  nELongitude: number,
-  nWLongitude: number,
-  sELongitude: number,
-  sWLongitude: number,
-  zoom: number
+  nELatitude: Number,
+  nWLatitude: Number,
+  sELatitude: Number,
+  sWLatitude: Number,
+  nELongitude: Number,
+  nWLongitude: Number,
+  sELongitude: Number,
+  sWLongitude: Number,
+  zoom: Number
 }
-
 export interface TrashCommonEntity {
   UserId: string
 }

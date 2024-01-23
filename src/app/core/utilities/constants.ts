@@ -12,5 +12,6 @@ const MAPBOX_STYLE = 'mapbox://styles/msuteu/cllnjn3u5001f01pe07y3e03b';
 const MAPBOX_LAT = -74.5;
 const MAPBOX_LNG = -74.5;
 
+const MAX_FILE_SIZE = 10;
 
-export { TRASH_CATEGORIES, MAPBOX_ZOOM, MAPBOX_STYLE };
+export { TRASH_CATEGORIES, MAPBOX_ZOOM, MAPBOX_STYLE, MAX_FILE_SIZE };

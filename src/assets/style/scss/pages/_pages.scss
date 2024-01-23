@@ -120,7 +120,26 @@ body {
             }
 
             .socialmedia-icons {
-                margin: 60px 0;
+                padding-left: 4px;
+                border-radius: 29px;
+                width: 317px;
+                height: 48px;
+
+                &.fb {
+                    background-color: $primary-bg;
+                }
+
+                &.google {
+                    background-color: $color-white;
+                    border: 1px solid $border-gray-light;
+
+                }
+
+                &.gust {
+                    background-color: $color-dark-blue;
+                }
+
+
             }
         }
     }
@@ -182,6 +201,37 @@ body {
             grid-template-columns: 1fr 1fr;
             column-gap: 20px;
         }
+
+        .tickbox {
+            a {
+                text-decoration: none;
+                color: $label-primary;
+            }
+        }
+
+        .change-img {
+            background: url('../../images/profile-add.png');
+            width: 169px;
+            height: 169px;
+            display: flex;
+            background-repeat: no-repeat;
+
+        }
+
+        &.edit-profile {
+            width: 100% !important;
+
+
+            .register-forms {
+                grid-template-columns: 1fr 1fr 1fr !important;
+                row-gap: 30px;
+            }
+
+            button.btn-primary.mdc-button {
+                width: 106px;
+            }
+        }
+
     }
 }
 
@@ -220,6 +270,59 @@ body {
 
     }
 }
+
+.profile-menu {
+    .menu-profile-img {
+        background: url('../../images/profile-menu.png');
+        width: 104px;
+        height: 104px;
+        display: flex;
+        background-repeat: no-repeat;
+
+        .edit-img-wrpr {
+            background: white;
+            width: 46px;
+            height: 46px;
+            position: absolute;
+            border: 0.5px solid #E8E8E8;
+            border-radius: 23px;
+            box-shadow: 0px 3px 6px #00000014;
+            right: -22px;
+            top: 5px;
+
+
+        }
+
+
+
+
+    }
+
+    .rewards {
+        border: 1px solid #F2F2F2;
+        padding: 20px;
+        border-radius: 9px;
+        gap: 30px;
+
+
+
+        .rank-wrapr {
+            &:after {
+                content: "";
+                background-color: #F2F2F2;
+                width: 1px;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: -15px;
+
+            }
+        }
+    }
+
+}
+
+
 
 //**********Public main page **********************//
 .public-main-page {
@@ -285,6 +388,14 @@ body {
                 }
 
                 .map-btn {
+                    button.btn-primary.mdc-button {
+                        width: auto;
+                        height: auto;
+                        z-index: 99;
+                        padding: 6px;
+                        font-size: 16px;
+                    }
+
                     .search-btn {
                         width: auto;
                         height: auto;
@@ -299,11 +410,11 @@ body {
                         align-items: center;
                         justify-content: center;
                         cursor: pointer;
-            
+
                         &:hover {
                             background-color: $primary-btn-hover;
                         }
-            
+
                         .material-icons {
                             font-size: 20px;
                             color: $color-white;
@@ -586,20 +697,20 @@ body {
     background-repeat: no-repeat;
 
     &.facebook-icon {
-        background-position: -1px -33px;
-        width: 43px;
-        height: 41px;
+        background-position: -237px -74px;
+        width: 44px;
+        height: 38px;
     }
 
     &.google-icon {
-        width: 41px;
+        width: 49px;
         height: 41px;
         background-position: -48px -33px;
 
     }
 
     &.gustuser-icon {
-        width: 41px;
+        width: 49px;
         height: 41px;
         background-position: -94px -33px;
 
@@ -659,4 +770,90 @@ body {
         height: 24px;
     }
 
+    &.add-img {
+        background-position: -90px -103px;
+        width: 46px;
+        height: 46px;
+        position: absolute;
+        bottom: 25px;
+        right: -5px;
+    }
+
+    &.zoom-out-icon {
+        background-position: -216px -2px;
+        width: 18px;
+        height: 18px;
+    }
+
+    &.zoom-in-icon {
+        background-position: -239px -2px;
+        width: 18px;
+        height: 18px;
+    }
+
+    &.edit-icon {
+        background-position: -188px -2px;
+        width: 25px;
+        height: 25px;
+
+    }
+
+    &.website-icon {
+        background-position: -194px -31px;
+        width: 32px;
+        height: 32px;
+    }
+
+    &.policy-icon {
+        background-position: -231px -31px;
+        width: 32px;
+        height: 32px;
+    }
+
+    &.help-icon {
+        background-position: -268px -33px;
+        width: 32px;
+        height: 32px;
+    }
+
+    &.Contact-icon {
+        background-position: -163px -74px;
+        width: 32px;
+        height: 32px;
+    }
+
+    &.settings-icon {
+        background-position: -200px -74px;
+        width: 32px;
+        height: 32px;
+    }
+
+    &.rank-icon {
+        background-position: -2px -105px;
+        width: 37px;
+        height: 35px;
+    }
+
+    &.point-icon {
+        background-position: -46px -105px;
+        width: 42px;
+        height: 33px;
+    }
+
+    &.arrow {
+        background-position: -262px -2px;
+        width: 14px;
+        height: 8px;
+    }
+}
+
+.list-none {
+    list-style: none;
+}
+
+.data-policy,
+.upload-popup {
+    button {
+        width: auto !important;
+    }
 }

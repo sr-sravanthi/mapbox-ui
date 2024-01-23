@@ -12,7 +12,20 @@ export class AppComponent implements OnInit {
 
   constructor(private authService: AuthService) { }
   ngOnInit(): void {
-    this.authService.getIsLoggedIn().subscribe(value => this.isLoggedIn = value);
+
+    let userDetails!: UserDetails;
+    if (sessionStorage.getItem("userDetails")) {
+      userDetails = JSON.parse(sessionStorage.getItem("userDetails") || "");
+
+      if (userDetails) {
+        this.authService.setIsLoggedIn(true);
+      }
+    }
+    this.authService.getIsLoggedIn().subscribe(value => {
+      console.log(value);
+      this.isLoggedIn = value
+    }
+    );
 
   }
 }

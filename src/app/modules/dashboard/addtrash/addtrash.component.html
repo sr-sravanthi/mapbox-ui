@@ -3,7 +3,7 @@
         <div class="left-map">
             <app-mapbox [container]="'addtrash'" [locateUser]="true" [flyToCords]="searchCoOrds">
             </app-mapbox>
-            <!-- <div #mapContainer class="map-container" id="addtrash"></div> -->
+
         </div>
         <div class="right-content flex-1 p-10">
             <div class="d-flex justfy-content-spacebetween ">
@@ -18,10 +18,10 @@
                         <span class="text-color fs-18">Drop your files here or </span><span
                             class="text-primary fs-18">browse</span>
                     </div>
-                    <label class="fs-12 text-gray">Maximum upload file size: 50 MB</label>
+                    <label class="fs-12 text-gray">Maximum upload file size: 10 MB</label>
                 </div>
             </div>
-            <div class="file-preview-wrapper" *ngIf="isFileUploaded">
+            <div class="file-preview-wrapper">
                 <div class="d-flex justfy-content-spacebetween preview-item align-items-center">
                     <div class="d-flex gap-10 ">
                         <div class="file-preview-icon custom-sprite"></div>
@@ -37,7 +37,7 @@
 
             </div>
             <div class="trash-details m-t-20">
-                <form [formGroup]="addTrashForm" (ngSubmit)="onSave()">
+                <form [formGroup]="addTrashForm">
                     <div>
                         <mat-form-field>
                             <mat-label>Trash Name</mat-label>
@@ -101,7 +101,7 @@
                 </form>
             </div>
             <div mat-dialog-actions class="d-flex justfy-content-end">
-                <button mat-stroked-button class="pointer btn-primary btn-submit" (click)="saveTrash()">save</button>
+                <button mat-stroked-button class="pointer btn-primary btn-submit" (click)="saveTrash()">Save</button>
             </div>
         </div>
     </div>

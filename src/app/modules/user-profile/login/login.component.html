@@ -7,14 +7,10 @@
                 <div class="left-content  full-width">
                     <h5 class="m-b-0">Welcome to</h5>
                     <h3 class="m-t-0 ">Eyesea</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eam si varietatem diceres, intellegerem,
-                    </p>
+                    <p>Real-time Maritime Pollution Reporting and Mapping </p>
                 </div>
                 <div>
-
                 </div>
-
-
             </div>
         </div>
 
@@ -27,70 +23,37 @@
                 </div>
                 <!--================== login-content=========== -->
                 <div class="login-content">
-                    <h3>Log in to your Account</h3>
-                    <p>Welcome back ! Please log in to continue !</p>
+                    <p class="text-center m-b-10">Welcome back ! </p>
+                    <p class="text-center m-t-0">Please log in to continue !</p>
                 </div>
                 <!--================== Login forms=========== -->
+
                 <div class="eyesea-login">
-                    <form class="login-form" [formGroup]="loginForm">
-                        <mat-form-field class="full-width login-custom-styles d-flex email-icon">
-                            <mat-icon>email</mat-icon>
-                            <input matInput formControlName="email" placeholder="Email" value="Email">
-                            <mat-error
-                                *ngIf="loginForm.get('email')?.invalid&&(loginForm.get('email')?.dirty||loginForm.get('email')?.touched)"></mat-error>
-                            <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Email is
-                                required</mat-error>
-                            <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Invalid email
-                                format</mat-error>
-                        </mat-form-field>
-                        <!-- <mat-form-field class="full-width login-custom-styles d-flex lock-icon">
-                            <mat-icon>lock</mat-icon>
-                            <input matInput formControlName="password" placeholder="Password" value="Password">
-                            <mat-error
-                                *ngIf="loginForm.get('password')?.invalid&&(loginForm.get('password')?.dirty||loginForm.get('password')?.touched)"></mat-error>
-                            <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is
-                                required</mat-error>
-                            <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">Password must be at
-                                least
-                                6 characters</mat-error>
-                        </mat-form-field> -->
-                        <!--================== Password Details=========== -->
-                        <!-- <div class="d-flex align-items-center justfy-content-spacebetween password-details">
-                            <div class="remember-me-section">
-                                <section class="">
-                                    <mat-checkbox class="remember-me" formControlName="rememberMe" type="mat-checkbox">Remember me</mat-checkbox>
-
-                                </section>
+                    <div class=" m-t-60">
+                        <div class="d-flex  align-items-center socialmedia-icons fb">
+                            <i class="facebook-icon pointer custom-sprite"></i>
+                            <div class="d-flex justify-content-center align-items-center full-width">
+                                <h4 class="text-white" (click)="facebookLogin()">Facebook</h4>
                             </div>
-                            <div class="forgot-password-section pointer"><label class="pointer">Forgot Password?</label>
-                            </div>
-                        </div> -->
-                        <!--================== Login Button=========== -->
-                        <div class="login-btn m-t-30">
-                            <section class="">
-                                <button mat-button class="pointer btn-primary" type="submit">Login</button>
-
-                            </section>
-
                         </div>
-                    </form>
-                    <span class="divider">or</span>
-                    <!--================== Social Media Icons=========== -->
-                    <div class="socialmedia-icons d-flex justify-content-center gap-10">
-                        <div class="facebook-icon pointer custom-sprite" (click)="facebookLogin()"></div>
-                        <div class="google-icon pointer custom-sprite" (click)="googleLogin()"></div>
-                        <div class="gustuser-icon pointer custom-sprite" (click)="guestUserLogin()"></div>
+
+                        <div class="d-flex  align-items-center socialmedia-icons google" (click)="googleLogin()">
+                            <i class="google-icon pointer custom-sprite"></i>
+                            <div class="d-flex justify-content-center align-items-center full-width">
+                                <h4 class="text-color">Google</h4>
+                            </div>
+                        </div>
+
+                        <div class="d-flex  align-items-center socialmedia-icons gust">
+                            <i class="gustuser-icon pointer custom-sprite"></i>
+                            <div class="d-flex justify-content-center align-items-center full-width">
+                                <h4 class="text-white" (click)="guestUserLogin()">Guest User</h4>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
-                <!--================== Login footer=========== -->
-                <div>
-                    <label class="pointer">Don't 'have an account? </label>
-                    <label class="text-success pointer" (click)="createAccount()">Create an account</label>
-                </div>
-
-
-
-
             </div>
         </div>
 
@@ -98,4 +61,3 @@
 
 
     <!-- login.component.html -->
-    
