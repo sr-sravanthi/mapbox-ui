@@ -1,7 +1,8 @@
 <div class="add-trash">
     <div mat-dialog-content class="trash-content d-flex p-0">
         <div class="left-map">
-            <app-mapbox [container]="'addtrash'" [locateUser]="true" [flyToCords]="searchCoOrds">
+            <app-mapbox [container]="'addtrash'" [locateUser]="true" [flyToCords]="geoCoderCords"
+                (geoCoderDraggedCords)="getGeoCoderDraggedCords($event)">
             </app-mapbox>
 
         </div>
@@ -42,33 +43,28 @@
                         <mat-form-field>
                             <mat-label>Trash Name</mat-label>
                             <input matInput placeholder="Trash Name" formControlName="Title">
-
-                            <mat-error *ngIf="addTrashForm.get('Title')?.hasError('required')">Please select
-                                Please enter title.</mat-error>
+                            <mat-error *ngIf="addTrashForm.get('Title')?.hasError('required')">
+                                Please enter a title.</mat-error>
                         </mat-form-field>
-
                     </div>
 
                     <div>
                         <mat-form-field>
-
                             <mat-label>Date</mat-label>
                             <input matInput [matDatepicker]="picker" placeholder="Select Date"
                                 formControlName="ReportedDate">
-
-
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                             <mat-error *ngIf="addTrashForm.get('ReportedDate')?.hasError('required')">Please select
                                 reported date.</mat-error>
                         </mat-form-field>
                     </div>
+
                     <div class="location-form">
                         <mat-form-field>
                             <div class="location-icon">
                                 <mat-icon class="$text-gray"> location_on</mat-icon>
                             </div>
-
                             <mat-label>Location</mat-label>
                             <input matInput placeholder="Enter Location" [formControl]="searchControl"
                                 [matAutocomplete]="auto">
@@ -89,7 +85,6 @@
                                 <mat-option value="2">Plastic</mat-option>
                                 <mat-option value="1">Net</mat-option>
                                 <mat-option value="4">Others</mat-option>
-
                             </mat-select>
                             <mat-error *ngIf="addTrashForm.get('CategoryId')?.hasError('required')">Please
                                 select

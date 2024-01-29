@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
 import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import * as mapboxgl from 'mapbox-gl';
 import { environment } from 'src/environments/environment.development';
@@ -13,6 +13,7 @@ import { MAP_STYLE, MAP_ZOOM } from 'src/app/core/utilities/constants';
 })
 export class MapboxComponent {
   map!: mapboxgl.Map;
+  geoCodermarker!: mapboxgl.Marker;
   locateUser!: mapboxgl.GeolocateControl;
   @Input() trashFiltersTemplate!: TemplateRef<any>
   @Input("locateUser") locateUserInput: boolean = false;
@@ -20,6 +21,8 @@ export class MapboxComponent {
   @Input("geoCoder") geoCoderInput: boolean = false;
   @Input("mapData") trashData!: any[];
   @Input("flyToCords") flyToCords!: any
+  @Output("geoCoderDraggedCords") geoCoderDraggedCords = new EventEmitter<any>();
+
   constructor(private mapboxService: MapboxService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -60,10 +63,11 @@ export class MapboxComponent {
     const geoCoder = new MapboxGeocoder({
       accessToken: environment.MAPBOX_APIKEY,
       mapboxgl: mapboxgl,
-      marker: false,
+      marker: true,
       reverseGeocode: true,
     });
     this.map.addControl(geoCoder, 'top-left');
+
   }
 
   initMap() {
@@ -79,18 +83,31 @@ export class MapboxComponent {
       this.addLocateUser();
     }
     if (this.geoCoderInput) {
-      this.addGeoCoder()
+      this.addGeoCoder();
+
     }
     this.map.on('load', () => {
       if (this.locateUserInput) {
         this.locateUser.trigger();
         this.loadImagesForMap();
-        this.mapboxService.setMapbounds(this.map.getBounds());
         if (this.container === "dashboard") {
+          this.mapboxService.setMapbounds(this.map.getBounds());
           this.initGeoJsonSource();
         }
       }
 
+      if (this.container === "addtrash") {
+        this.geoCodermarker = new mapboxgl.Marker({
+          color: '#F84C4C',
+          draggable: true
+        });
+
+        this.geoCodermarker.on('dragend', () => {
+          console.log('draggable');
+          console.log(this.geoCodermarker.getLngLat());
+          this.geoCoderDraggedCords.emit(this.geoCodermarker.getLngLat());
+        });
+      }
     })
   }
 
@@ -161,6 +178,9 @@ export class MapboxComponent {
   }
   flyToCoOrdsOnMap(center: any) {
     this.map.flyTo({ center: center, zoom: MAP_ZOOM });
+    // this.geoCoderDraggedCords.emit(center);
+    this.geoCodermarker.setLngLat(center).addTo(this.map);
+
   }
 
   searchTrashOnMap() {

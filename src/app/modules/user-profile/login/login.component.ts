@@ -102,6 +102,7 @@ export class LoginComponent implements OnInit {
     });
   }
   guestUserLogin() {
+   
     this.router.navigateByUrl('/profile/register');
   }
 

@@ -15,6 +15,7 @@ import { environment } from 'src/environments/environment';
 })
 export class HeaderComponent implements OnInit {
   authUserDetails: any;
+  userDetails: any;
   imageUrl: string = '';
   constructor(public dialog: MatDialog, private authService: AuthService, private router: Router) { }
   ngOnInit(): void {
@@ -28,6 +29,10 @@ export class HeaderComponent implements OnInit {
     console.log(this.authUserDetails);
     if (this.authUserDetails) {
       this.imageUrl = this.authUserDetails.photoURL;
+    }
+
+    if (sessionStorage.getItem("userDetails") !== null) {
+      this.userDetails = JSON.parse(sessionStorage.getItem("userDetails") || "");
     }
 
   }
@@ -44,5 +49,7 @@ export class HeaderComponent implements OnInit {
 
 
   }
-
+  editProfile() {
+    this.router.navigateByUrl("profile/editprofile")
+  }
 }

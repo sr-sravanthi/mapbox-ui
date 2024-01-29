@@ -25,7 +25,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
     ReactiveFormsModule,
     SharedModule
   ],
-
+exports:[
+  EditProfileComponent
+],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

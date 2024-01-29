@@ -15,7 +15,7 @@
             <div class="d-flex align-items-center gap-20">
                 <div class="divider"><i></i></div>
 
-                <span>{{authUserDetails.displayName}}</span>
+                <span>{{userDetails?.name}}</span>
 
                 <!-- <div class="user-profile"  (click)="clickOnProfilePhoto()">
                 
@@ -34,7 +34,7 @@
                             </div>
                         </div> -->
                         <div class="d-flex  flex-column">
-                            <h4 class="m-b-0 fs-22">{{authUserDetails.displayName}}</h4>
+                            <h4 class="m-b-0 fs-22">{{userDetails?.name}}</h4>
                             <!-- <label class="text-gray">BSM Company</label> -->
                         </div>
                         <div class="d-flex rewards m-t-30 m-b-30">
@@ -42,7 +42,7 @@
                                 <i class="custom-sprite rank-icon"></i>
                                 <div class="d-flex flex-column">
                                     <label class="text-gray fs-12">Your rank</label>
-                                    <label class="bold">1265</label>
+                                    <label class="bold">{{userDetails.rank}}</label>
                                 </div>
                             </div>
 
@@ -52,7 +52,7 @@
                                     <label class="text-gray fs-12">Your points</label>
                                     <div class="d-flex gap-10 align-items-center">
                                         <i class="custom-sprite arrow"></i>
-                                        <label class="bold">12</label>
+                                        <label class="bold">{{userDetails.points}}</label>
                                     </div>
 
                                 </div>
@@ -77,6 +77,10 @@
                         <div class="d-flex align-items-center gap-20">
                             <i class="custom-sprite settings-icon"></i>
                             <h4>Settings</h4>
+                        </div>
+                        <div class="d-flex align-items-center gap-20" (click)="editProfile()">
+                            <i class="custom-sprite settings-icon"></i>
+                            <h4>Edit Profile</h4>
                         </div>
                         <div class="d-flex align-items-center gap-20" (click)="signout()">
                             <i class="custom-sprite settings-icon"></i>

@@ -36,16 +36,13 @@ export class TrashService {
 
   }
 
-  saveAttachment(file: any) {
+  saveAttachment(formdata: any) {
     let options = {
       headers: new HttpHeaders({
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
         reportProgress: "true",
-        responseType: "json",
-        observe: 'events'
-
       }),
     };
-    return this.http.post(`${this.apiUrl}${httpUrls.POSTIMAGE}`, file, options)
+    return this.http.post(`${this.apiUrl}${httpUrls.POSTIMAGE}`, formdata, options)
   }
 }

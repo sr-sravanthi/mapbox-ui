@@ -11,10 +11,13 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
   styleUrls: ['./edit-profile.component.scss']
 })
 export class EditProfileComponent {
- registrationForm!: FormGroup;
+  registrationForm!: FormGroup;
   userTypes!: UserType[];
   companyDetails: any;
   vesselDetails: any;
+  imageUrl: any;
+  authUserDetails: any;
+  userDetails: any;
   constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) { }
   ngOnInit(): void {
     this.getInitialData()
@@ -25,31 +28,30 @@ export class EditProfileComponent {
       userId: [""],
       imoNumber: [""],
       VesselID: [""],
-      // email: ['', [Validators.required, Validators.email]],
       userTypeID: ["", [Validators.required]],
       profileURL: [""],
-      // password: ['', [Validators.required, Validators.pattern(/^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/)]],
-      agreeChkbox: [false, [Validators.requiredTrue]],
-      // confirmPassword: [''],
 
-    }, {
-      // validators: [this.passwordMatchValidator]
+
+    });
+
+    if (sessionStorage.getItem("authProviderUserData") !== null) {
+      this.authUserDetails = JSON.parse(sessionStorage.getItem("authProviderUserData") || "");
+      this.imageUrl = this.authUserDetails?.photoURL + "?nocache=" + new Date().getTime();
+      this.registrationForm.patchValue({ profileURL: this.authUserDetails?.photoUR });
+
     }
 
-    );
+    if (sessionStorage.getItem("userDetails") !== null) {
+      this.userDetails = JSON.parse(sessionStorage.getItem("userDetails") || "");
 
-    let userDetails: UserDetails = JSON.parse(sessionStorage.getItem("userDetails") || "");
-    let authUserDetails = JSON.parse(sessionStorage.getItem("authProviderUserData") || "");
-
-    console.log(authUserDetails);
-    if (authUserDetails) {
-      this.registrationForm.patchValue({ userId: authUserDetails.uid, profileURL: authUserDetails.photoURL, userName: authUserDetails.displayName });
-      console.log(this.registrationForm.value)
+      this.registrationForm.patchValue({
+        userId: this.userDetails.userID, userNumber: this.userDetails.userNumber, userName: this.userDetails.name, companyId: this.userDetails.companyId,
+        VesselID: this.userDetails.vesselId, imoNumber: this.userDetails.imoNumber, userTypeID: Number(this.userDetails.userTypeId)
+      });
     }
-    if (userDetails) {
-      this.registrationForm.patchValue({ userNumber: userDetails.userNumber });
-    }
+    console.log(this.registrationForm.value)
   }
+
 
   getInitialData() {
 
@@ -88,7 +90,7 @@ export class EditProfileComponent {
 
   }
 
-  onRegisterClick() {
+  oneditRegisterClick() {
     console.log(this.registrationForm.value);
     if (this.registrationForm.valid) {
       delete this.registrationForm.value.agreeChkbox;
@@ -114,7 +116,7 @@ export class EditProfileComponent {
     this.authService.getUserDetails(user).subscribe({
       next: (response: any) => {
         console.log(response);
-        if (response.commonEntity?.transactionStatus === "Y" && response.commonEntity?.message === "Success") {
+        if (response.commonEntity?.transactionStatus === "Y") {
           console.log(response.userDetailEntity);
           sessionStorage.setItem('userDetails', JSON.stringify(response.userDetailEntity[0]));
           if (response.userDetailEntity[0]?.isRegistered) {
@@ -130,9 +132,6 @@ export class EditProfileComponent {
       },
     });
 
-  }
-  clickLogin() {
-    this.router.navigateByUrl('/profile/login');
   }
 
 }

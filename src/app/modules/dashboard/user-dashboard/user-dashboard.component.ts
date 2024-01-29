@@ -9,7 +9,7 @@ import { TrashService } from 'src/app/core/services/trash/trash.service';
 import { MapboxService } from 'src/app/core/services/mapbox/mapbox.service';
 import { MAP_ZOOM } from 'src/app/core/utilities/constants';
 import { UserDetails } from 'src/app/core/interfaces/user';
-import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-user-dashboard',
@@ -95,6 +95,11 @@ export class UserDashboardComponent implements OnInit {
     if (this.selectedTab === "My Trash") {
       this.selectedTabTrashData = this.myTrash;
       this.trashDataForMap = this.myTrash;
+      if (this.mapboxService.searchTimestamp != null) {
+        this.mapboxService.searchTimestamp = null;
+        this.trashService.refreshTrashData();
+
+      }
     }
     else if (this.selectedTab === "All Trash") {
       this.selectedTabTrashData = this.trashDataForMap = this.allTrash;
@@ -108,6 +113,7 @@ export class UserDashboardComponent implements OnInit {
     if (!this.isFilterAppllied) {
       this.isFilterAppllied = true;
       this.filterSelectedTrash(categoryId);
+
     }
     else if (this.selectedCategoryFilter !== categoryId) {
       this.isFilterAppllied = true;

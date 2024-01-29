@@ -35,20 +35,10 @@ export class SignUpComponent implements OnInit {
       userId: [""],
       imoNumber: [""],
       VesselID: [""],
-      //email: ['', [Validators.required, Validators.email]],
       userTypeID: ["", [Validators.required]],
-      profileURL: [""],
-      // password: ['', [Validators.required, Validators.pattern(/^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/)]],
-      agreeChkbox: [false, [Validators.requiredTrue]],
-      // confirmPassword: [''],
-
-    }, {
-      // validators: [this.passwordMatchValidator]
-    }
-
-    );
-
-
+      //profileURL: [""],
+      agreeChkbox: [false, [Validators.requiredTrue]]
+    });
 
 
     let userDetails: UserDetails = JSON.parse(sessionStorage.getItem("userDetails") || "");
@@ -117,12 +107,14 @@ export class SignUpComponent implements OnInit {
   //   //this.myForm.get('autocompleteControl').setValue(item);
   // }
   getprofilephoto() {
-    this.authUserDetails = JSON.parse(sessionStorage.getItem("authProviderUserData") || "");
-    console.log(this.authUserDetails);
-    if (this.authUserDetails) {
-      this.imageUrl = this.authUserDetails.photoURL;
-    }
 
+    if (sessionStorage.getItem("authProviderUserData") !== null) {
+      this.authUserDetails = JSON.parse(sessionStorage.getItem("authProviderUserData") || "");
+      console.log(this.authUserDetails);
+      if (this.authUserDetails) {
+        this.imageUrl = this.authUserDetails.photoURL;
+      }
+    }
   }
   getInitialData() {
 
@@ -209,7 +201,7 @@ export class SignUpComponent implements OnInit {
     let dialogRef = this.dialog.open(DataPolicyComponent, {
       width: '40%',
     });
-   
+
   }
 
 }

@@ -23,28 +23,23 @@ import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/shared/dateFormat';
 
 export class AddtrashComponent implements OnInit {
 
-  map!: mapboxgl.Map;
   allTrash!: any;
-  popup!: mapboxgl.Popup;
-  marker!: mapboxgl.Marker;
-
   addTrashForm!: FormGroup;
   selectedCategory!: string;
   selectedDate!: Date;
-
-  geoCoder!: MapboxGeocoder;
-
   searchControl = new FormControl();
   geoCoderSuggestions: any[] = [];
   searchCoOrds: any;
+  geoCoderCords: any;
+
   @ViewChild('fileUploader') fileUploader!: ElementRef;
 
   uploadedFiles!: File[];
 
   validFileExt: Array<string> = [
-    ".jpg",
-    ".jpeg",
-    ".png"
+    "jpg",
+    "jpeg",
+    "png"
   ];
   filename: string = ""
   filesize: number = 0;
@@ -71,9 +66,21 @@ export class AddtrashComponent implements OnInit {
   }
 
   onGeoCoderSelection(event: any) {
-    console.log(event.option.value);
+
     const data = event.option.value;
-    this.searchCoOrds = data?.center as mapboxgl.LngLat;
+    this.geoCoderCords = data?.center as mapboxgl.LngLat;
+    console.log(typeof (this.geoCoderCords));
+    console.log(this.geoCoderCords);
+
+    this.searchCoOrds = this.geoCoderCords;
+
+  }
+
+  getGeoCoderDraggedCords(draggedCords: any) {
+    console.log(draggedCords);
+    console.log(typeof (draggedCords));
+
+    this.searchCoOrds = [draggedCords.lng, draggedCords.lat];
     console.log(this.searchCoOrds);
 
   }
@@ -111,7 +118,7 @@ export class AddtrashComponent implements OnInit {
       this.filesize = Number((this.uploadedFiles[0].size / (1024 * 1024)).toFixed(2));
       if (this.filename.indexOf(".") != -1) {
         this.fileExt = this.filename.substring(
-          this.filename.lastIndexOf("."),
+          this.filename.lastIndexOf(".") + 1,
           this.filename.length
         );
 
@@ -128,6 +135,13 @@ export class AddtrashComponent implements OnInit {
             AttachmentName: this.filename,
             FileType: this.fileExt
           };
+
+          // const formData: FormData = new FormData();
+          // formData.append('FileName', "00d18b2d-040e-48f1-b3cb-849753b76f6a.png");
+          // formData.append('File', this.uploadedFiles[0]);
+          // this.trashService.saveAttachment(formData).subscribe((res) => {
+          //   console.log(res);
+          // })
 
 
         }
@@ -175,12 +189,15 @@ export class AddtrashComponent implements OnInit {
           next: (response: any) => {
             console.log(response);
             if (response.commonEntity.transactionStatus === "Y" && response.trashDetailsEntity.length > 0) {
-             
-              // if (this.isFileUploaded) {
-              //   this.trashService.saveAttachment(this.uploadedFiles[0]).subscribe((res) => {
-              //     console.log(res);
-              //   })
-              // }
+
+              if (this.isFileUploaded && response.attachmentEntity.length > 0) {
+                const formData: FormData = new FormData();
+                formData.append('FileName', response.attachmentEntity[0]?.fileName);
+                formData.append('File', this.uploadedFiles[0]);
+                this.trashService.saveAttachment(formData).subscribe((res) => {
+                  console.log(res);
+                })
+              }
 
               this.dialogRef.close(true);
             }

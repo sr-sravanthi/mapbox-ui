@@ -16,7 +16,7 @@
 
             </div>
             <div class="d-flex justify-content-center m-b-20">
-                <div class=" relative">
+                <div class="relative">
                     <img class="change-img" [src]="imageUrl">
                     <!-- <i class="add-img custom-sprite"></i> -->
 
@@ -123,9 +123,12 @@
                 </div>
                 <div class="tickbox m-t-20 m-b-20">
                     <section class="">
-                        <mat-checkbox formControlName="agreeChkbox">I agree with Eyesea user agreement and <a
+                        <!-- <mat-checkbox formControlName="agreeChkbox">I agree with Eyesea user agreement and <a
                                 (click)="dataPolocyPopup()">Privacy Policy..</a>
-                        </mat-checkbox>
+                        </mat-checkbox> -->
+                        <mat-checkbox formControlName="agreeChkbox">I agree with Eyesea user agreement and <a
+                            href="https://eyesea.org/privacy-policy/">Privacy Policy..</a>
+                    </mat-checkbox>
                         <!-- <mat-error *ngIf="registrationForm.get('agreeChkbox')?.hasError('requiredTrue')"
                             class="m-l-20">Please agree
                             Privacy Policy </mat-error> -->
