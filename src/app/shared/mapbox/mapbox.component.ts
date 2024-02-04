@@ -54,6 +54,9 @@ export class MapboxComponent {
       positionOptions: {
         enableHighAccuracy: true,
       },
+      fitBoundsOptions: {
+        zoom: 13
+      }
 
     });
     this.map.addControl(this.locateUser, 'bottom-right')
@@ -186,6 +189,7 @@ export class MapboxComponent {
   searchTrashOnMap() {
     this.mapboxService.searchTimestamp = new Date();
     this.mapboxService.setMapbounds(this.map.getBounds());
+    console.log(this.map.getZoom());
   }
 
 }

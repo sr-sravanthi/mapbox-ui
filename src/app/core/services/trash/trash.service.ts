@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AddTrashRequest, TrashRequest } from '../../interfaces/trash';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { httpUrls } from '../auth/httpUrl';
+import { httpUrls } from '../httpUrl';
 
 @Injectable({
   providedIn: 'root'
