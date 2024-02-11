@@ -32,9 +32,3 @@ export interface UserDetails {
     isGuestUser?: string
 
 }
-
-export interface UserType {
-    id: number,
-    code: string,
-    name: string
-}

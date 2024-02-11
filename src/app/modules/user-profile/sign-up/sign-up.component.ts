@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { debounceTime, delay, forkJoin, map, of, startWith } from 'rxjs';
-import { UserDetails, UserRequest, UserType } from 'src/app/core/interfaces/user';
+import { UserDetails, UserRequest } from 'src/app/core/interfaces/user';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { DataPolicyComponent } from '../data-policy/data-policy.component';
 import { MatDialog } from '@angular/material/dialog';
+import { UserType } from 'src/app/core/interfaces/common';
 
 @Component({
   selector: 'app-sign-up',

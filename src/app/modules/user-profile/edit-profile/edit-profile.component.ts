@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { UserDetails, UserRequest, UserType } from 'src/app/core/interfaces/user';
+import { UserType } from 'src/app/core/interfaces/common';
+import { UserDetails, UserRequest } from 'src/app/core/interfaces/user';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 
 @Component({
@@ -21,7 +22,9 @@ export class EditProfileComponent {
   initAutoComplete: boolean = false;
   constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) { }
   ngOnInit(): void {
-    this.getInitialData()
+
+    console.log(this.authService.masterData)
+
     this.registrationForm = this.fb.group({
       userName: ["", [Validators.required, Validators.pattern(/^[a-zA-Z]+(?: [a-zA-Z]+)*$/)]],
       companyId: ["", [Validators.required]],
