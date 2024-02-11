@@ -31,9 +31,18 @@
                         </mat-form-field>
                     </div>
                     <div class="grid-item">
+                        <app-mat-auto-complete [optionData]="companyDetails"
+                            [label]="'Organization'" [optionKey]="'name'" [optionValue]="'id'"
+                            [customClass]="'register-custom-styles login-custom-styles'"
+                            (optionSelectedValue)="onCompanySelected($event)"></app-mat-auto-complete>
+                        <mat-error *ngIf="registrationForm.get('companyId')?.hasError('required')">Organization is
+                            required</mat-error>
+                    </div>
+                    <!-- <div class="grid-item">
 
                         <mat-form-field class="register-custom-styles login-custom-styles">
                             <mat-label class="fs-12">Organization</mat-label>
+                            <app-material-autocomplete></app-material-autocomplete>
 
                             <mat-select formControlName="companyId">
                                 <mat-option *ngFor="let type of companyDetails"
@@ -42,7 +51,7 @@
                             <mat-error *ngIf="registrationForm.get('companyId')?.hasError('required')">Organization is
                                 required</mat-error>
                         </mat-form-field>
-                    </div>
+                    </div> -->
                     <div class="grid-item">
                         <mat-form-field class=" register-custom-styles login-custom-styles">
                             <mat-label class="fs-12">User Number</mat-label>
@@ -57,7 +66,7 @@
                     </div>
                     <div class="grid-item">
 
-                        <mat-form-field class="register-custom-styles login-custom-styles">
+                        <!-- <mat-form-field class="register-custom-styles login-custom-styles">
                             <mat-label class="fs-12">Ship Name</mat-label>
 
                             <mat-select formControlName="VesselID">
@@ -66,7 +75,14 @@
                             </mat-select>
                             <mat-error *ngIf="registrationForm.get('VesselID')?.hasError('required')">User Type is
                                 required</mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
+
+                        <app-mat-auto-complete [optionData]="vesselDetails"
+                            [label]="'Ship Name'" [optionKey]="'vesselName'" [optionValue]="'id'"
+                            [customClass]="'register-custom-styles login-custom-styles'"
+                            (optionSelectedValue)="onVesselSelected($event)"></app-mat-auto-complete>
+                        <mat-error *ngIf="registrationForm.get('VesselID')?.hasError('required')">User Type is
+                            required</mat-error>
                     </div>
 
                     <div class="grid-item">

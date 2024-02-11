@@ -7,11 +7,10 @@ import { MatAutoCompleteComponent } from './mat-auto-complete/mat-auto-complete.
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
-
 @NgModule({
   declarations: [
     MapboxComponent,
-    MatAutoCompleteComponent
+    MatAutoCompleteComponent,
   ],
   imports: [
     CommonModule,
@@ -21,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   exports: [
     MapboxComponent,
+    MatAutoCompleteComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

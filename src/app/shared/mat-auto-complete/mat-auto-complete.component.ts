@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { Observable, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-mat-auto-complete',
@@ -9,28 +9,52 @@ import { Observable, debounceTime, distinctUntilChanged, switchMap } from 'rxjs'
 })
 export class MatAutoCompleteComponent {
 
-  @Input() searchFn!: (term: string) => Observable<any[]>; // Function to fetch data asynchronously
-  @Input() displayFn!: (item: any) => string; // Function to display the selected item in the input
-  @Output() selected = new EventEmitter<any>(); // Event emitted when an item is selected
+  @Input() optionData: any[] = [];
+  @Input() optionKey: string = "";
+  @Input() optionValue: string = "";
+
+
+  @Input() customClass: string = "";
+  @Input() label: string = "";
+
+  @Output() optionSelectedValue = new EventEmitter();
+
+
 
   searchControl = new FormControl();
-  searchResults: any[] = [];
+  filteredData: any[] = []
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.filteredData = this.optionData;
+    console.log(this.optionKey);
+    console.log(this.optionValue);
+
+  }
   ngOnInit(): void {
-    this.setupSearch();
-  }
-
-  private setupSearch(): void {
     this.searchControl.valueChanges.pipe(
-      debounceTime(300), // Debounce for 300ms
-      distinctUntilChanged(), // Only emit when the current value is different from the previous value
-      switchMap(term => this.searchFn(term))
-    ).subscribe(results => {
-      this.searchResults = results;
-    });
+      startWith(''),
+      map(value => { return this._filter(value || '') })
+    ).subscribe();
+
   }
 
-  onItemSelected(item: any): void {
-    this.selected.emit(item);
+
+  private _filter(value: string) {
+    console.log(value);
+
+    if (this.optionData.length > 0 && value != "" && typeof (value) == "string") {
+      const filterValue = value.toLowerCase();
+      this.filteredData = this.optionData.filter((option: any) => option[this.optionKey].toLowerCase().includes(filterValue));
+    }
+    else {
+      this.filteredData = this.optionData;
+    }
+    return this.filteredData;
+  }
+
+  onOptionSelected(event: any) {
+    this.searchControl.setValue(event.option.value[this.optionKey]);
+    this.optionSelectedValue.emit(event.option.value);
+
   }
 }

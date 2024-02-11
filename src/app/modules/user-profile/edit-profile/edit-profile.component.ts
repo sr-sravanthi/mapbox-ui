@@ -13,21 +13,22 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
 export class EditProfileComponent {
   registrationForm!: FormGroup;
   userTypes!: UserType[];
-  companyDetails: any;
-  vesselDetails: any;
+  companyDetails: any[] = [];
+  vesselDetails: any[] = [];
   imageUrl: any;
   authUserDetails: any;
   userDetails: any;
+  initAutoComplete: boolean = false;
   constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) { }
   ngOnInit(): void {
     this.getInitialData()
     this.registrationForm = this.fb.group({
       userName: ["", [Validators.required, Validators.pattern(/^[a-zA-Z]+(?: [a-zA-Z]+)*$/)]],
-      companyId: [""],
+      companyId: ["", [Validators.required]],
       userNumber: [""],
       userId: [""],
       imoNumber: [""],
-      VesselID: [""],
+      VesselID: ["", [Validators.required]],
       userTypeID: ["", [Validators.required]],
       profileURL: [""],
 
@@ -73,12 +74,14 @@ export class EditProfileComponent {
             console.log(this.userTypes)
           }
           if (companyNamesResponse && companyNamesResponse?.commonEntity.transactionStatus === "Y") {
-            this.companyDetails = companyNamesResponse?.companyDetails.filter((company: any) => company.name !== "");
-            console.log(this.companyDetails)
+            let companyData = companyNamesResponse?.companyDetails.filter((company: any) => company.name !== "");
+
+            this.companyDetails = [...companyData];
+            console.log(this.companyDetails);
           }
           if (vesselNamesResponse && vesselNamesResponse?.commonEntity.transactionStatus === "Y") {
-            this.vesselDetails = vesselNamesResponse?.vesselEntity;
-            console.log(this.vesselDetails)
+            let vesselData = vesselNamesResponse?.vesselEntity;
+            this.vesselDetails = [...vesselData];
           }
         },
         error: () => {
@@ -108,6 +111,14 @@ export class EditProfileComponent {
 
   }
 
+  onCompanySelected(event: any) {
+    console.log(event);
+    this.registrationForm.get("companyId")?.setValue(event["id"]);
+  }
+  onVesselSelected(event: any) {
+    console.log(event);
+    this.registrationForm.get("VesselID")?.setValue(event["id"]);
+  }
   getUserData() {
     const user: UserRequest = {
       userid: this.registrationForm.value.userId
