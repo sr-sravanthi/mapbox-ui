@@ -22,12 +22,14 @@
 <ng-template #fitersTemplate let-data="dynamicData">
     <div class="map-wrapper">
         <div class="filter-btn-wrapper">
-            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column"
-                [ngClass]="{'active': isFilterAppllied && selectedCategoryFilter==1}" (click)="filterTrash(1)">
-                <i class="net-icon custom-sprite"></i>
-                <label>net</label>
+            <div *ngFor="let category of trashCategories"
+                class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column"
+                [ngClass]="{'active': isFilterAppllied && selectedCategoryFilter==category.id}"
+                (click)="filterTrash(category.id)">
+                <i [ngClass]="category.code.toLowerCase()+'-icon'" class="custom-sprite"></i>
+                <label>{{category.name}}</label>
             </div>
-            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column"
+            <!-- <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column"
                 [ngClass]="{'active': isFilterAppllied && selectedCategoryFilter==2}" (click)="filterTrash(2)">
                 <i class="plastic custom-sprite"></i>
                 <label>plastic</label>
@@ -36,12 +38,12 @@
                 [ngClass]="{'active': isFilterAppllied && selectedCategoryFilter==3}" (click)="filterTrash(3)">
                 <i class="oil-icon custom-sprite"></i>
                 <label>Oil spill </label>
-            </div>
-            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column"
+            </div> -->
+            <!-- <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column"
                 [ngClass]="{'active': isFilterAppllied && selectedCategoryFilter==4}" (click)="filterTrash(4)">
                 <i class="other-icon custom-sprite"></i>
                 <label>other</label>
-            </div>
+            </div> -->
         </div>
     </div>
 </ng-template>

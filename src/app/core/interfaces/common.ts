@@ -11,7 +11,7 @@ export interface TrashCatergory {
     code: string,
     name: string,
     imageURL: string,
-    sortOrder: number,
+        sortOrder: number,
     isActive: boolean
 }
 

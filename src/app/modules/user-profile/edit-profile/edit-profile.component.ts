@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
-import { UserType } from 'src/app/core/interfaces/common';
-import { UserDetails, UserRequest } from 'src/app/core/interfaces/user';
+import { Company, UserType, Vessel } from 'src/app/core/interfaces/common';
+import { UserRequest } from 'src/app/core/interfaces/user';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 
 @Component({
@@ -13,9 +12,9 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
 })
 export class EditProfileComponent {
   registrationForm!: FormGroup;
-  userTypes!: UserType[];
-  companyDetails: any[] = [];
-  vesselDetails: any[] = [];
+  userTypes: UserType[] = [];
+  companyDetails: Company[] = [];
+  vesselDetails: Vessel[] = [];
   imageUrl: any;
   authUserDetails: any;
   userDetails: any;
@@ -23,7 +22,9 @@ export class EditProfileComponent {
   constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) { }
   ngOnInit(): void {
 
-    console.log(this.authService.masterData)
+    this.userTypes = this.authService.masterData.userTypes;
+    this.companyDetails = this.authService.masterData.companyData;;
+    this.vesselDetails = this.authService.masterData.vesselData;;
 
     this.registrationForm = this.fb.group({
       userName: ["", [Validators.required, Validators.pattern(/^[a-zA-Z]+(?: [a-zA-Z]+)*$/)]],
@@ -53,51 +54,9 @@ export class EditProfileComponent {
         VesselID: this.userDetails.vesselId, imoNumber: this.userDetails.imoNumber, userTypeID: Number(this.userDetails.userTypeId)
       });
     }
-    console.log(this.registrationForm.value)
-  }
-
-
-  getInitialData() {
-
-    let getUserTypes$ = this.authService.getUserTypes();
-    let getCompnayNames$ = this.authService.getCompnayNames();
-    let getVesselNames$ = this.authService.getVesselNames();
-
-
-    forkJoin([getUserTypes$, getCompnayNames$, getVesselNames$]).subscribe(
-      {
-        next: (result) => {
-          console.log(result);
-          let userTypesResponse = result[0];
-          let companyNamesResponse = result[1];
-          let vesselNamesResponse = result[2];
-
-          if (userTypesResponse && userTypesResponse?.commonEntity.transactionStatus === "Y") {
-            this.userTypes = userTypesResponse?.userTypeDetailEntity;
-            console.log(this.userTypes)
-          }
-          if (companyNamesResponse && companyNamesResponse?.commonEntity.transactionStatus === "Y") {
-            let companyData = companyNamesResponse?.companyDetails.filter((company: any) => company.name !== "");
-
-            this.companyDetails = [...companyData];
-            console.log(this.companyDetails);
-          }
-          if (vesselNamesResponse && vesselNamesResponse?.commonEntity.transactionStatus === "Y") {
-            let vesselData = vesselNamesResponse?.vesselEntity;
-            this.vesselDetails = [...vesselData];
-          }
-        },
-        error: () => {
-        }
-      }
-    );
-
-
-
   }
 
   oneditRegisterClick() {
-    console.log(this.registrationForm.value);
     if (this.registrationForm.valid) {
       delete this.registrationForm.value.agreeChkbox;
       this.registrationForm.value.VesselID = this.registrationForm.value.VesselID.toString();
@@ -115,11 +74,9 @@ export class EditProfileComponent {
   }
 
   onCompanySelected(event: any) {
-    console.log(event);
     this.registrationForm.get("companyId")?.setValue(event["id"]);
   }
   onVesselSelected(event: any) {
-    console.log(event);
     this.registrationForm.get("VesselID")?.setValue(event["id"]);
   }
   getUserData() {
@@ -129,9 +86,7 @@ export class EditProfileComponent {
 
     this.authService.getUserDetails(user).subscribe({
       next: (response: any) => {
-        console.log(response);
         if (response.commonEntity?.transactionStatus === "Y") {
-          console.log(response.userDetailEntity);
           sessionStorage.setItem('userDetails', JSON.stringify(response.userDetailEntity[0]));
           if (response.userDetailEntity[0]?.isRegistered) {
             this.authService.setIsLoggedIn(true);

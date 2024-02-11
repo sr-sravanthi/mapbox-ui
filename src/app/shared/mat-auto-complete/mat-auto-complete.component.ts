@@ -26,8 +26,6 @@ export class MatAutoCompleteComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.filteredData = this.optionData;
-    console.log(this.optionKey);
-    console.log(this.optionValue);
 
   }
   ngOnInit(): void {
@@ -40,7 +38,6 @@ export class MatAutoCompleteComponent {
 
 
   private _filter(value: string) {
-    console.log(value);
 
     if (this.optionData.length > 0 && value != "" && typeof (value) == "string") {
       const filterValue = value.toLowerCase();

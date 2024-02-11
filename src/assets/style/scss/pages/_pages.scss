@@ -336,7 +336,7 @@ body {
             .map-wrapper {
                 .filter-btn-wrapper {
                     width: 57px;
-                    height: 234px;
+                    //height: 234px;
                     border-radius: 8px;
                     background-color: $color-white;
                     display: flex;
@@ -363,12 +363,11 @@ body {
                             }
 
                             .net-icon {
-                                background-position: -82px -76px;
-                                ;
+                                background-position: -82px -76px;;
 
                             }
 
-                            .plastic {
+                            .pls-icon {
                                 background-position: -55px -79px;
 
                             }
@@ -753,7 +752,7 @@ body {
         height: 24px;
     }
 
-    &.plastic {
+    &.pls-icon {
         background-position: -169px -37px;
         width: 24px;
         height: 24px;

@@ -9,6 +9,7 @@ import { TrashService } from 'src/app/core/services/trash/trash.service';
 import { MapboxService } from 'src/app/core/services/mapbox/mapbox.service';
 import { MAP_ZOOM } from 'src/app/core/utilities/constants';
 import { UserDetails } from 'src/app/core/interfaces/user';
+import { TrashCatergory } from 'src/app/core/interfaces/common';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class UserDashboardComponent implements OnInit {
   selectedTab: string = '';
   selectedCategoryFilter!: number;
   isFilterAppllied: boolean = false;
+  trashCategories: TrashCatergory[] = [];
   tabNames = ["My Trash", "All Trash", "Recovered Trash"];
 
   constructor(public dialog: MatDialog, private authService: AuthService, private trashService: TrashService,
@@ -33,6 +35,9 @@ export class UserDashboardComponent implements OnInit {
   ngOnInit(): void {
 
     this.selectedTab = "My Trash";
+
+    this.trashCategories = this.authService.masterData.trashCategories;
+
 
     this.getTrashForCurrentBounds();
 
