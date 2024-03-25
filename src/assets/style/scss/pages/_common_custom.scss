@@ -148,6 +148,9 @@ $sizes: 5, 10, 20, 30, 40, 50;
 .text-primary {
     color: $label-primary;
 }
+.color-primary{
+    color: $color-dark-blue;
+}
 
 .pointer {
     cursor: pointer;
@@ -155,6 +158,7 @@ $sizes: 5, 10, 20, 30, 40, 50;
 
 .relative {
     position: relative;
+
 }
 
 .fs-12 {
@@ -163,6 +167,9 @@ $sizes: 5, 10, 20, 30, 40, 50;
 
 .bold {
     font-weight: 700;
+}
+.semi-bold {
+    font-weight: 600;
 }
 
 .text-color {
@@ -176,7 +183,15 @@ $sizes: 5, 10, 20, 30, 40, 50;
 .bg-success {
     background: $color-success !important;
 }
+.b-b-0{
+    border-bottom: none;
+}
 
+.mat-mdc-option{
+    border-bottom: 1px solid #ddd;
+    font-size: 13px !important;
+    min-height: 40px;
+}
 //*****************************Material styles override********************************//
 //Checkbox
 .mdc-checkbox {
@@ -324,7 +339,9 @@ button.btn-white.mdc-button {
 }
 
 //**********************tab**************//
-
+.mdc-tab__ripple{
+    display: none;
+}
 .mat-mdc-tab-group {
     .mat-mdc-tab-label-container {
         flex-grow: initial;

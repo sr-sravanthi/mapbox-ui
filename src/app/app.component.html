@@ -1,3 +1,7 @@
-<app-header *ngIf=isLoggedIn></app-header>
-<router-outlet></router-outlet>
-<app-footer></app-footer>
+<div class="full-height" [class.not-login]="!isLoggedIn">
+    <app-header *ngIf="isLoggedIn"></app-header>
+    <div class="page-container">
+        <router-outlet></router-outlet>
+    </div>
+    <app-footer></app-footer>
+</div>log

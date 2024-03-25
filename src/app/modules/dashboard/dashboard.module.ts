@@ -7,9 +7,9 @@ import { MaterialModule } from 'src/app/shared/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TrashitemComponent } from './trashitem/trashitem.component';
 import { TrashTabComponent } from './trash-tab/trash-tab.component';
-import { MapboxComponent } from 'src/app/shared/mapbox/mapbox.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TrashitemPopupComponent } from './trashitem-popup/trashitem-popup.component';
+import { WeatherComponent } from './weather/weather.component';
 
 
 
@@ -19,7 +19,8 @@ import { TrashitemPopupComponent } from './trashitem-popup/trashitem-popup.compo
     UserDashboardComponent,
     TrashitemComponent,
     TrashTabComponent,
-    TrashitemPopupComponent
+    TrashitemPopupComponent,
+    WeatherComponent
 
   ],
   imports: [

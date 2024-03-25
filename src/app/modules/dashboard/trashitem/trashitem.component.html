@@ -1,19 +1,20 @@
-
 <div class="trashlist-item trash-blk d-flex justfy-content-spacebetween m-b-10 " (click)="trashPopup()">
     <div class="d-flex gap-30">
-        <div class="trash-img"></div>
+        <img [src]="trashImg" alt="trash-img" class="trash-img">
         <div class="d-flex flex-column gap-5">
-            <!-- <label>{{TRASH_CATEGORIES[trashItem.categoryId]}} near Hyderabad</label> -->
             <label>{{trashItem.title}}</label>
-            <div class="d-flex align-items-center location-icon">
+            <div class="d-flex align-items-center location-icon gap-5">
                 <mat-icon>location_on</mat-icon>
-                <span>{{trashItem.latitude}}, {{trashItem.longitude}}</span>
+                <span>{{this.mapboxService.formatLatitude(trashItem.latitude)}},{{this.mapboxService.formatLongitude(trashItem.longitude)}}</span>
+                <div class="badge bg-blue"> {{getTrashTypeName(trashItem.categoryId)}}</div>
+
             </div>
+
 
         </div>
     </div>
     <div class="right-end d-flex flex-column align-items-end gap-5">
-        <div class="badge bg-blue">{{TRASH_CATEGORIES[trashItem.categoryId]}}</div>
+        <div class="badge bg-green" *ngIf="trashItem.isRecovered">Recovered</div>
         <span>{{trashItem.reportedDate | date: 'dd-MMM-yyyy'}}</span>
     </div>
 </div>

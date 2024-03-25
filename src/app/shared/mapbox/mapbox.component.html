@@ -6,9 +6,9 @@
 
     <div class="map-wrapper" *ngIf="container==='dashboard'">
         <div class="map-btn d-flex justify-content-center m-t-10">
-            <div class="pointer search-btn" (click)="searchTrashOnMap()">
+            <div class="pointer search-btn" (click)="searchTrashOnMap()" *ngIf="tabName==='All Trash'">
                 <mat-icon>search</mat-icon>
-                <span class="text-white">Search this Area</span>
+                <span class="text-white">Search area</span>
             </div>
         </div>
     </div>

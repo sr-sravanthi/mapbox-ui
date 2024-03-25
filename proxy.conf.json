@@ -1,0 +1,7 @@
+{
+    "/api": {
+        "target": "https://mapps-pal-ci.mariapps.com",
+        "secure": false,
+        "changeOrigin": true
+    }
+}

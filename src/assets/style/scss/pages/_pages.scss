@@ -1,3 +1,8 @@
+html {
+    height: 100%;
+    overflow-y: hidden;
+}
+
 body {
     font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
     margin: 0;
@@ -5,9 +10,26 @@ body {
     height: 100%;
 }
 
+.page-container {
+    height: calc(100vh - 70px);
+    overflow: auto;
+}
+
+.not-login {
+    .page-container {
+        height: 100%;
+    }
+
+    .register-section {
+        .register-right {
+            height: calc(100vh - 61px);
+        }
+    }
+}
+
 //login page//
 .login-section {
-    height: 100vh;
+    // height: 100vh;
 
 
     .login-wrper {
@@ -180,14 +202,18 @@ body {
 
     .register-right {
         width: 45% !important;
-        padding: 30px;
+        padding: 30px 90px;
         display: flex;
         flex-direction: column;
+        height: calc(100vh - 130px);
+        overflow: auto;
+        overflow-x: hidden;
 
         h3 {
             font-size: 28px;
             font-weight: 600;
             color: $text-color;
+            margin-top: 0;
 
         }
 
@@ -210,11 +236,13 @@ body {
         }
 
         .change-img {
+            //background: url('../../images/profile-add.png');
             width: 169px;
             height: 169px;
             display: flex;
             background-repeat: no-repeat;
             border-radius: 50%;
+            // background-size: cover;
 
 
         }
@@ -240,7 +268,7 @@ body {
 //Header- section//
 .header-section {
     >div {
-        padding: 12px 20px 0 20px;
+        padding: 10px 20px 10px 20px;
     }
 
     .header-left {
@@ -262,6 +290,11 @@ body {
             border-radius: 50%;
         }
 
+        .profie-image {
+            // background: url('../../images/profile-add.png');
+            background-size: cover;
+        }
+
         .divider {
             width: 1px;
             height: 30px;
@@ -270,15 +303,146 @@ body {
         }
 
     }
+    
+    .gust-user{
+        .gust-register{
+            border: 1px solid $border-light;
+            padding: 20px;
+            border-radius: 9px;
+        }
+    }
+}
+.gust-user{
+    .guster-register{
+        border: 1px solid $border-light;
+        padding: 15px;
+        border-radius: 9px;
+        background-color: $grey-light-btn-bg;
+        margin-top: 20px;
+    }
+}
+.gust-user button.btn-primary.mdc-button {
+    width: auto;
+    height: 35px;
+}
+.custom-mat-mdc-menu-panel,
+.custom-notification-menu-panel {
+    min-width: 350px !important;
+    box-shadow: 0px 3px 6px #0000002E !important;
+    border: 1px solid #D4E8F9;
+
+    .mat-mdc-menu-content {
+        padding: 0;
+    }
+}
+
+.custom-notification-menu-panel {
+    height: calc(100vh - 200px);
+
+    ul {
+        padding: 0;
+        margin: 0;
+
+        li {
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid $border-light;
+            padding: 5px 10px;
+            background-color: $color-white;
+
+            &.unread-notification {
+                background-color: #F3F7FB;
+
+                .notification-icon {
+                    &::after {
+                        content: '';
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                        background-color: $label-primary;
+                        position: absolute;
+                        top: -3px;
+                        left: 10px;
+                    }
+                }
+            }
+        }
+    }
+
+    .mat-mdc-tab-header {
+        padding: 0 10px;
+    }
+
+    .badge {
+        background-color: #D6E2F2;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 10px;
+        color: $text-color;
+        margin-left: 10px;
+    }
+
+    .notification-icon {
+        width: 53px;
+        height: 53px;
+        border-radius: 50%;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+        &.bg-blue {
+            background-color: #D6E2F2;
+            border: 1px solid #ADCBEB;
+        }
+
+        &.bg-orange-light {
+            background-color: #FAF6F0;
+            border: 1px solid #F1E3D0;
+        }
+
+        &.bg-violet {
+            background-color: #DEE2FF;
+            border: 1px solid #BAC1EF;
+        }
+
+        &.bg-pink {
+            background-color: #FFE6F1;
+            border: 1px solid #EFC6D8;
+        }
+    }
+    
+
+}
+
+.award-notification {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: none !important;
+
+    .badge {
+        width: 18px !important;
+        height: 18px !important;
+        color: $label-primary;
+        margin-left: 0;
+    }
 }
 
 .profile-menu {
     .menu-profile-img {
-        background: url('../../images/profile-menu.png');
+        //background: url('../../images/profile-add.png');
+        background-size: cover;
         width: 104px;
         height: 104px;
         display: flex;
         background-repeat: no-repeat;
+        border-radius: 50%;
 
         .edit-img-wrpr {
             background: white;
@@ -300,7 +464,7 @@ body {
     }
 
     .rewards {
-        border: 1px solid #F2F2F2;
+        border: 1px solid $border-light;
         padding: 20px;
         border-radius: 9px;
         gap: 30px;
@@ -310,7 +474,7 @@ body {
         .rank-wrapr {
             &:after {
                 content: "";
-                background-color: #F2F2F2;
+                background-color: $border-light;
                 width: 1px;
                 position: absolute;
                 top: 0;
@@ -328,10 +492,19 @@ body {
 //**********Public main page **********************//
 .public-main-page {
     .left-content {
+        position: relative;
+
+        #map {
+
+            display: none;
+        }
+
         .map-container {
-            width: 65%;
-            height: 100%;
             position: absolute;
+            bottom: 0;
+            top: 0;
+            right: 0;
+            left: 0;
 
             .map-wrapper {
                 .filter-btn-wrapper {
@@ -363,13 +536,13 @@ body {
                             }
 
                             .net-icon {
-                                background-position: -82px -76px;;
+                                background-position: -82px -76px;
+                                ;
 
                             }
 
                             .pls-icon {
                                 background-position: -55px -79px;
-
                             }
 
                             .oil-icon {
@@ -400,9 +573,9 @@ body {
                         width: auto;
                         height: auto;
                         z-index: 99;
-                        padding: 6px;
-                        font-size: 16px;
-                        background-color: $primary-light;
+                        padding: 6px 10px 6px 9px;
+                        font-size: 14px;
+                        background-color: $primary-btn;
                         border-radius: 20px;
                         position: absolute;
                         display: flex;
@@ -412,12 +585,18 @@ body {
                         cursor: pointer;
 
                         &:hover {
-                            background-color: $primary-btn-hover;
+                            background-color: #363677;
                         }
 
                         .material-icons {
                             font-size: 20px;
                             color: $color-white;
+                            display: flex;
+                            align-items: center;
+                        }
+
+                        .mat-icon {
+                            width: 20px;
                         }
                     }
 
@@ -432,8 +611,8 @@ body {
 
         .right-btn {
             width: 85px;
-            height: 34px;
-            background-color: $primary-light;
+            padding: 6px 6px 6px 6px;
+            background-color: $primary-btn;
             border-radius: 20px;
             position: absolute;
             right: 20px;
@@ -450,6 +629,8 @@ body {
             .material-icons {
                 font-size: 20px;
                 color: $color-white;
+                display: flex;
+                align-items: center;
             }
         }
 
@@ -480,7 +661,7 @@ body {
 
     .trashlist-wrapper {
         .trashlist-container {
-            height: calc(100vh - 143px);
+            height: calc(100vh - 205px);
             overflow: auto;
 
             .trashlist-item {
@@ -495,7 +676,7 @@ body {
                         height: 48px;
                         display: block;
                         background-repeat: no-repeat;
-                        background: url('../../images/plastic.png');
+                        // background: url('../../images/plastic.png');
                     }
 
                     .right-end {
@@ -543,6 +724,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &.bg-green {
+        background-color: #23AA8F;
+        border: 1px solid #7fc7b9;
+        color: $color-white;
+    }
 
     &.bg-blue {
         background-color: #D6E2F2;
@@ -840,10 +1027,55 @@ body {
         height: 33px;
     }
 
-    &.arrow {
+    &.green-arrow {
         background-position: -262px -2px;
         width: 14px;
         height: 8px;
+    }
+
+    &.red-arrow {
+        background-position: -245px -116px;
+        width: 14px;
+        height: 8px;
+    }
+
+    &.edit-profile-icon {
+        background-position: -169px -112px;
+        width: 32px;
+        height: 32px;
+    }
+
+    &.logout-icon {
+        background-position: -209px -112px;
+        width: 32px;
+        height: 32px;
+    }
+
+    &.rank1 {
+        background-position: -2px -145px;
+        width: 16px;
+        height: 25px;
+        min-width: 16px;
+    }
+
+    &.rank2 {
+        background-position: -25px -145px;
+        width: 18px;
+        height: 25px;
+        min-width: 18px;
+
+    }
+
+    &.rank3 {
+        background-position: -50px -145px;
+        width: 18px;
+        height: 25px;
+        min-width: 18px;
+    }
+    &.register-icon{
+        background-position: -126px -145px;
+        width: 48px;
+        height: 48px;
     }
 }
 
@@ -856,4 +1088,9 @@ body {
     button {
         width: auto !important;
     }
+}
+
+.menu-icons {
+    max-height: 350px;
+    overflow: auto;
 }

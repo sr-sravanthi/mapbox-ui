@@ -1,5 +1,3 @@
-
-
 export interface UserType {
     id: number,
     code: string,
@@ -11,10 +9,9 @@ export interface TrashCatergory {
     code: string,
     name: string,
     imageURL: string,
-        sortOrder: number,
+    sortOrder: number,
     isActive: boolean
 }
-
 export interface Company {
     id: string,
     code: string,

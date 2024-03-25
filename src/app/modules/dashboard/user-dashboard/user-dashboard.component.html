@@ -1,14 +1,15 @@
 <div class="public-main-page ">
     <div class="full-height d-flex">
         <div class="left-content d-flex flex-1">
-            <app-mapbox [container]="'dashboard'" [locateUser]="true" [mapData]="trashDataForMap"
-                [trashFiltersTemplate]="fitersTemplate"></app-mapbox>
+            <app-mapbox [container]="'dashboard'" [locateUser]="true" [trashData]="trashDataForMap"
+                [trashFiltersTemplate]="fitersTemplate" [tabName]="selectedTab"></app-mapbox>
         </div>
         <div class="right-content">
             <div class="relative p-20">
-                <mat-tab-group (selectedTabChange)="onTrashTabChange($event)">
+                <mat-tab-group (selectedTabChange)="onTrashTabChange($event)" disableRipple>
                     <mat-tab [label]="tab" *ngFor="let tab of tabNames">
-                        <app-trash-tab [tabName]="selectedTab" [trashData]="trashDataForMap"></app-trash-tab>
+                        <app-trash-tab [tabName]="selectedTab" [trashData]="trashDataForMap"
+                            [trashCategories]="trashCategories" [attachmentData]="allTrashAttachment"></app-trash-tab>
                     </mat-tab>
                 </mat-tab-group>
                 <div class="right-btn " (click)="AddTrashClick()">
@@ -29,21 +30,6 @@
                 <i [ngClass]="category.code.toLowerCase()+'-icon'" class="custom-sprite"></i>
                 <label>{{category.name}}</label>
             </div>
-            <!-- <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column"
-                [ngClass]="{'active': isFilterAppllied && selectedCategoryFilter==2}" (click)="filterTrash(2)">
-                <i class="plastic custom-sprite"></i>
-                <label>plastic</label>
-            </div>
-            <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column"
-                [ngClass]="{'active': isFilterAppllied && selectedCategoryFilter==3}" (click)="filterTrash(3)">
-                <i class="oil-icon custom-sprite"></i>
-                <label>Oil spill </label>
-            </div> -->
-            <!-- <div class="btn-inner-wrapper d-flex align-items-center pointer justify-content-center flex-column"
-                [ngClass]="{'active': isFilterAppllied && selectedCategoryFilter==4}" (click)="filterTrash(4)">
-                <i class="other-icon custom-sprite"></i>
-                <label>other</label>
-            </div> -->
         </div>
     </div>
 </ng-template>

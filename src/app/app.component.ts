@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDetails } from './core/interfaces/user';
 import { AuthService } from './core/services/auth/auth.service';
+import { LocationStrategy } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +10,22 @@ import { AuthService } from './core/services/auth/auth.service';
 })
 export class AppComponent implements OnInit {
   isLoggedIn: boolean = false;
+ isGuestuserIn:boolean = false;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private location:LocationStrategy) {
+
+   }
   ngOnInit(): void {
-    this.authService.getMasterData();
+
+    this.location.onPopState(()=>{
+      console.log("popstate");
+      console.log(this.location.getBaseHref())
+
+    })
+
+
+
+    this.authService.initMasterData();
 
     let userDetails!: UserDetails;
     if (sessionStorage.getItem("userDetails")) {
@@ -20,11 +33,15 @@ export class AppComponent implements OnInit {
 
       if (userDetails) {
         this.authService.setIsLoggedIn(true);
+        this.authService.setProfileDetails(userDetails);
+      }
+      if(userDetails.isGuestUser){
+        this.isGuestuserIn=true
       }
     }
     this.authService.getIsLoggedIn().subscribe(value => {
-      console.log(value);
-      this.isLoggedIn = value
+      this.isLoggedIn = value;
+     
     }
     );
 

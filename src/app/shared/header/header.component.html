@@ -1,95 +1,131 @@
 <div class="header-section">
     <div class="d-flex justfy-content-spacebetween">
         <div class="header-left">
-
         </div>
+
         <div class="header-right d-flex align-items-center gap-30">
             <div class="d-flex gap-20">
-                <div class="award-icon custom-sprite"></div>
+                <div class="award-icon custom-sprite pointer" [matMenuTriggerFor]="beforeMenu2">
+                    <mat-menu #beforeMenu2="matMenu" xPosition="before" class="custom-notification-menu-panel m-t-10">
+                        <div class="">
+                            <div class="p-10">
+                                <h4 class="fs-16 fw-600 m-0 m-b-20">Ranking</h4>
+                                <div *matMenuContent (click)="$event.stopPropagation()"
+                                    (keydown)="$event.stopPropagation()">
+                                    <app-awards></app-awards>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-menu>
+                </div>
 
-                <div class="notification-icon custom-sprite">
+                <div class="notification-icon custom-sprite pointer" [matMenuTriggerFor]="beforeMenu1">
                     <div matBadge="4" matBadgeOverlap="false" class="demo-section"></div>
+                    <div>
+                        <mat-menu #beforeMenu1="matMenu" xPosition="before"
+                            class="custom-notification-menu-panel m-t-10">
+                            <div class="">
+                                <div class="p-10">
+                                    <h4 class="fs-18 fw-600 m-0">Notifications</h4>
+                                </div>
+                                <div *matMenuContent (click)="$event.stopPropagation()"
+                                    (keydown)="$event.stopPropagation()">
+                                    <app-notifications></app-notifications>
+                                </div>
+                            </div>
+                        </mat-menu>
+                    </div>
                 </div>
             </div>
 
             <div class="d-flex align-items-center gap-20">
                 <div class="divider"><i></i></div>
+                <span>{{userDetails.isGuestUser == "N" ? userDetails.name : 'Guest'}}</span>
 
-                <span>{{userDetails?.name}}</span>
-
-                <!-- <div class="user-profile"  (click)="clickOnProfilePhoto()">
-                
-                </div> -->
-                <!--   -->
-                <button mat-button>
-                    <img class="user-profile" [src]="imageUrl" [matMenuTriggerFor]="beforeMenu" alt="profile image">
-                </button>
-                <mat-menu #beforeMenu="matMenu" xPosition="before">
+                <a class="pointer">
+                    <img class="user-profile" [src]="imageUrl" referrerpolicy="no-referrer"
+                        [matMenuTriggerFor]="beforeMenu" alt="profile image">
+                </a>
+                <mat-menu #beforeMenu="matMenu" xPosition="before" class="custom-mat-mdc-menu-panel m-t-20">
                     <div class="profile-menu d-flex flex-column p-10">
-                        <!-- <div class="d-flex  ">
-                            <div class="menu-profile-img relative">
-                                <div class="d-flex align-items-center  edit-img-wrpr ">
-                                    <i class="edit-icon custom-sprite"></i>
+                        <ng-container *ngIf="userDetails.isRegistered">
+                            <div class="d-flex justify-content-center">
+                                <div class="relative">
                                 </div>
+                                <img class="menu-profile-img relative" [src]="imageUrl">
                             </div>
-                        </div> -->
-                        <div class="d-flex  flex-column">
-                            <h4 class="m-b-0 fs-22">{{userDetails?.name}}</h4>
-                            <!-- <label class="text-gray">BSM Company</label> -->
-                        </div>
-                        <div class="d-flex rewards m-t-30 m-b-30">
-                            <div class="d-flex rank-wrapr relative gap-20">
-                                <i class="custom-sprite rank-icon"></i>
-                                <div class="d-flex flex-column">
-                                    <label class="text-gray fs-12">Your rank</label>
-                                    <label class="bold">{{userDetails.rank}}</label>
+                            <div class="d-flex  flex-column align-items-center">
+                                <h4 class="m-b-0 fs-22">{{userDetails.name}}</h4>
+                                <label class="text-gray">{{userDetails.companyName}}</label>
+                            </div>
+                            <div class="d-flex rewards m-t-30 m-b-30">
+                                <div class="d-flex rank-wrapr relative gap-20">
+                                    <i class="custom-sprite rank-icon"></i>
+                                    <div class="d-flex flex-column">
+                                        <label class="text-gray fs-12">Your rank</label>
+                                        <label class="bold">{{userDetails.rank}}</label>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="d-flex gap-20">
-                                <i class="custom-sprite point-icon"></i>
-                                <div>
-                                    <label class="text-gray fs-12">Your points</label>
+                                <div class="d-flex gap-20">
+                                    <i class="custom-sprite point-icon"></i>
+                                    <div>
+                                        <label class="text-gray fs-12">Your points</label>
+                                        <div class="d-flex gap-10 align-items-center">
+                                            <i [ngClass]="userDetails.level? 'green-arrow':'red-arrow'"
+                                                class="custom-sprite"></i>
+                                            <label class="bold">{{userDetails.points}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="userDetails.isGuestUser === 'Y'">
+
+                            <div class="gust-user m-t-20">
+                                <div class="d-flex justify-content-center">
+
+                                    <img class="user-profile relative"
+                                        src="../../../assets/style/images/guest_profile.png">
+                                </div>
+                                <div class="d-flex  flex-column align-items-center">
+                                    <h4 class="m-b-0 fs-22">{{userDetails.userNumber}}</h4>
+                                </div>
+
+                                <div class="d-flex flex-column  gap-10 guster-register ">
                                     <div class="d-flex gap-10 align-items-center">
-                                        <i class="custom-sprite arrow"></i>
-                                        <label class="bold">{{userDetails.points}}</label>
+                                        <i class="custom-sprite register-icon"></i>
+                                        <h4 class="bold fs-18 m-0">Register Now</h4>
+                                    </div>
+
+                                    <span>Your profile is not registered yet</span>
+                                    <span>Please register to get points and rewards</span>
+                                    <div>
+                                        <button mat-stroked-button class="pointer btn-primary  m-t-10"
+                                            (click)="onGuestRegister()">Register</button>
                                     </div>
 
                                 </div>
+
+
+
                             </div>
-                        </div>
-                        <div class="d-flex align-items-center gap-20">
-                            <i class="custom-sprite website-icon"></i>
-                            <h4>Eyesea Website</h4>
-                        </div>
-                        <div class="d-flex align-items-center gap-20">
-                            <i class="custom-sprite policy-icon"></i>
-                            <h4>Data Policy</h4>
-                        </div>
-                        <div class="d-flex align-items-center gap-20">
-                            <i class="custom-sprite help-icon"></i>
-                            <h4>Help</h4>
-                        </div>
-                        <div class="d-flex align-items-center gap-20">
-                            <i class="custom-sprite Contact-icon"></i>
-                            <h4>Contact Us</h4>
-                        </div>
-                        <div class="d-flex align-items-center gap-20">
-                            <i class="custom-sprite settings-icon"></i>
-                            <h4>Settings</h4>
-                        </div>
-                        <div class="d-flex align-items-center gap-20" (click)="editProfile()">
-                            <i class="custom-sprite settings-icon"></i>
-                            <h4>Edit Profile</h4>
-                        </div>
-                        <div class="d-flex align-items-center gap-20" (click)="signout()">
-                            <i class="custom-sprite settings-icon"></i>
-                            <h4>Log out</h4>
+
+
+                        </ng-container>
+                        <div class="menu-icons">
+                            <ng-container *ngFor="let item of profileMenuItems; index as i">
+                                <div class="d-flex align-items-center gap-20 pointer" *ngIf="!item.isHidden"
+                                    (click)="navigate(i)">
+                                    <i [class]="item.icon"></i>
+                                    <h4>{{item.label}}</h4>
+                                </div>
+                            </ng-container>
+
                         </div>
                     </div>
                 </mat-menu>
             </div>
-
         </div>
     </div>
 </div>

@@ -9,13 +9,19 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { UploadPhotoComponent } from './upload-photo/upload-photo.component';
 import { DataPolicyComponent } from './data-policy/data-policy.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { AwardsComponent } from './awards/awards.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+
 @NgModule({
   declarations: [
     LoginComponent,
     SignUpComponent,
     EditProfileComponent,
     UploadPhotoComponent,
-    DataPolicyComponent
+    DataPolicyComponent,
+    AwardsComponent,
+    NotificationsComponent
+
   ],
 
   imports: [
@@ -25,9 +31,11 @@ import { SharedModule } from 'src/app/shared/shared.module';
     ReactiveFormsModule,
     SharedModule
   ],
-exports:[
-  EditProfileComponent
-],
+  exports: [
+    EditProfileComponent,
+    AwardsComponent,
+    NotificationsComponent
+ ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

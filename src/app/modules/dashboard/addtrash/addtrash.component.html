@@ -9,7 +9,7 @@
         <div class="right-content flex-1 p-10">
             <div class="d-flex justfy-content-spacebetween ">
                 <h1 mat-dialog-title class="d-flex p-0">Add Trash</h1>
-                <mat-icon class="text-gray" (click)="closePopup()">close</mat-icon>
+                <mat-icon class="text-gray pointer" (click)="closePopup()">close</mat-icon>
             </div>
             <div class="file-uploader">
                 <input type="file" class="input-hidden" (change)="onFileSelected($event)" #fileUploader>
@@ -28,7 +28,7 @@
                         <div class="file-preview-icon custom-sprite"></div>
                         <div class="d-flex flex-column">
                             <span class="fs-14 bold">{{this.filename}}</span>
-                            <label class="fs-11 text-gray">{{this.filesize}} MB</label>
+                            <label class="fs-11 text-gray">{{this.filesizeUI}}</label>
                         </div>
                     </div>
                     <div (click)="deleteFile()">
@@ -41,10 +41,8 @@
                 <form [formGroup]="addTrashForm">
                     <div>
                         <mat-form-field>
-                            <mat-label>Trash Name</mat-label>
-                            <input matInput placeholder="Trash Name" formControlName="Title">
-                            <mat-error *ngIf="addTrashForm.get('Title')?.hasError('required')">
-                                Please enter a title.</mat-error>
+                            <mat-label>Trash Title</mat-label>
+                            <input matInput formControlName="Title">
                         </mat-form-field>
                     </div>
 
@@ -55,7 +53,8 @@
                                 formControlName="ReportedDate">
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
-                            <mat-error *ngIf="addTrashForm.get('ReportedDate')?.hasError('required')">Please select
+                            <mat-error *ngIf="addTrashForm.get('ReportedDate')?.hasError('required')"
+                                class="fs-13">Please select
                                 reported date.</mat-error>
                         </mat-form-field>
                     </div>
@@ -66,25 +65,17 @@
                                 <mat-icon class="$text-gray"> location_on</mat-icon>
                             </div>
                             <mat-label>Location</mat-label>
-                            <input matInput placeholder="Enter Location" [formControl]="searchControl"
-                                [matAutocomplete]="auto">
-                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
-                                (optionSelected)="onGeoCoderSelection($event)">
-                                <mat-option *ngFor="let option of geoCoderSuggestions" [value]="option">
-                                    {{option.place_name}}
-                                </mat-option>
-                            </mat-autocomplete>
+                            <input matInput [value]="selectedFormatedCoords" readonly>
+
                         </mat-form-field>
                     </div>
 
                     <div>
                         <mat-form-field>
                             <mat-label>Select Category</mat-label>
-                            <mat-select formControlName="CategoryId">
-                                <mat-option value="3">Oil</mat-option>
-                                <mat-option value="2">Plastic</mat-option>
-                                <mat-option value="1">Net</mat-option>
-                                <mat-option value="4">Others</mat-option>
+                            <mat-select formControlName="CategoryId" (selectionChange)="onCatergoryChange($event)">
+                                <mat-option [value]="item.id"
+                                    *ngFor="let item of trashCategories">{{item.name}}</mat-option>
                             </mat-select>
                             <mat-error *ngIf="addTrashForm.get('CategoryId')?.hasError('required')">Please
                                 select

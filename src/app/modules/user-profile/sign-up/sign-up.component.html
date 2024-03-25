@@ -13,26 +13,23 @@
         <div class="register-right">
             <div class="m-b-20">
                 <h3 class="m-b-10">Create a Profile</h3>
-
             </div>
-            <div class="d-flex justify-content-center m-b-20">
+            <div class="d-flex justify-content-center m-b-60">
                 <div class="relative">
-                    <img class="change-img" [src]="imageUrl">
-                    <!-- <i class="add-img custom-sprite"></i> -->
-
+                    <img class="change-img" [src]="imageUrl" referrerpolicy="no-referrer">
                 </div>
             </div>
+
+
             <form class="registration-form" [formGroup]="registrationForm" (ngSubmit)="onRegisterClick()">
                 <div class="register-forms">
+
                     <div class="grid-item">
-                        <mat-form-field class="register-custom-styles login-custom-styles">
-                            <mat-label class="fs-12">Select User Type</mat-label>
-                            <mat-select formControlName="userTypeID">
-                                <mat-option *ngFor="let type of userTypes" [value]="type.id">{{type.name}}</mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="registrationForm.get('UserTypeID')?.hasError('required')">User Type is
-                                required</mat-error>
-                        </mat-form-field>
+                        <app-mat-auto-complete [optionData]="userTypes" [label]="'User Type'" [optionKey]="'name'"
+                            [optionValue]="'id'" [customClass]="'register-custom-styles login-custom-styles'"
+                            (optionSelectedValue)="onUserTypeSelected($event)"></app-mat-auto-complete>
+                        <mat-error *ngIf="registrationForm.get('UserTypeID')?.hasError('required')">UserType is
+                            required</mat-error>
                     </div>
 
                     <div class="grid-item">
@@ -47,91 +44,47 @@
                             <mat-error *ngIf="registrationForm.get('userName')?.hasError('pattern')">Enter a valid
                                 name</mat-error>
                         </mat-form-field>
-
-
                     </div>
 
                     <div class="grid-item">
-                        <mat-form-field class="register-custom-styles login-custom-styles">
-                            <mat-label class="fs-12">Organization</mat-label>
-
-                            <mat-select formControlName="companyId">
-                                <mat-option *ngFor="let type of companyDetails"
-                                    [value]="type.name">{{type.name}}</mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="registrationForm.get('companyId')?.hasError('required')">Organization is
-                                required</mat-error>
-                        </mat-form-field>
+                        <app-mat-auto-complete [optionData]="companyDetails" [label]="'Organization'"
+                            [optionKey]="'name'" [optionValue]="'id'"
+                            [customClass]="'register-custom-styles login-custom-styles'"
+                            (optionSelectedValue)="onCompanySelected($event)"></app-mat-auto-complete>
+                        <mat-error *ngIf="registrationForm.get('companyId')?.hasError('required')">Organization is
+                            required</mat-error>
                     </div>
-                    <!-- 
-                    <div class="grid-item">
-                        <mat-form-field class="register-custom-styles login-custom-styles">
-                            <mat-label class="fs-12">Organization</mat-label>
-                            <input matInput [formControl]="companySearchControl" [matAutocomplete]="auto">
-                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                                <mat-option *ngFor="let option of companyDetails" [value]="option">
-                                    {{option.name}}
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field> 
-                    <div class="register-custom-styles login-custom-styles"> <app-autocomplete
-                                [searchFn]="searchCompanyFn" [displayFn]="displayCompanyFn"
-                                (selected)="onItemSelected($event)"></app-autocomplete></div>
 
-                   </div> -->
 
                     <div class="grid-item">
-                        <mat-form-field class=" register-custom-styles login-custom-styles">
+                        <mat-form-field class=" register-custom-styles login-custom-styles" [ariaDisabled]="true">
                             <mat-label class="fs-12">User Number</mat-label>
                             <input matInput formControlName="userNumber" readonly="true" placeholder="" value="">
                         </mat-form-field>
                     </div>
 
                     <div class="grid-item">
-                        <mat-form-field class=" register-custom-styles login-custom-styles">
-                            <mat-label class="fs-12">MMSI Number</mat-label>
-                            <input matInput formControlName="imoNumber" placeholder="" value="">
-                        </mat-form-field>
+                        <app-mat-auto-complete [optionData]="vesselDetails" [label]="'Ship Name'"
+                            [optionKey]="'vesselName'" [optionValue]="'id'"
+                            [customClass]="'register-custom-styles login-custom-styles'"
+                            (optionSelectedValue)="onVesselSelected($event)"></app-mat-auto-complete>
+                        <mat-error *ngIf="registrationForm.get('VesselID')?.hasError('required')">Ship Name is
+                            required</mat-error>
                     </div>
 
                     <div class="grid-item">
-                        <mat-form-field class="register-custom-styles login-custom-styles">
-                            <mat-label class="fs-12">Ship Name</mat-label>
-
-                            <mat-select formControlName="VesselID">
-                                <mat-option *ngFor="let type of vesselDetails"
-                                    [value]="type.vesselObjectId">{{type.vesselName}}</mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="registrationForm.get('VesselID')?.hasError('required')">User Type is
-                                required</mat-error>
+                        <mat-form-field class=" register-custom-styles login-custom-styles" [ariaDisabled]="true">
+                            <input matInput formControlName="imoNumber" placeholder="MMSI Number" readonly>
                         </mat-form-field>
                     </div>
-
-                    <!-- <div class="grid-item">
-                        <mat-form-field class="register-custom-styles login-custom-styles">
-                            <mat-label class="fs-12">Ship Name</mat-label>
-                            <input matInput [formControl]="vesselSearchControl" [matAutocomplete]="auto">
-                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                                <mat-option *ngFor="let option of vesselDetails" [value]="option">
-                                    {{option.place_name}}
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field>
-                    </div>  -->
 
 
                 </div>
                 <div class="tickbox m-t-20 m-b-20">
                     <section class="">
-                        <!-- <mat-checkbox formControlName="agreeChkbox">I agree with Eyesea user agreement and <a
-                                (click)="dataPolocyPopup()">Privacy Policy..</a>
-                        </mat-checkbox> -->
                         <mat-checkbox formControlName="agreeChkbox">I agree with Eyesea user agreement and <a
-                            href="https://eyesea.org/privacy-policy/">Privacy Policy..</a>
-                    </mat-checkbox>
-                        <!-- <mat-error *ngIf="registrationForm.get('agreeChkbox')?.hasError('requiredTrue')"
-                            class="m-l-20">Please agree
-                            Privacy Policy </mat-error> -->
+                                href="https://eyesea.org/privacy-policy/" target="_blank">Privacy Policy.</a>
+                        </mat-checkbox>
                     </section>
                 </div>
 

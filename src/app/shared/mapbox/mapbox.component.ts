@@ -1,31 +1,40 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
 import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import * as mapboxgl from 'mapbox-gl';
 import { environment } from 'src/environments/environment.development';
 import * as turf from '@turf/turf';
 import { MapboxService } from 'src/app/core/services/mapbox/mapbox.service';
-import { MAP_STYLE, MAP_ZOOM } from 'src/app/core/utilities/constants';
+import { MAP_MAXZOOM, MAP_MINZOOM, MAP_STYLE, MAP_ZOOM } from 'src/app/core/utilities/constants';
+import { MatDialog } from '@angular/material/dialog';
+import { TrashitemPopupComponent } from 'src/app/modules/dashboard/trashitem-popup/trashitem-popup.component';
 
 @Component({
   selector: 'app-mapbox',
   templateUrl: './mapbox.component.html',
   styleUrls: ['./mapbox.component.scss']
 })
-export class MapboxComponent {
+export class MapboxComponent implements OnInit {
   map!: mapboxgl.Map;
   geoCodermarker!: mapboxgl.Marker;
   locateUser!: mapboxgl.GeolocateControl;
+
+
   @Input() trashFiltersTemplate!: TemplateRef<any>
   @Input("locateUser") locateUserInput: boolean = false;
   @Input("container") container!: string;
   @Input("geoCoder") geoCoderInput: boolean = false;
-  @Input("mapData") trashData!: any[];
   @Input("flyToCords") flyToCords!: any
   @Output("geoCoderDraggedCords") geoCoderDraggedCords = new EventEmitter<any>();
+  @Input('tabName') tabName: any;
+  @Input('trashData') trashData: any[] = [];
 
-  constructor(private mapboxService: MapboxService) { }
+  constructor(private mapboxService: MapboxService, public dialog: MatDialog) { }
+
+  ngOnInit(): void {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
+
     if (this.trashData) {
       if (this.trashData.length > 0) {
         this.convertToGeoJsonData(this.trashData);
@@ -44,7 +53,9 @@ export class MapboxComponent {
   }
 
   ngAfterViewInit(): void {
+
     this.initMap();
+
   }
 
   addLocateUser() {
@@ -54,12 +65,35 @@ export class MapboxComponent {
       positionOptions: {
         enableHighAccuracy: true,
       },
-      fitBoundsOptions: {
-        zoom: 13
-      }
 
     });
-    this.map.addControl(this.locateUser, 'bottom-right')
+    this.map.addControl(this.locateUser, 'bottom-right');
+
+    this.locateUser.on('geolocate', (e: any) => {
+      let userCoordinates = new mapboxgl.LngLat(
+        e.coords.longitude,
+        e.coords.latitude
+      );
+
+      this.mapboxService.currentMapCenter = userCoordinates.toArray();
+      if (this.container == "addtrash") {
+        this.geoCodermarker = new mapboxgl.Marker({
+          color: '#F84C4C',
+          draggable: true
+        });
+
+        this.geoCodermarker.on('dragend', () => {
+
+          this.geoCoderDraggedCords.emit(this.geoCodermarker.getLngLat().toArray());
+        });
+        this.geoCodermarker.setLngLat(userCoordinates).
+      
+        addTo(this.map);
+      }
+    });
+
+
+
   }
 
   addGeoCoder() {
@@ -67,7 +101,7 @@ export class MapboxComponent {
       accessToken: environment.MAPBOX_APIKEY,
       mapboxgl: mapboxgl,
       marker: true,
-      reverseGeocode: true,
+      reverseGeocode: false,
     });
     this.map.addControl(geoCoder, 'top-left');
 
@@ -78,39 +112,50 @@ export class MapboxComponent {
       accessToken: environment.MAPBOX_APIKEY,
       container: this.container,
       style: MAP_STYLE,
-      zoom: MAP_ZOOM
+      zoom: MAP_ZOOM,
+      minZoom: MAP_MINZOOM,
+      maxZoom: MAP_MAXZOOM,
+
+
+
     });
-    this.map.addControl(new mapboxgl.NavigationControl());
+    this.map.addControl(new mapboxgl.NavigationControl(),'bottom-right');
 
     if (this.locateUserInput) {
       this.addLocateUser();
+
     }
     if (this.geoCoderInput) {
       this.addGeoCoder();
 
     }
     this.map.on('load', () => {
+
+
       if (this.locateUserInput) {
-        this.locateUser.trigger();
+
         this.loadImagesForMap();
         if (this.container === "dashboard") {
+          if (this.mapboxService.currentMapCenter == null) {
+            this.locateUser.trigger();
+          }
+          else {
+            this.map.setCenter(this.mapboxService.currentMapCenter);
+          }
+
           this.mapboxService.setMapbounds(this.map.getBounds());
+
+
+
           this.initGeoJsonSource();
+        }
+        if (this.container === "addtrash") {
+          this.locateUser.trigger();
+
         }
       }
 
-      if (this.container === "addtrash") {
-        this.geoCodermarker = new mapboxgl.Marker({
-          color: '#F84C4C',
-          draggable: true
-        });
 
-        this.geoCodermarker.on('dragend', () => {
-          console.log('draggable');
-          console.log(this.geoCodermarker.getLngLat());
-          this.geoCoderDraggedCords.emit(this.geoCodermarker.getLngLat());
-        });
-      }
     })
   }
 
@@ -145,10 +190,7 @@ export class MapboxComponent {
       id: 'trash-layer',
       source: 'trash-source',
       type: 'symbol',
-      // layout: {
-      //   'icon-image': 'red-marker',
-      //   'icon-size': 1,
-      // },
+
       layout: {
         'icon-image': [
           'match',
@@ -158,6 +200,18 @@ export class MapboxComponent {
         ],
         'icon-size': 1.5,
       },
+    });
+
+    this.map.on('click', 'trash-layer', (e: any) => {
+      console.log(e.lngLat);
+      console.log(e.features[0].properties);
+
+
+      let dialogRef = this.dialog.open(TrashitemPopupComponent, {
+        data: e.features[0].properties,
+        width: '40%',
+      });
+
     });
 
 
@@ -175,13 +229,12 @@ export class MapboxComponent {
       features.push(feature);
     });
 
-    console.log(features);
+
     let trashFeatures = turf.featureCollection(features);
     (this.map.getSource('trash-source') as mapboxgl.GeoJSONSource).setData(trashFeatures)
   }
   flyToCoOrdsOnMap(center: any) {
     this.map.flyTo({ center: center, zoom: MAP_ZOOM });
-    // this.geoCoderDraggedCords.emit(center);
     this.geoCodermarker.setLngLat(center).addTo(this.map);
 
   }
@@ -189,7 +242,10 @@ export class MapboxComponent {
   searchTrashOnMap() {
     this.mapboxService.searchTimestamp = new Date();
     this.mapboxService.setMapbounds(this.map.getBounds());
-    console.log(this.map.getZoom());
+
+    this.mapboxService.currentMapZoom = Math.round(this.map.getZoom());
+    this.mapboxService.currentMapCenter = this.map.getCenter();
+
   }
 
 }

@@ -7,7 +7,7 @@
                 <div class="left-content  full-width">
                     <h5 class="m-b-0">Welcome to</h5>
                     <h3 class="m-t-0 ">Eyesea</h3>
-                    <p>Real-time Maritime Pollution Reporting and Mapping </p>
+                    <p>Real-time Maritime Pollution Reporting and Mapping</p>
                 </div>
                 <div>
                 </div>
@@ -30,24 +30,26 @@
 
                 <div class="eyesea-login">
                     <div class=" m-t-60">
-                        <div class="d-flex  align-items-center socialmedia-icons fb">
-                            <i class="facebook-icon pointer custom-sprite"></i>
+                        <div class="d-flex  align-items-center socialmedia-icons fb pointer">
+                            <i class="facebook-icon  custom-sprite"></i>
                             <div class="d-flex justify-content-center align-items-center full-width">
                                 <h4 class="text-white" (click)="facebookLogin()">Facebook</h4>
                             </div>
                         </div>
 
-                        <div class="d-flex  align-items-center socialmedia-icons google" (click)="googleLogin()">
-                            <i class="google-icon pointer custom-sprite"></i>
+                        <div class="d-flex  align-items-center socialmedia-icons google pointer"
+                            (click)="googleLogin()">
+                            <i class="google-icon  custom-sprite"></i>
                             <div class="d-flex justify-content-center align-items-center full-width">
                                 <h4 class="text-color">Google</h4>
                             </div>
                         </div>
 
-                        <div class="d-flex  align-items-center socialmedia-icons gust">
-                            <i class="gustuser-icon pointer custom-sprite"></i>
+                        <div *ngIf="!isGuestUser" class="d-flex  align-items-center socialmedia-icons gust pointer"
+                            (click)="guestUserLogin()">
+                            <i class="gustuser-icon  custom-sprite"></i>
                             <div class="d-flex justify-content-center align-items-center full-width">
-                                <h4 class="text-white" (click)="guestUserLogin()">Guest User</h4>
+                                <h4 class="text-white">Guest User</h4>
                             </div>
                         </div>
 
@@ -58,6 +60,3 @@
         </div>
 
     </div>
-
-
-    <!-- login.component.html -->

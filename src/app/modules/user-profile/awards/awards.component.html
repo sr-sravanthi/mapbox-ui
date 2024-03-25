@@ -1,0 +1,66 @@
+<div>
+    <mat-tab-group  disableRipple >
+        <mat-tab [label]="tab" *ngFor="let tab of tabNames;index as i">
+          <div *ngIf="i==0">
+                <div class=" d-flex flex-column">
+                    <div *ngFor="let award of personalAwardDetails">
+                        <div class="d-flex  justfy-content-spacebetween p-5 m-3 align-items-center">
+                            <div class="d-flex gap-20 align-items-center">
+                                <i *ngIf="award.rank==1" class="custom-sprite rank1"></i>
+                                <i *ngIf="award.rank==2" class="custom-sprite rank2"></i>
+                                <i *ngIf="award.rank==3" class="custom-sprite rank3"></i>
+                                <i *ngIf="award.rank>3" class="badge bold m-l-0">{{award.rank}}</i>
+                                <span class=" text-color ">{{award.userName}}</span>
+                            </div>
+                            <div class="right-end d-flex gap-20 align-items-center">
+                                <span class="fs-12 semi-bold">{{award.score}}</span>
+                                <i [ngClass]="award.level? 'green-arrow':'red-arrow'" class="custom-sprite"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="i==1">
+                <div class=" d-flex flex-column">
+                    <div *ngFor="let award of vesselAwardDetails">
+                        <div class="d-flex  justfy-content-spacebetween p-5 m-3 align-items-center">
+                            <div class="d-flex gap-20 align-items-center">
+                                <i *ngIf="award.rank==1" class="custom-sprite rank1"></i>
+                                <i *ngIf="award.rank==2" class="custom-sprite rank2"></i>
+                                <i *ngIf="award.rank==3" class="custom-sprite rank3"></i>
+                                <i *ngIf="award.rank>3" class="badge bold m-l-0">{{award.rank}}</i>
+                                <span class=" text-color ">{{award.vesselName}}</span>
+                            </div>
+                            <div class="right-end d-flex gap-20 align-items-center">
+                                <span class="fs-12 semi-bold">{{award.score}}</span>
+                                <i [ngClass]="award.level? 'green-arrow':'red-arrow'" class="custom-sprite"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="i==2">
+                <div class=" d-flex flex-column">
+                    <div *ngFor="let award of organizationAwardDetails">
+                        <div class="d-flex  justfy-content-spacebetween p-5 m-3 align-items-center">
+                            <div class="d-flex gap-20 align-items-center">
+                                <i *ngIf="award.rank==1" class="custom-sprite rank1"></i>
+                                <i *ngIf="award.rank==2" class="custom-sprite rank2"></i>
+                                <i *ngIf="award.rank==3" class="custom-sprite rank3"></i>
+                                <i *ngIf="award.rank>3" class="badge bold m-l-0">{{award.rank}}</i>
+                                <span class="text-color ">{{award.companyName}}</span>
+                            </div>
+                            <div class="right-end d-flex gap-20 align-items-center">
+                                <span class="fs-12 semi-bold">{{award.score}}</span>
+                                <i [ngClass]="award.level? 'green-arrow':'red-arrow'" class="custom-sprite"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    <!-- <div class="d-flex justify-content-center align-items-center p-10">
+        <span class="text-primary fs-14">See All Notification</span>
+    </div> -->
+</div>

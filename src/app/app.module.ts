@@ -12,6 +12,11 @@ import { HeaderInterceptor } from './core/interceptors/header.interceptor';
 import { SharedModule } from './shared/shared.module';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import { UserProfileModule } from './modules/user-profile/user-profile.module';
+
+
+
+
 
 
 
@@ -20,7 +25,8 @@ import { FooterComponent } from './shared/footer/footer.component';
     AppComponent,
     HeaderComponent,
     FooterComponent,
-
+  
+    
   ],
   imports: [
     BrowserModule,
@@ -31,8 +37,8 @@ import { FooterComponent } from './shared/footer/footer.component';
     MaterialModule,
     SocialLoginModule,
     GoogleSigninButtonModule,
-    SharedModule
-
+    SharedModule,
+    UserProfileModule
   ],
 
   providers: [
@@ -57,6 +63,8 @@ import { FooterComponent } from './shared/footer/footer.component';
             provider: new FacebookLoginProvider('1151945012179017'),
           },
         ],
+      
+        
         onError: (err: any) => {
           console.error(err);
         },

@@ -1,0 +1,26 @@
+<div>
+    <mat-tab-group disableRipple>
+        <mat-tab [label]="tab" *ngFor="let tab of tabNames;index as i">
+            <div *ngIf="i==0">
+                <div class=" d-flex flex-column">
+                    <h4 class="d-flex justify-content-center align-items-center">No notifications yet</h4>
+                </div>
+            </div>
+            <div *ngIf="i==1">
+                <div class="d-flex flex-column">
+                    <h4  class="d-flex justify-content-center">No notifications yet</h4>
+                </div>
+            </div>
+            <div *ngIf="i==2">
+                <div class=" d-flex flex-column">
+                    <h4  class="d-flex justify-content-center">No notifications yet</h4>
+                </div>
+            </div>
+            <div *ngIf="i==3">
+                <div class=" d-flex flex-column">
+                    <h4  class="d-flex justify-content-center">No notifications yet</h4>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

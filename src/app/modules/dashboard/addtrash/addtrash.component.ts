@@ -1,14 +1,16 @@
-import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import * as mapboxgl from 'mapbox-gl';
 import { debounceTime, switchMap, of, catchError } from 'rxjs';
+import { MasterData, TrashCatergory } from 'src/app/core/interfaces/common';
 import { AddTrashRequest, TrashAttachmentEntity, TrashCommonEntity, TrashEntity } from 'src/app/core/interfaces/trash';
-import { UserDetails } from 'src/app/core/interfaces/user';
+import { UserDetails, UserRequest } from 'src/app/core/interfaces/user';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { MapboxService } from 'src/app/core/services/mapbox/mapbox.service';
 import { TrashService } from 'src/app/core/services/trash/trash.service';
-import { MAX_FILE_SIZE, getCurrentDateTimeTrasanctionID } from 'src/app/core/utilities/constants';
+import { MAX_FILE_SIZE, TRASH_CATEGORIES, getCurrentDateTimeTrasanctionID } from 'src/app/core/utilities/constants';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/shared/dateFormat';
 
 @Component({
@@ -22,7 +24,8 @@ import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/shared/dateFormat';
 })
 
 export class AddtrashComponent implements OnInit {
-
+  formData = new FormData();
+  userDetails!: UserDetails;
   allTrash!: any;
   addTrashForm!: FormGroup;
   selectedCategory!: string;
@@ -31,7 +34,8 @@ export class AddtrashComponent implements OnInit {
   geoCoderSuggestions: any[] = [];
   searchCoOrds: any;
   geoCoderCords: any;
-
+  trashName: any;
+  resfilename: any;
   @ViewChild('fileUploader') fileUploader!: ElementRef;
 
   uploadedFiles!: File[];
@@ -42,48 +46,91 @@ export class AddtrashComponent implements OnInit {
     "png"
   ];
   filename: string = ""
+  filesizeUI: string = "";
   filesize: number = 0;
   fileExt: string = "";
   isFileUploaded: boolean = false;
   attachmentEntity!: TrashAttachmentEntity;
+  selectedPlace!: string;
+  selectedAddress!: string;
+  selectedFormatedCoords!: string;
+  trashTitle!: string;
+  trashCategories: TrashCatergory[] = [];
+
 
 
   constructor(private fb: FormBuilder,
     public dialogRef: MatDialogRef<AddtrashComponent>,
     private mapboxService: MapboxService,
-    private trashService: TrashService) {
+    private trashService: TrashService,
+    private authService: AuthService,) {
 
   }
   ngOnInit(): void {
     this.addTrashForm = this.fb.group({
-      Title: ['', Validators.required],
-      ReportedDate: [null, Validators.required],
-      CategoryId: [0, Validators.required],
+      Title: [''],
+      ReportedDate: [new Date(), Validators.required],
+      CategoryId: [2, Validators.required],
       Longitude: [''],
       Latitude: [''],
     });
     this.setupAutocomplete();
+
+    this.authService.getMasterData().subscribe((data: MasterData) => {
+      this.trashCategories = data.trashCategories;
+      console.log(this.trashCategories);
+
+    });
+    this.searchCoOrds = this.mapboxService.currentMapCenter;
+    this.getCurrentPlace(this.searchCoOrds);
   }
 
   onGeoCoderSelection(event: any) {
 
     const data = event.option.value;
     this.geoCoderCords = data?.center as mapboxgl.LngLat;
-    console.log(typeof (this.geoCoderCords));
-    console.log(this.geoCoderCords);
-
     this.searchCoOrds = this.geoCoderCords;
 
+
   }
+
+  onCatergoryChange(event: any) {
+    const selectedCategoryId = this.addTrashForm.get('CategoryId')?.value;
+    const selectedTrashType = this.trashCategories.find((trashType: any) => trashType.id === selectedCategoryId);
+    if (selectedTrashType) {
+      this.trashName = selectedTrashType.name;
+    }
+    this.trashTitle = this.trashName + " near " + this.selectedPlace
+    this.addTrashForm.get("Title")?.setValue(this.trashTitle);
+  }
+
 
   getGeoCoderDraggedCords(draggedCords: any) {
-    console.log(draggedCords);
-    console.log(typeof (draggedCords));
-
-    this.searchCoOrds = [draggedCords.lng, draggedCords.lat];
-    console.log(this.searchCoOrds);
+    this.searchCoOrds = draggedCords;
+    this.getCurrentPlace(this.searchCoOrds);
 
   }
+
+  getCurrentPlace(selectedCords: any) {
+    this.mapboxService.getaddressByCoordinates(this.searchCoOrds)
+      .subscribe((res: any) => {
+
+        if (res.features.length > 0 && res?.features[3]) {
+          this.selectedPlace = res?.features[3].text;
+          this.selectedAddress = res?.features[0].place_name;
+          this.trashTitle = TRASH_CATEGORIES[this.addTrashForm.get('CategoryId')?.value] + " near " + this.selectedPlace
+          this.addTrashForm.get("Title")?.setValue(this.trashTitle);
+
+        }
+      });
+
+    this.selectedFormatedCoords = this.mapboxService.formatLatitude(this.searchCoOrds[0]) + "," + this.mapboxService.formatLongitude(this.searchCoOrds[1]);
+
+
+  }
+
+
+
 
   setupAutocomplete() {
     this.searchControl.valueChanges
@@ -94,7 +141,7 @@ export class AddtrashComponent implements OnInit {
       )
       .subscribe((data: any) => {
         this.geoCoderSuggestions = data.features;
-        console.log(this.geoCoderSuggestions);
+
       });
   }
 
@@ -102,20 +149,21 @@ export class AddtrashComponent implements OnInit {
     return value && typeof value === 'object' ? value.place_name : value;
   }
 
-
-
   closePopup() {
-    this.dialogRef.close();
+    this.dialogRef.close(null);
   }
 
 
 
   onFileSelected(event: any) {
-    console.log(event.target.files);
     if (event.target.files.length > 0) {
       this.uploadedFiles = event.target.files;
       this.filename = this.uploadedFiles[0].name;
       this.filesize = Number((this.uploadedFiles[0].size / (1024 * 1024)).toFixed(2));
+      let filesizeKb = this.uploadedFiles[0].size / (1024);
+      let filesizeMb = filesizeKb > 1000 ? filesizeKb / (1024) : 0;
+      this.filesizeUI = filesizeMb > 0 ? filesizeMb.toFixed(2) + " MB" : filesizeKb.toFixed(2) + " KB";
+
       if (this.filename.indexOf(".") != -1) {
         this.fileExt = this.filename.substring(
           this.filename.lastIndexOf(".") + 1,
@@ -133,17 +181,12 @@ export class AddtrashComponent implements OnInit {
           this.attachmentEntity = {
             AttachmentTransactionId: getCurrentDateTimeTrasanctionID(),
             AttachmentName: this.filename,
-            FileType: this.fileExt
+            FileType: this.fileExt,
           };
 
-          // const formData: FormData = new FormData();
-          // formData.append('FileName', "00d18b2d-040e-48f1-b3cb-849753b76f6a.png");
-          // formData.append('File', this.uploadedFiles[0]);
-          // this.trashService.saveAttachment(formData).subscribe((res) => {
-          //   console.log(res);
-          // })
-
-
+          const formData = new FormData();
+          formData.append('FileName', this.filename);
+          formData.append('file', this.uploadedFiles[0]);
         }
       }
     }
@@ -154,8 +197,8 @@ export class AddtrashComponent implements OnInit {
     this.uploadedFiles = [];
     this.filename = "";
     this.filesize = 0;
+    this.filesizeUI = "";
     this.isFileUploaded = false;
-    console.log(this.uploadedFiles)
   }
 
   updateFormValues() {
@@ -164,16 +207,15 @@ export class AddtrashComponent implements OnInit {
   }
 
   saveTrash() {
-    let userDetails!: UserDetails;
-    if (sessionStorage.getItem("userDetails")) {
-      userDetails = JSON.parse(sessionStorage.getItem("userDetails") || "");
+    this.userDetails = this.authService.getUserId();
+    const user: UserRequest = {
+      userid: this.userDetails.userID
     }
-
     if (this.addTrashForm.valid && this.searchCoOrds) {
       this.updateFormValues();
       let transactionId = getCurrentDateTimeTrasanctionID();
 
-      let commonEntity: TrashCommonEntity = { UserId: userDetails?.userID };
+      let commonEntity: TrashCommonEntity = { UserId: this.userDetails?.userID };
       let trashEntity: TrashEntity = { ...this.addTrashForm.value, TransactionId: transactionId };
       if (this.isFileUploaded && this.attachmentEntity) {
         this.attachmentEntity.TransactionId = transactionId;
@@ -181,32 +223,37 @@ export class AddtrashComponent implements OnInit {
 
       let addTrashRequest: AddTrashRequest = { CommonEntity: commonEntity, TrashList: [trashEntity], AttachmentEntity: this.isFileUploaded ? [this.attachmentEntity] : [] };
 
-      console.log(addTrashRequest);
-
-
       this.trashService.addTrash(addTrashRequest).subscribe(
         {
           next: (response: any) => {
-            console.log(response);
             if (response.commonEntity.transactionStatus === "Y" && response.trashDetailsEntity.length > 0) {
 
               if (this.isFileUploaded && response.attachmentEntity.length > 0) {
-                const formData: FormData = new FormData();
-                formData.append('FileName', response.attachmentEntity[0]?.fileName);
-                formData.append('File', this.uploadedFiles[0]);
-                this.trashService.saveAttachment(formData).subscribe((res) => {
-                  console.log(res);
-                })
+                this.resfilename = response.attachmentEntity[0]?.fileName
+                this.uploadFormdata(this.resfilename, this.uploadedFiles[0]);
+
+                this.trashService.saveAttachment(this.formData)
+                  .then(response => {
+                    // console.log('File uploaded successfully:', response);
+                  })
+                  .catch(error => {
+                  });
               }
 
-              this.dialogRef.close(true);
+              this.authService.getUserDetails(user).subscribe((user: any) => {
+                if (user.commonEntity?.transactionStatus === "Y" && user.commonEntity?.message === "Success") {
+                  this.authService.setProfileDetails(user.userDetailEntity[0]);
+                }
+              });
+
+              this.dialogRef.close(response.trashDetailsEntity);
             }
           }
         });
-
-
     }
-
-
+  }
+  uploadFormdata(fileName: string, file: File) {
+    this.formData.append('FileName', fileName);
+    this.formData.append('file', file, file.name);
   }
 }

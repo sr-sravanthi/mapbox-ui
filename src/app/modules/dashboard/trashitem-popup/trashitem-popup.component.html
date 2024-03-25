@@ -1,13 +1,18 @@
 <div class="trash-details-popup">
-    <div class="d-flex justfy-content-end p-5 text-gray "><mat-icon (click)="closePopup()">close</mat-icon></div>
+    <div class="d-flex justfy-content-end p-5 text-gray pointer"><mat-icon (click)="closePopup()">close</mat-icon></div>
     <div mat-dialog-content class="d-flex gap-10 p-10">
 
-        <div class="trash-img"></div>
+        <!-- <div class="trash-img"></div> -->
+        <img [src]="trashItem.attachmentUrl" alt="trash-img" class="trash-img">
         <div class=" ">
             <div> <label class="fs-16 text-color m-0">{{trashItem.title}}</label></div>
 
             <span class="text-gray fs-12">Category :</span><span
-                class="bold fs-12">{{TRASH_CATEGORIES[trashItem.categoryId]}}</span>
+                class="bold fs-12 color-primary bold">{{TRASH_CATEGORIES[trashItem.categoryId]}}</span>
+        </div>
+        <div>
+            <button mat-button class="pointer btn-primary"class="weather"  (click)="onclickweather()">Weather Reports</button>
+          
         </div>
     </div>
     <div class="p-10">
@@ -22,8 +27,9 @@
             </div>
         </div>
         <div class="d-flex justfy-content-spacebetween">
-            <span class="fs-14">N{{trashItem.latitude}}, W{{trashItem.longitude}}</span>
-            <span class="fs-13">{{trashItem.reportedDate| date: 'dd-MMM-yyyy'}}</span>
+            <span class="fs-14 color-primary bold">{{this.mapboxService.formatLatitude(this.trashItem.latitude)}},
+                {{this.mapboxService.formatLongitude(this.trashItem.longitude)}}</span>
+            <span class="fs-13 color-primary bold">{{trashItem.reportedDate| date: 'dd-MMM-yyyy'}}</span>
         </div>
         <div class="d-flex justfy-content-spacebetween m-t-10">
             <div class="d-flex align-items-center">
@@ -36,8 +42,9 @@
             </div>
         </div>
         <div class="m-t-10 d-flex justfy-content-spacebetween">
-            <span class="fs-14">{{trashItem.reportedUserName}}</span>
-            <span class="fs-13" *ngIf="trashItem.isRecovered">{{trashItem.recoveredDate| date: 'dd-MMM-yyyy'}}</span>
+            <span class="fs-14 color-primary bold">{{trashItem.reportedUserName}}</span>
+            <span class="fs-13 color-primary bold" *ngIf="trashItem.isRecovered">{{trashItem.recoveredDate| date:
+                'dd-MMM-yyyy'}}</span>
         </div>
 
     </div>

@@ -1,7 +1,8 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { TRASH_CATEGORIES } from 'src/app/core/utilities/constants';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { TrashitemPopupComponent } from '../trashitem-popup/trashitem-popup.component';
+import { MapboxService } from 'src/app/core/services/mapbox/mapbox.service';
+import { TrashService } from 'src/app/core/services/trash/trash.service';
 
 @Component({
   selector: 'app-trashitem',
@@ -11,20 +12,53 @@ import { TrashitemPopupComponent } from '../trashitem-popup/trashitem-popup.comp
 export class TrashitemComponent implements OnInit {
 
   @Input("trashItem") trashItem: any;
+  @Input("trashCategories") trashCategories: any[] = [];
+  @Input("trashAttachmentUrl") trashAttachmentUrl: string = "";
+
+  trashImg: string = "";
   trashcategory: string = '';
-  TRASH_CATEGORIES = TRASH_CATEGORIES;
-  constructor(public dialog: MatDialog) { }
+
+  constructor(public dialog: MatDialog, public mapboxService: MapboxService, public trashService: TrashService) { }
+
   ngOnInit(): void {
+    //console.log(this.trashItem);
+    
+  
+    let attachemnt = this.trashService.allTrashAttachmentData.filter((trash: any) => trash.trashId == this.trashItem.trashId);
+    if (attachemnt.length > 0) {
+      this.trashImg = this.trashService.getAttachmentUrl(attachemnt[0].fileName);
+    }
+    else {
+      this.trashImg = "plastic.png"
+    }
+
+    // if (attachemnt[0]) {
+    //   this.trashService.getAttachment(attachemnt[0].fileName).subscribe((res) => {
+    //     if (res) {
+    //       console.log(res);
+    //       //trashImgUrl = this.trashService.getAttachmentUrl(attachemnt[0].fileName);
+    //     }
+    //   });
+    // }
+
   }
+
+  getTrashTypeName(trashItemId: any) {
+
+    if (!this.trashCategories) {
+      return undefined;
+    }
+    const correspondingTrashType = this.trashCategories.find((trash: any) => trash.id === trashItemId);
+    return correspondingTrashType?.name;
+  }
+
   trashPopup() {
     let dialogRef = this.dialog.open(TrashitemPopupComponent, {
-      data: this.trashItem,
+      data: { ...this.trashItem, attachmentUrl: this.trashImg },
       width: '40%',
     });
 
-
-
-
   }
-}
 
+
+}

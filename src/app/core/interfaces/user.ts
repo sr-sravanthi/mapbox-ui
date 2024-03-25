@@ -7,7 +7,7 @@ export interface UserRequest {
     deviceType?: string,
     firebasetokenId?: string,
     AuthType?: string,
-    isGuestUser?: boolean
+    isGuestUser?: string
 }
 
 
@@ -32,3 +32,12 @@ export interface UserDetails {
     isGuestUser?: string
 
 }
+
+export interface GuestUserRequest{
+    oldId?:string,
+    newId?:string,
+    email?:string,
+    photoURL?:string,
+    name?:string
+}
+
